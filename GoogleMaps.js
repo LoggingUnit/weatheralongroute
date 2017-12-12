@@ -23,6 +23,11 @@ class GoogleMaps {
     });
   }
 
+  /**
+   * Method to view a map and info panel
+   * @param {div, div} div for mount map and info panel with the route
+   * @return nope
+   */
   viewRoute() {
     var that = this;
     var directionsDisplay = new google.maps.DirectionsRenderer({
@@ -77,6 +82,7 @@ class GoogleMaps {
   }
 
   getRoute() {
-    return this.directions;
+    console.log("dots count ", this.directions.routes[0].overview_path.length);
+    return this.directions.routes[0].overview_path;
   }
 }
