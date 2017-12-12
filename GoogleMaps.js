@@ -4,8 +4,11 @@
  */
 class GoogleMaps {
 
-  constructor() {
-    // constructor body is here
+  constructor(mountPointMap, mountPointPanel) {
+    this.mountPointMap = mountPointMap;
+    this.mountPointPanel = mountPointPanel;
+    this.directions;
+    this.map;
   }
 
   /**
@@ -13,23 +16,25 @@ class GoogleMaps {
    * @param {div, div} div for mount map and info panel with the route
    * @return nope
    */
-  initializeMap(mountPointMap, mountPointPanel) {
-    var that = this;
-    var map = new google.maps.Map(document.getElementById(mountPointMap), {
-      zoom: 4,
-      center: { lat: -24.345, lng: 134.46 }  // Australia.
+  initializeMap(lat, lng, zoom) {
+    this.map = new google.maps.Map(document.getElementById(this.mountPointMap), {
+      zoom: zoom,
+      center: { lat, lng }
     });
-    var directionsService = new google.maps.DirectionsService;
+  }
+
+  viewRoute() {
+    var that = this;
     var directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,
-      map: map,
-      panel: document.getElementById(mountPointPanel)
+      map: this.map,
+      panel: document.getElementById(this.mountPointPanel)
     });
+    directionsDisplay.setDirections(this.directions);
     directionsDisplay.addListener('directions_changed', function () {
-      that.computeTotalDistance(directionsDisplay.getDirections());
+      that.directions = directionsDisplay.getDirections();
+      that.computeTotalDistance();
     });
-    that.displayRoute('Perth, WA', 'Sydney, NSW', directionsService,
-      directionsDisplay);
   }
 
   /**
@@ -37,8 +42,10 @@ class GoogleMaps {
    * @param {origin, destination, service, display}
    * @return nope
    */
-  displayRoute(origin, destination, service, display) {
-    service.route({
+  calcRoute(origin, destination) {
+    var that = this;
+    var directionsService = new google.maps.DirectionsService;
+    directionsService.route({
       origin: origin,
       destination: destination,
       //waypoints: [{location: 'Adelaide, SA'}, {location: 'Broken Hill, NSW'}],
@@ -46,7 +53,8 @@ class GoogleMaps {
       avoidTolls: true
     }, function (response, status) {
       if (status === 'OK') {
-        display.setDirections(response);
+        that.directions = response;
+        that.viewRoute();
       } else {
         alert('Could not display directions due to: ' + status);
       }
@@ -58,13 +66,17 @@ class GoogleMaps {
     * @param {result}
     * @return nope
     */
-  computeTotalDistance(result) {
+  computeTotalDistance() {
     var total = 0;
-    var myroute = result.routes[0];
+    var myroute = this.directions.routes[0];
     for (var i = 0; i < myroute.legs.length; i++) {
       total += myroute.legs[i].distance.value;
     }
     total = total / 1000;
     document.getElementById('total').innerHTML = total + ' km';
+  }
+
+  getRoute() {
+    return this.directions;
   }
 }
