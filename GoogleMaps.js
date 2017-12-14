@@ -8,7 +8,7 @@ class GoogleMaps {
     this.mountPointMap = mountPointMap;
     this.mountPointPanel = mountPointPanel;
     this.directions;
-    this.directionsFixedStep;
+    this.routeSimple;
     this.map;
   }
 
@@ -30,7 +30,7 @@ class GoogleMaps {
    *  see details there.
    * @param {origin, destination, step, tolerance}
    * @return nope
-   */                                                                 
+   */
   calcRoute(origin, destination, step, tolerance) {
     var that = this;
     var directionsService = new google.maps.DirectionsService;
@@ -45,7 +45,7 @@ class GoogleMaps {
         that.directions = response;
         that._viewRoute();
         that._simplifyRoute(step, tolerance);
-        that._viewMarkers(that.directions.routes[0].overview_path);
+        //that._viewMarkers(that.directions.routes[0].overview_path);
       } else {
         alert('Could not display directions due to: ' + status);
       }
@@ -88,7 +88,41 @@ class GoogleMaps {
    * @param {step, tolerance} 
    */
   _simplifyRoute(step, tolerance) {
-    console.log(step, tolerance);
+    var that = this;
+    var simple = this.routeSimple;
+    var original = this.directions.routes[0].overview_path;
+    var libSpher = google.maps.geometry.spherical;
+    simple = [];
+    var currentPoint = 0;
+
+    //Get distance of original route in meters, convert into kilimeners and count steps to use their number as array length
+    var simpleArrayLength = Math.ceil(this.directions.routes[0].legs[0].distance.value / 1000 / step);
+    simple[0] = original[0];
+    
+    //calcStep(0);
+
+    for (var i = 0; i < simpleArrayLength; i++) {
+      simple[i+1] = calcStep();
+    }
+
+    this._viewMarkers(simple);
+
+    function calcStep() {
+      let distance = 0;
+
+      while ((distance/1000 <= step)&&(currentPoint < that.directions.routes[0].overview_path.length-1)) {
+        distance += libSpher.computeDistanceBetween(original[currentPoint],original[currentPoint+1]);
+        currentPoint++;
+      }
+
+      if (distance/1000 > step + tolerance) {
+        console.log('tolerance exceeded');
+      }      
+
+      console.log('Last point of step: ', currentPoint, ', distance: ', distance/1000);
+
+      return original[currentPoint];
+    }
 
   }
 
@@ -98,8 +132,8 @@ class GoogleMaps {
    */
   _viewMarkers(markersArray) {
     var that = this;
-    function createMarker (lat, lng) {
-      var myLatLng = {lat, lng};
+    function createMarker(lat, lng) {
+      var myLatLng = { lat, lng };
       var marker = new google.maps.Marker({
         position: myLatLng,
         map: that.map,
