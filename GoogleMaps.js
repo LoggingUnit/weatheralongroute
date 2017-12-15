@@ -60,7 +60,8 @@ class GoogleMaps {
    * @return {lat, lng, time}
    */
   getRoute() {
-    console.log("dots count ", this.directions.routes[0].overview_path.length);
+    console.log("dots count original", this.directions.routes[0].overview_path.length);
+    console.log("dots count simple", this.routeSimple.length);
     console.log(this.directions);
     return this.directions.routes[0].overview_path;
   }
@@ -89,55 +90,74 @@ class GoogleMaps {
    */
   _simplifyRoute(step, tolerance) {
     var that = this;
+    this.routeSimple = [];
     var simple = this.routeSimple;
     var original = this.directions.routes[0].overview_path;
     var libSpher = google.maps.geometry.spherical;
-    simple = [];
+    simple = this.routeSimple;
     var currentPoint = 0;
+    var arr = [];
 
-    //Get distance of original route in meters, convert into kilimeners and count steps to use their number as array length
-    var simpleArrayLength = Math.ceil(this.directions.routes[0].legs[0].distance.value / 1000 / step);
+    //Get distance of original route in meters and count steps to use their number as array length
+    var simpleArrayLength = Math.ceil(this.directions.routes[0].legs[0].distance.value / step);
     simple[0] = original[0];
+    arr[0] = {point: simple[0],
+              distance: 0};
     
-    //calcStep(0);
+    for (var i = 1; i < simpleArrayLength; i++) {
+      var obj = calcPoint();
+      simple[i] = obj.point;
+      arr[i] = obj;
+    };
 
-    for (var i = 0; i < simpleArrayLength; i++) {
-      simple[i+1] = calcStep();
+    for (var m = 0; m <= arr.length-1; m++) {
+      console.log('obj: ', m, ' distance: ', arr[m].distance);
     }
 
     this._viewMarkers(simple);
 
-    function calcStep() {
+    function calcPoint() {
       let distance = 0;
+      let distancePrev = 0;
 
-      while ((distance/1000 <= step)&&(currentPoint < that.directions.routes[0].overview_path.length-1)) {
+      while ((distance <= step)&&(currentPoint < that.directions.routes[0].overview_path.length-1)) {
+        distancePrev = distance;
         distance += libSpher.computeDistanceBetween(original[currentPoint],original[currentPoint+1]);
         currentPoint++;
       }
 
-      if (distance/1000 > step + tolerance) {
-        console.log('tolerance exceeded');
+      if (distance > step + tolerance) {
+        var diff = distance - step;
+        var heading = libSpher.computeHeading(original[currentPoint-1],original[currentPoint]);
+        var newPoint = libSpher.computeOffset(original[currentPoint-1], (distance-distancePrev-diff), heading);
+        var distanceNew = libSpher.computeDistanceBetween(original[currentPoint-1], newPoint);
+        console.log('last point of step: ', currentPoint-1, ', distance: ', distance);
+        console.log('diff: ', diff);
+        console.log('new point distance: ', distanceNew);
+        console.log('######################################');
+        return {point: newPoint,
+                distance: distancePrev + distanceNew}
       }      
-
-      console.log('Last point of step: ', currentPoint, ', distance: ', distance/1000);
-
-      return original[currentPoint];
+      console.log('last point of step: ', currentPoint, ', distance: ', distance);
+      console.log('######################################');
+      return {point: original[currentPoint],
+              distance: distance};
     }
-
   }
 
   /**
    * Method to show custom markers of route on the map. When method received array of LatLng obj it creates and displays markers;
    * @param {markersArray} 
    */
-  _viewMarkers(markersArray) {
+  _viewMarkers(markersArray, label) {
+    var title = label || 'Point'
     var that = this;
     function createMarker(lat, lng) {
       var myLatLng = { lat, lng };
       var marker = new google.maps.Marker({
         position: myLatLng,
         map: that.map,
-        title: 'Lek kek!'
+        title: title
       })
     }
 
