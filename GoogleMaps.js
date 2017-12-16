@@ -26,12 +26,12 @@ class GoogleMaps {
 
   /**
    * Method to show a route and info panel in defined divs. Origin - start point of the route. Dest. - 
-   * final point of the route. Step and toler. - variable for internal _simplifyRoute(step, tolerance) method,
+   * final point of the route. Step - variable for internal _simplifyRoute(step) method,
    *  see details there.
-   * @param {origin, destination, step, tolerance}
+   * @param {origin, destination, step}
    * @return nope
    */
-  calcRoute(origin, destination, step, tolerance) {
+  calcRoute(origin, destination, step) {
     var that = this;
     var directionsService = new google.maps.DirectionsService;
     directionsService.route({
@@ -44,7 +44,7 @@ class GoogleMaps {
       if (status === 'OK') {
         that.directions = response;
         that._viewRoute();
-        that._simplifyRoute(step, tolerance);
+        that._simplifyRoute(step);
         //that._viewMarkers(that.directions.routes[0].overview_path);
       } else {
         alert('Could not display directions due to: ' + status);
@@ -82,13 +82,11 @@ class GoogleMaps {
   }
 
   /**
-   * Method to simplify a direction route with fixed step and defined tolerance. Both vars have to be entered in kilometers.
-   * Step - how many kilometers between route coordinate points in simplified route. Tolerance - if we already have a route point
-   * (in original not simplified route) within tolerance from new calculated route point, original point will be used, simplified 
-   * point will not be created
-   * @param {step, tolerance} 
+   * Method to simplify a direction route with fixed step. Both vars have to be entered in kilometers.
+   * Step - how many kilometers between route coordinate points in simplified route.
+   * @param {step} 
    */
-  _simplifyRoute(step, tolerance) {
+  _simplifyRoute(step) {
     var that = this;
     this.routeSimple = [];
     var simple = this.routeSimple;
@@ -104,41 +102,61 @@ class GoogleMaps {
     arr[0] = {point: simple[0],
               distance: 0};
     
-    for (var i = 1; i < simpleArrayLength; i++) {
-      var obj = calcPoint();
+    for (var i = 1; i <= simpleArrayLength; i++) {
+      var obj = calcPoint(simple[i-1]);
       simple[i] = obj.point;
       arr[i] = obj;
     };
 
+    var summ = 0;
     for (var m = 0; m <= arr.length-1; m++) {
+      summ += arr[m].distance;
       console.log('obj: ', m, ' distance: ', arr[m].distance);
     }
 
+    console.log('summ:', summ);
+
     this._viewMarkers(simple);
 
-    function calcPoint() {
+    function calcPoint(prevSimple) {
       let distance = 0;
       let distancePrev = 0;
 
+      var begin = 0;
+      if ((prevSimple.lat()!==original[currentPoint].lat())||((prevSimple.lng()!==original[currentPoint].lng()))) {
+        begin = prevSimple;
+        console.log('begin = prevSimple;');
+      }
+      else {
+        begin = original[currentPoint];
+        console.log('begin = original;');
+      }
+      
+      console.log('begin: ', begin.lat(), begin.lng());
+      
       while ((distance <= step)&&(currentPoint < that.directions.routes[0].overview_path.length-1)) {
         distancePrev = distance;
-        distance += libSpher.computeDistanceBetween(original[currentPoint],original[currentPoint+1]);
+        distance += libSpher.computeDistanceBetween(begin,original[currentPoint+1]);
         currentPoint++;
+        begin = original[currentPoint];
       }
 
-      if (distance > step + tolerance) {
+      if (distance > step) {
         var diff = distance - step;
+        if (diff/step >= 2) {
+          console.log('diff/step: ', Math.floor(diff/step));
+        }
         var heading = libSpher.computeHeading(original[currentPoint-1],original[currentPoint]);
         var newPoint = libSpher.computeOffset(original[currentPoint-1], (distance-distancePrev-diff), heading);
         var distanceNew = libSpher.computeDistanceBetween(original[currentPoint-1], newPoint);
         console.log('last point of step: ', currentPoint-1, ', distance: ', distance);
-        console.log('diff: ', diff);
-        console.log('new point distance: ', distanceNew);
+        console.log('end: ', newPoint.lat(), newPoint.lng());
         console.log('######################################');
         return {point: newPoint,
                 distance: distancePrev + distanceNew}
       }      
       console.log('last point of step: ', currentPoint, ', distance: ', distance);
+      console.log('end: ', original[currentPoint].lat(), original[currentPoint].lng());
       console.log('######################################');
       return {point: original[currentPoint],
               distance: distance};
