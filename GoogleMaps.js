@@ -87,80 +87,32 @@ class GoogleMaps {
    * @param {step} 
    */
   _simplifyRoute(step) {
+
     var that = this;
-    this.routeSimple = [];
-    var simple = this.routeSimple;
-    var original = this.directions.routes[0].overview_path;
-    var libSpher = google.maps.geometry.spherical;
-    simple = this.routeSimple;
-    var currentPoint = 0;
-    var arr = [];
-
-    // //Get distance of original route in meters and count steps to use their number as array length
-    // var simpleArrayLength = Math.ceil(this.directions.routes[0].legs[0].distance.value / step);
-    // simple[0] = original[0];
-    // arr[0] = {point: simple[0],
-    //           distance: 0};
-
-    // for (var i = 1; i <= simpleArrayLength; i++) {
-    //   var obj = calcPoint(simple[i-1]);
-    //   simple[i] = obj.point;
-    //   arr[i] = obj;
-    // };
-
-    // var summ = 0;
-    // for (var m = 0; m <= arr.length-1; m++) {
-    //   summ += arr[m].distance;
-    //   console.log('obj: ', m, ' distance: ', arr[m].distance);
-    // }
-
-    // console.log('summ:', summ);
-
-    // this._viewMarkers(simple);
-
-    // function calcPoint(prevSimple) {
-    //   let distance = 0;
-    //   let distancePrev = 0;
-
-    //   var begin = 0;
-    //   if ((prevSimple.lat()!==original[currentPoint].lat())||((prevSimple.lng()!==original[currentPoint].lng()))) {
-    //     begin = prevSimple;
-    //     console.log('begin = prevSimple;');
-    //   }
-    //   else {
-    //     begin = original[currentPoint];
-    //     console.log('begin = original;');
-    //   }
-
-    //   console.log('begin: ', begin.lat(), begin.lng());
-
-    //   while ((distance <= step)&&(currentPoint < that.directions.routes[0].overview_path.length-1)) {
-    //     distancePrev = distance;
-    //     distance += libSpher.computeDistanceBetween(begin,original[currentPoint+1]);
-    //     currentPoint++;
-    //     begin = original[currentPoint];
-    //   }
-
-    //   if (distance > step) {
-    //     var diff = distance - step;
-    //     var heading = libSpher.computeHeading(original[currentPoint-1],original[currentPoint]);
-    //     var newPoint = libSpher.computeOffset(original[currentPoint-1], (distance-distancePrev-diff), heading);
-    //     var distanceNew = libSpher.computeDistanceBetween(original[currentPoint-1], newPoint);
-    //     console.log('last point of step: ', currentPoint-1, ', distance: ', distance);
-    //     console.log('end: ', newPoint.lat(), newPoint.lng());
-    //     console.log('######################################');
-    //     return {point: newPoint,
-    //             distance: distancePrev + distanceNew}
-    //   }      
-    //   console.log('last point of step: ', currentPoint, ', distance: ', distance);
-    //   console.log('end: ', original[currentPoint].lat(), original[currentPoint].lng());
-    //   console.log('######################################');
-    //   return {point: original[currentPoint],
-    //           distance: distance};
-    // }
 
     var simpleRoute = new SimpleRoute(this.directions, step);
-    simpleRoute.simplifyRoute();
+    var arrRoute = simpleRoute.simplifyRoute();
+    
+
+    //  /////////////////////////////////////// FOR TEST PURPOSES ONLY
+    let i = 1;
+    while (arrRoute[i]) {
+
+      var lat = arrRoute[i].coordStepEnd.lat();
+      var lng = arrRoute[i].coordStepEnd.lng();
+      var title = arrRoute[i].stepId.toString();
+
+      var myLatLng = {lat, lng};
+      var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: that.map,
+        title: title
+      })
+
+
+      i++;
+    }
+// ////////////////////////////////////////////////////////////////////////
   }
 
   /**

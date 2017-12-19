@@ -25,7 +25,9 @@ class SimpleRoute {
     }
 
     simplifyRoute() {
-        var firstStep = {
+        var totalDistanceOfRoute = 0;
+
+        var zeroStep = {
             stepId: 0,
             idStart: 0,
             idEnd: 0,
@@ -36,18 +38,22 @@ class SimpleRoute {
             stepDistance: 0,
         }
 
-        firstStep.coordStepStart = this.originalRoute[0];
-        firstStep.coordStepEnd = this.originalRoute[0];
+        zeroStep.coordStepStart = this.originalRoute[0];
+        zeroStep.coordStepEnd = this.originalRoute[0];
+        this.stepArr[0] = zeroStep;
 
-        this.stepArr[0] = firstStep;
-        let length = this._calcLengthStepArr(this.originalRouteLeg.distance.value, this.distPerStep);
+        let length = this._calcLengthStepArr(this.originalRoute, this.distPerStep);
         console.log('stepArr[0] length:', length);
-
-        for (let i = 1; i <= length; i++) {
-
+       
+        for (let i = 0; i < length; i++) {
+            this.stepArr[i+1] = this._calcStep(this.originalRoute, this.stepArr[i], this.distPerStep);
+            totalDistanceOfRoute += this.stepArr[i].stepDistance;
+            console.log(totalDistanceOfRoute);
         }
 
-        this._calcStep(this.originalRoute, this.stepArr[0], this.distPerStep);
+
+        
+        return this.stepArr;
     }
 
     _calcStep(origRouteArr, stepLast, distStp) {
@@ -58,6 +64,8 @@ class SimpleRoute {
         }
         stepNew.stepId = stepLast.stepId+1;
         stepNew.idStart = stepLast.idEnd;
+        stepNew.idEnd = stepNew.idStart;
+
         stepNew.coordStepStart = stepLast.coordStepEnd;
         stepNew.coordStepEnd = stepNew.coordStepStart;
         
@@ -65,22 +73,26 @@ class SimpleRoute {
         while (stepNew.stepDistance <= distStp) {
             stepDistancePrev = stepNew.stepDistance;
 
-            if (!origRouteArr[stepNew.idEnd]) {
-                //If last ID in original route do following
-                stepNew.idEnd--;
-                console.log('Info: last element of original route reached, id: ', stepNew.idEnd);
-                stepNew.stepDistance += libSpher.computeDistanceBetween(stepNew.coordStepEnd, origRouteArr[stepNew.idEnd]);
-                stepNew.coordStepEnd = origRoute[stepNew.idEnd];
-                break;
-            }
-
             if (stepNew.idEnd === stepNew.idStart) {
                 //If it is begginging of new while loop
                 console.log('Info: beginning of new loop detected');
-                stepNew.stepDistance += libSpher.computeDistanceBetween(stepNew.coordStepStart, origRouteArr[stepNew.idEnd+1]);
+                stepNew.stepDistance += libSpher.computeDistanceBetween(stepNew.coordStepEnd, origRouteArr[stepNew.idEnd+1]);
+                if (stepNew.stepDistance > distStp) {
+                    stepNew.idEnd++;
+                    break;
+                }
                 stepNew.coordStepEnd = origRouteArr[stepNew.idEnd+1];
                 stepNew.idEnd++;
                 continue;
+            }
+
+            if (!origRouteArr[stepNew.idEnd+1]) {
+                //If last ID in original route do following
+                console.log('Info: last element of original route reached, id: ', stepNew.idEnd);
+                stepNew.stepDistance += libSpher.computeDistanceBetween(stepNew.coordStepEnd, origRouteArr[stepNew.idEnd]);
+                stepNew.coordStepEnd = origRouteArr[stepNew.idEnd];
+                console.log(stepNew);
+                return stepNew;
             }
 
             //Regular additional iteration
@@ -91,12 +103,22 @@ class SimpleRoute {
         }
 
         stepNew.idEnd--;
-        stepNew.coordStepEnd = origRouteArr[stepNew.idEnd];
+        if (stepNew.idEnd !== stepNew.idStart) {
+            //If no original poing in step range
+            stepNew.coordStepEnd = origRouteArr[stepNew.idEnd];
+        } 
+        
         //Make new point to have required step distance since last original point
 
         var diff = stepNew.stepDistance - distStp;
         var heading = libSpher.computeHeading(stepNew.coordStepEnd, origRouteArr[stepNew.idEnd+1]);
-        var newPoint = libSpher.computeOffset(stepNew.coordStepEnd, (stepNew.stepDistance-stepDistancePrev-diff), heading);
+        if (stepNew.idEnd === stepNew.idStart) {
+            //If no original poing in step range
+            var newPoint = libSpher.computeOffset(stepNew.coordStepEnd, distStp, heading);
+        } 
+        else {
+            var newPoint = libSpher.computeOffset(stepNew.coordStepEnd, (stepNew.stepDistance-stepDistancePrev-diff), heading);
+        }
         stepNew.stepDistance = stepDistancePrev + libSpher.computeDistanceBetween(stepNew.coordStepEnd, newPoint);
         stepNew.coordStepEnd = newPoint;
         
@@ -104,7 +126,13 @@ class SimpleRoute {
         return stepNew;
     }
 
-    _calcLengthStepArr(distTotal, stp) {
+    _calcLengthStepArr(route, stp) {
+        var libSpher = google.maps.geometry.spherical;
+        var distTotal = 0;
+        for (var i = 0; i < route.length-1; i++) {
+            distTotal += google.maps.geometry.spherical.computeDistanceBetween(route[i],route[i+1]);
+        }
+        console.log('Dist total: ', distTotal);
         var length = Math.ceil(distTotal / stp);
         return length;
     }
