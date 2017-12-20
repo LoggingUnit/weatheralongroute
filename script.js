@@ -3,9 +3,8 @@
 function initMap() {
   var googleMaps = new GoogleMaps("map", "right-panel");
   googleMaps.initializeMap(-24.345, 134.46, 4);
-  googleMaps.calcRoute('Vladivostok', 'Paris', 5000);
-  // 49282.4 - ok
-  // 49282.39 - not ok
+  googleMaps.calcRoute('Oktyabrsky', 'Piter', 50000);
+
   function getHuet() {
     var someShit = googleMaps.getRoute();
   }

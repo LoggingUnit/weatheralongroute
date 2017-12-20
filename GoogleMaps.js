@@ -82,8 +82,8 @@ class GoogleMaps {
   }
 
   /**
-   * Method to simplify a direction route with fixed step. Both vars have to be entered in kilometers.
-   * Step - how many kilometers between route coordinate points in simplified route.
+   * Method to simplify a direction route with fixed step.
+   * Step - how many meters between route coordinate points in simplified route.
    * @param {step} 
    */
   _simplifyRoute(step) {
