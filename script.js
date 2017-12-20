@@ -7,6 +7,7 @@ function initMap() {
 
   function getHuet() {
     var someShit = googleMaps.getRoute();
+    console.log(someShit);
   }
   setTimeout(getHuet, 3000);
 }

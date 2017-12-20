@@ -9,6 +9,8 @@ class GoogleMaps {
     this.mountPointPanel = mountPointPanel;
     this.directions;
     this.routeSimple;
+    this.definedStep;
+    this.markers = [];
     this.map;
   }
 
@@ -32,6 +34,7 @@ class GoogleMaps {
    * @return nope
    */
   calcRoute(origin, destination, step) {
+    this.definedStep = step;
     var that = this;
     var directionsService = new google.maps.DirectionsService;
     directionsService.route({
@@ -45,7 +48,7 @@ class GoogleMaps {
         that.directions = response;
         that._viewRoute();
         that._simplifyRoute(step);
-        //that._viewMarkers(that.directions.routes[0].overview_path);
+        that._viewMarkers();
       } else {
         alert('Could not display directions due to: ' + status);
       }
@@ -60,10 +63,10 @@ class GoogleMaps {
    * @return {lat, lng, time}
    */
   getRoute() {
-    console.log("dots count original", this.directions.routes[0].overview_path.length);
-    //console.log("dots count simple", this.routeSimple.length);
+    console.log("dots count original: ", this.directions.routes[0].overview_path.length);
+    console.log("dots count simple: ", this.routeSimple.length);
     console.log(this.directions);
-    return this.directions.routes[0].overview_path;
+    return this.routeSimple;
   }
 
   /**
@@ -82,26 +85,50 @@ class GoogleMaps {
   }
 
   /**
+   * Method to return defined step
+   * @return {}
+   */
+  _getDefinedStep() {
+    return this.definedStep;
+  }
+
+  /**
    * Method to simplify a direction route with fixed step.
    * Step - how many meters between route coordinate points in simplified route.
    * @param {step} 
    */
   _simplifyRoute(step) {
-
-    var that = this;
-
     var simpleRoute = new SimpleRoute(this.directions, step);
-    var arrRoute = simpleRoute.simplifyRoute();
-    
+    this.routeSimple = simpleRoute.simplifyRoute();
+  }
 
-    //  /////////////////////////////////////// FOR TEST PURPOSES ONLY
-    let i = 1;
+  /**
+   * Method to show custom markers of route on the map. 
+   * When method received array of LatLng obj it creates and displays markers;
+   * @param {none} 
+   */
+  _viewMarkers() {
+    var that = this;
+    var arrRoute = this.routeSimple;
+    let i = 0;
+
+    //Delete all markers
+    if (that.markers) {
+      while (that.markers[i]) {
+        that.markers[i].setMap(null);
+        i++;
+      }
+      that.markers = [];
+      i = 1;
+    }
+
+    //Create the markers from routeSimple array
     while (arrRoute[i]) {
 
       var lat = arrRoute[i].coordStepEnd.lat();
       var lng = arrRoute[i].coordStepEnd.lng();
       var title = arrRoute[i].stepId.toString();
-
+      
       var myLatLng = {lat, lng};
       var marker = new google.maps.Marker({
         position: myLatLng,
@@ -109,32 +136,9 @@ class GoogleMaps {
         title: title
       })
 
+      that.markers.push(marker);
 
       i++;
-    }
-// ////////////////////////////////////////////////////////////////////////
-  }
-
-  /**
-   * Method to show custom markers of route on the map. When method received array of LatLng obj it creates and displays markers;
-   * @param {markersArray} 
-   */
-  _viewMarkers(markersArray, label) {
-    var title = label || 'Point'
-    var that = this;
-    function createMarker(lat, lng) {
-      var myLatLng = { lat, lng };
-      var marker = new google.maps.Marker({
-        position: myLatLng,
-        map: that.map,
-        title: title
-      })
-    }
-
-    if (typeof markersArray[0].lat === 'function') {
-      for (var i = 0; i < markersArray.length; i++) {
-        createMarker(markersArray[i].lat(), markersArray[i].lng());
-      };
     }
   }
 
@@ -153,6 +157,8 @@ class GoogleMaps {
     directionsDisplay.setDirections(this.directions);
     directionsDisplay.addListener('directions_changed', function () {
       that.directions = directionsDisplay.getDirections();
+      that._simplifyRoute(that._getDefinedStep());
+      that._viewMarkers();
       that._computeTotalDistance();
     });
   }

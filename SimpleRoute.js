@@ -64,12 +64,12 @@ class SimpleRoute {
         this.stepArr[0] = zeroStep;
 
         let length = this._calcLengthStepArr(this.originalRoute, this.distPerStep);
-        console.log('stepArr[0] length:', length);
+        //console.log('stepArr[0] length:', length);
        
         for (let i = 0; i < length; i++) {
             this.stepArr[i+1] = this._calcStep(this.originalRoute, this.stepArr[i], this.distPerStep);
             totalDistanceOfRoute += this.stepArr[i].stepDistance;
-            console.log(totalDistanceOfRoute);
+            //console.log(totalDistanceOfRoute);
         }
         return this.stepArr;
     }
@@ -102,7 +102,6 @@ class SimpleRoute {
 
             if (stepNew.idEnd === stepNew.idStart) {
                 //If it is begginging of new while loop
-                console.log('Info: beginning of new loop detected');
                 stepNew.stepDistance += libSpher.computeDistanceBetween(stepNew.coordStepEnd, origRouteArr[stepNew.idEnd+1]);
                 if (stepNew.stepDistance > distStp) {
                     //If no original poing in step range
@@ -116,10 +115,10 @@ class SimpleRoute {
 
             if (!origRouteArr[stepNew.idEnd+1]) {
                 //If last ID in original route do following
-                console.log('Info: last element of original route reached, id: ', stepNew.idEnd);
+                //console.log('Info: last element of original route reached, id: ', stepNew.idEnd);
                 stepNew.stepDistance += libSpher.computeDistanceBetween(stepNew.coordStepEnd, origRouteArr[stepNew.idEnd]);
                 stepNew.coordStepEnd = origRouteArr[stepNew.idEnd];
-                console.log(stepNew);
+                //console.log(stepNew);
                 return stepNew;
             }
 
@@ -150,7 +149,7 @@ class SimpleRoute {
         stepNew.stepDistance = stepDistancePrev + libSpher.computeDistanceBetween(stepNew.coordStepEnd, newPoint);
         stepNew.coordStepEnd = newPoint;
         
-        console.log(stepNew);
+        //console.log(stepNew);
         return stepNew;
     }
 
@@ -168,7 +167,7 @@ class SimpleRoute {
         for (var i = 0; i < route.length-1; i++) {
             distTotal += google.maps.geometry.spherical.computeDistanceBetween(route[i],route[i+1]);
         }
-        console.log('Dist total: ', distTotal);
+        //console.log('Dist total: ', distTotal);
         var length = Math.ceil(distTotal / stp);
         return length;
     }
