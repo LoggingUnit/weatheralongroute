@@ -22,8 +22,8 @@ class SimpleRoute {
            idEnd - last included into current step point of original route array 
            coordStepStart - coordinates of start point of current step
            coordStepEnd - coordinates of end point of current step 
-           timeStart: 0,
-           timeEnd: 0,
+           timeStart - start step time in milliseconds since first point of first step (it was 0 ms)
+           timeEnd - same but about steps end
            stepDistance - actual step distance of current step
          */
         this.stepProto = {
@@ -71,7 +71,44 @@ class SimpleRoute {
             totalDistanceOfRoute += this.stepArr[i].stepDistance;
             //console.log(totalDistanceOfRoute);
         }
+        this._applyTime(this.stepArr, this.originalRouteLeg.duration.value*1000, this.originalRouteLeg.distance.value);
+
         return this.stepArr;
+    }
+
+    /**
+     * Method to apply time of start and end of simplified steps.
+     * Time defined in milliseconds relative to first point of first step (it was 0 ms)
+     * stepArr - array of simplified steps
+     * timeToRoute - time to reach destination according Google
+     * googleLength - length of route according Google|
+     * @param {stepArr, timeToRoute, googleLength}
+     * @return {nope}
+     */
+
+    _applyTime(stepArr, timeToRoute, googleLength) {
+        console.log('applyTime: ', stepArr, timeToRoute, googleLength);
+        //Calculation of a time consumed by last interval (interval wich is less than full step)
+        var speedAverage = (googleLength)/(timeToRoute/3600); //kilometer per hour
+        var length = this.stepArr.length;
+        var distanceInKilometers = this.stepArr[length-1].stepDistance/1000; //kilometer
+        var timeLastStep = (distanceInKilometers/speedAverage)*3600*1000;
+        //Calculation of a time consumed by rest steps (full steps with same time)
+        var timeEachFullStep = (timeToRoute - timeLastStep)/(length-2);
+        
+        for (var i = 1; i < length; i++) {
+            if (i===1) {
+                stepArr[i].timeStart = 0;
+                stepArr[i].timeEnd = timeEachFullStep;
+                continue;
+            }
+            stepArr[i].timeStart = stepArr[i-1].timeEnd;
+            stepArr[i].timeEnd = stepArr[i].timeStart + timeEachFullStep;
+        }
+
+        stepArr[length-1].timeEnd = timeToRoute;
+
+        console.log(stepArr);
     }
 
     /**
