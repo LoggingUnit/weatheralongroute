@@ -27,13 +27,15 @@ class GoogleMaps {
   }
 
   /**
-   * Method to show a route and info panel in defined divs. Origin - start point of the route. Dest. - 
-   * final point of the route. Step - variable for internal _simplifyRoute(step) method,
-   *  see details there.
+   * Method to show a route and info panel in defined divs. 
+   * Origin - start point of the route. City name.
+   * Dest - final point of the route.
+   * Step - variable for internal _simplifyRoute(step) method, *  see details there.
+   * res, rej - promises response
    * @param {origin, destination, step}
    * @return nope
    */
-  calcRoute(origin, destination, step) {
+  calcRoute(origin, destination, step, res, rej) {
     this.definedStep = step;
     var that = this;
     var directionsService = new google.maps.DirectionsService;
@@ -49,8 +51,9 @@ class GoogleMaps {
         that._viewRoute();
         that._simplifyRoute(step);
         that._viewMarkers();
+        res();
       } else {
-        alert('Could not display directions due to: ' + status);
+        rej('Could not display directions due to: ' + status);
       }
     });
   }

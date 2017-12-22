@@ -87,7 +87,6 @@ class SimpleRoute {
      */
 
     _applyTime(stepArr, timeToRoute, googleLength) {
-        console.log('applyTime: ', stepArr, timeToRoute, googleLength);
         //Calculation of a time consumed by last interval (interval wich is less than full step)
         var speedAverage = (googleLength)/(timeToRoute/3600); //kilometer per hour
         var length = this.stepArr.length;
@@ -107,8 +106,6 @@ class SimpleRoute {
         }
 
         stepArr[length-1].timeEnd = timeToRoute;
-
-        console.log(stepArr);
     }
 
     /**
