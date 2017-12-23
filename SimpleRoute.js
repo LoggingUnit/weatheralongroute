@@ -97,15 +97,17 @@ class SimpleRoute {
         
         for (var i = 1; i < length; i++) {
             if (i===1) {
-                stepArr[i].timeStart = 0;
-                stepArr[i].timeEnd = timeEachFullStep;
+                //apply current time in millisecs for GMT+0 (UTC) since 1970 year 1 jan 
+                var date = new Date(); 
+                stepArr[i].timeStart = date.getTime(); 
+                stepArr[i].timeEnd = stepArr[i].timeStart + timeEachFullStep;
                 continue;
             }
             stepArr[i].timeStart = stepArr[i-1].timeEnd;
             stepArr[i].timeEnd = stepArr[i].timeStart + timeEachFullStep;
         }
 
-        stepArr[length-1].timeEnd = timeToRoute;
+        stepArr[length-1].timeEnd = timeToRoute + date.getTime();
     }
 
     /**

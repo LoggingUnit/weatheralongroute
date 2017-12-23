@@ -73,6 +73,21 @@ class GoogleMaps {
   }
 
   /**
+   * Method corrects timeStart and timeEnd for each step according to fixed offset value
+   * to give to a use ability to change time of route start
+   * offset - offset value in hours
+   * @param {offset}
+   * @return none
+   */
+  setOffset(offset) {
+    var offsetMilliSec = offset * 3600 * 1000;
+    for (var i = 1; i < this.routeSimple.length; i++) {
+      this.routeSimple[i].timeStart += offsetMilliSec;
+      this.routeSimple[i].timeEnd += offsetMilliSec;
+    }
+  }
+
+  /**
    * Method to compute a distance and change value in defined divs
    * @param {result}
    * @return nope
