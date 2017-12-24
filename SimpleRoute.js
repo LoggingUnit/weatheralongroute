@@ -95,12 +95,11 @@ class SimpleRoute {
         //Calculation of a time consumed by rest steps (full steps with same time)
         var timeEachFullStep = (timeToRoute - timeLastStep)/(length-2);
         
-        for (var i = 1; i < length; i++) {
-            if (i===1) {
+        for (var i = 0; i < length; i++) {
+            if (i===0) {
                 //apply current time in millisecs for GMT+0 (UTC) since 1970 year 1 jan 
                 var date = new Date(); 
-                stepArr[i].timeStart = date.getTime(); 
-                stepArr[i].timeEnd = stepArr[i].timeStart + timeEachFullStep;
+                stepArr[i].timeEnd = date.getTime(); 
                 continue;
             }
             stepArr[i].timeStart = stepArr[i-1].timeEnd;

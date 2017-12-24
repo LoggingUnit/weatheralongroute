@@ -66,9 +66,9 @@ class GoogleMaps {
    * @return {lat, lng, time}
    */
   getRoute() {
-    console.log("dots count original: ", this.directions.routes[0].overview_path.length);
-    console.log("dots count simple: ", this.routeSimple.length);
-    console.log(this.directions);
+    // console.log("dots count original: ", this.directions.routes[0].overview_path.length);
+    // console.log("dots count simple: ", this.routeSimple.length);
+    // console.log(this.directions);
     return this.routeSimple;
   }
 

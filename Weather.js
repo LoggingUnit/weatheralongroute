@@ -9,10 +9,35 @@ class Weather {
   }
 
   /**
+   * A method to apply propper forecast to each step from simple step array
+   * routeSimple - route with simplified step with fixed intervals 
+   * weatherForecast - forecast array with all forecasts
+   * @param {routeSimple, weatherForecast}
+   * @return {routeWithWeather}
+   */
+  assignWeatherToRoute(routeSimple, weatherForecast) {
+    // console.log('routeSimple: ', routeSimple);
+    // console.log('weatherForecast: ', weatherForecast);
+
+    var routeWithWeather = [];
+
+    for (var i = 0 ; i <= routeSimple.length-1; i++) {
+      routeWithWeather[i] = calcWeatherForSingleStep(routeSimple[i], weatherForecast[i])
+    }
+
+    function calcWeatherForSingleStep(singleStep, singleWeather) {
+      console.log(singleStep,singleWeather);
+      
+
+    }
+    
+  }
+
+  /**
    * Method to recieve a weather forecast for each point of input array
    * arr - input array of steps 
    * @param {arr}
-   * @return promise
+   * @return {promise}
    */
   weatherForecast(arr) {
     var that = this;
