@@ -7,17 +7,18 @@ function initMap() {
   googleMaps.initializeMap(-24.345, 134.46, 4);
 
   let promise = new Promise(function (res, rej) {
-    googleMaps.calcRoute('Oktyabrsky', 'Piter', 1000000, res, rej);
+    googleMaps.calcRoute('Oktyabrsky', 'Piter', 100000, res, rej);
   });
   promise.then(
     response => {
       googleMaps.setOffset(0);
-      weather.weatherForecast(googleMaps.getRoute());
-      
+      return weather.weatherForecast(googleMaps.getRoute());
     }
   )
   .then(
-    res => {console.log(res);}
+    weather => {
+      console.log(weather);
+    ;}
   )
 }
 

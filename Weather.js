@@ -12,19 +12,20 @@ class Weather {
    * Method to recieve a weather forecast for each point of input array
    * arr - input array of steps 
    * @param {arr}
-   * @return nope
+   * @return promise
    */
   weatherForecast(arr) {
-    
-    var promises = [];
-    for (var i = 0; i < arr.length; i++) {
-      promises[i] = this._singleWeatherXhrPromise(arr[i]);
-    }
-    Promise.all(promises)
-      .then(results => {
-        console.log(results);
-        return results;
-      });
+    var that = this;
+    return new Promise(function(resolve,reject) {
+      var promises = [];
+      for (var i = 0; i < arr.length; i++) {
+        promises[i] = that._singleWeatherXhrPromise(arr[i]);
+      }
+      Promise.all(promises)
+        .then(results => {
+          resolve(results);
+        });
+    });
   }
 
   /**
@@ -46,7 +47,8 @@ class Weather {
   
       xhr.onload = function() {
         if (this.status == 200) {
-          resolve(this.response);
+          var json = JSON.parse(this.response)
+          resolve(json);
         } else {
           var error = new Error(this.statusText);
           error.code = this.status;
