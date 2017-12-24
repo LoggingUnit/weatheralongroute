@@ -17,8 +17,8 @@ function initMap() {
   )
   .then(
     response => {
-      weather.assignWeatherToRoute(googleMaps.getRoute(), response);
+      console.log(weather.assignWeatherToRoute(googleMaps.getRoute(), response));
     ;}
   )
-}
+} 
 

@@ -26,11 +26,30 @@ class Weather {
     }
 
     function calcWeatherForSingleStep(singleStep, singleWeather) {
-      console.log(singleStep,singleWeather);
+      //console.log(singleStep,singleWeather);
       
+      var idOfMinimal = 0;
+      var diffMinimal = Infinity;
 
+      for (let j = 0; j < singleWeather.list.length; j++) {
+        var diff = Math.abs((singleStep.timeEnd/1000).toFixed(0)-singleWeather.list[j].dt);
+        //console.log(diff);
+        if (diff <= diffMinimal) {
+          diffMinimal = diff;
+          idOfMinimal = j;
+          //console.log('new minimal diff: ', diff);
+        }
+        if (diff > diffMinimal) {
+          //console.log('next more than previous: ', diff, diffMinimal);
+          break;
+        }
+      }
+      
+      singleStep.weather = singleWeather.list[idOfMinimal];
+      return singleStep;
     }
     
+    return routeWithWeather;
   }
 
   /**
