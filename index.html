@@ -9,18 +9,21 @@
 <body>
 	<div id="map"></div>
     <div id="right-panel">
-		<p>Михаил Хуй</p>
-		<input type="text" id="inputFrom">
-		<input type="text" id="inputTo">
-		<input type="button" id="buttonGo" value="GO">
-		<input type="text" id="inputOffset">	
+		<form id="user-form">
+			<input type="text" id="inputFrom" title="From">
+			<input type="text" id="inputTo" title="To">
+			<input type="button" id="buttonGo" value="GO"  disabled>
+			<input type="number" id="inputOffset" title="Offset">
+			<input type="number" id="inputStep" title="Step">
+		</form>
 		<p>Total Distance: <span id="total"></span></p>
     </div>
 </body>
 
+<script src="validate.js"></script>
 <script src="Weather.js"></script>
-<script 
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClPVi2QBIbPd5pHGNV_bhVv8JZiEMXq9M&libraries=geometry&callback=initMap" async defer></script>
+<script id="googleapisScript"
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClPVi2QBIbPd5pHGNV_bhVv8JZiEMXq9M&libraries=geometry&" async defer ></script>
 <script src="GoogleMaps.js"></script>
 <script src="SimpleRoute.js"></script>
 <script src="script.js"></script>
