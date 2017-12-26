@@ -8,10 +8,24 @@ class GoogleMaps {
     this.mountPointMap = mountPointMap;
     this.mountPointPanel = mountPointPanel;
     this.directions;
+    this.directionsDisplay;
     this.routeSimple;
     this.definedStep;
     this.markers = [];
     this.map;
+  }
+
+  addListenerOnDirChange(fu) {
+    var that = this;
+    this.directionsDisplay.addListener('directions_changed', function () {
+      that.directions = that.directionsDisplay.getDirections();
+      that._simplifyRoute(that._getDefinedStep());
+      that._viewMarkers();
+      that._computeTotalDistance();
+      if (fu) {
+        fu();
+      }
+    });
   }
 
   /**
@@ -24,6 +38,12 @@ class GoogleMaps {
       zoom: zoom,
       center: { lat, lng }
     });
+
+    this.directionsDisplay = new google.maps.DirectionsRenderer({
+      draggable: true,
+      map: this.map,
+      panel: document.getElementById(this.mountPointPanel)
+    });
   }
 
   /**
@@ -35,7 +55,7 @@ class GoogleMaps {
    * @param {origin, destination, step}
    * @return nope
    */
-  calcRoute(origin, destination, step, res, rej) {
+  calcRoute(origin, destination, step) {
     this.definedStep = step;
     var that = this;
     var directionsService = new google.maps.DirectionsService;
@@ -49,11 +69,11 @@ class GoogleMaps {
       if (status === 'OK') {
         that.directions = response;
         that._viewRoute();
+        that.addListenerOnDirChange(); 
         that._simplifyRoute(step);
         that._viewMarkers();
-        res();
       } else {
-        rej('Could not display directions due to: ' + status);
+        alert('Could not display directions due to: ' + status);
       }
     });
   }
@@ -167,17 +187,10 @@ class GoogleMaps {
    */
   _viewRoute() {
     var that = this;
-    var directionsDisplay = new google.maps.DirectionsRenderer({
-      draggable: true,
-      map: this.map,
-      panel: document.getElementById(this.mountPointPanel)
-    });
-    directionsDisplay.setDirections(this.directions);
-    directionsDisplay.addListener('directions_changed', function () {
-      that.directions = directionsDisplay.getDirections();
-      that._simplifyRoute(that._getDefinedStep());
-      that._viewMarkers();
-      that._computeTotalDistance();
-    });
+
+    this.directionsDisplay.setMap(null);
+    this.directionsDisplay.setMap(this.map);
+    this.directionsDisplay.setDirections(this.directions);
+    
   }
 }

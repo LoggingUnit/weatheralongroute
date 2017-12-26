@@ -25,6 +25,7 @@ promiseServicesLoaded
     window.weather = new Weather('https://api.openweathermap.org/data/2.5/forecast?mode=json&units=metric&APPID=0bc7c6edc6e5bc381e503d32151b71c9');
     window.googleMaps = new GoogleMaps("map", "right-panel");
     googleMaps.initializeMap(66.788890, 93.775280, 3);
+    googleMaps.addListenerOnDirChange(refreshWeatherOnDirChange);
     buttonSubmit.disabled = false;
   },
   error => console.log('Error: ', error.message)
@@ -32,23 +33,18 @@ promiseServicesLoaded
 
 function callback() {
 
-
   if (validate(inputFrom) && validate(inputTo) && validate(inputOffset) && validate(inputStep)) {
     console.log('form validated');
-    
-    let promise1 = new Promise(function (res, rej) {
-      googleMaps.calcRoute(inputFrom.value, inputTo.value, inputStep.value, res, rej);
-    });
-    promise1.then(
-      response => {
-        googleMaps.setOffset(inputOffset.value);
-        return weather.weatherForecast(googleMaps.getRoute());
-      })
-      .then(
-      response => {
-        console.log(weather.assignWeatherToRoute(googleMaps.getRoute(), response));
-      });
+    googleMaps.calcRoute(inputFrom.value, inputTo.value, inputStep.value*1000);
   }
+}
+
+function refreshWeatherOnDirChange() {
+  let prom = weather.weatherForecast(googleMaps.getRoute());
+  prom.then(
+    response => {
+      console.log(weather.assignWeatherToRoute(googleMaps.getRoute(), response));
+    });
 }
 
 
