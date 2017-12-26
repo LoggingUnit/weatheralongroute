@@ -23,7 +23,7 @@ promiseServicesLoaded
   result => {
     console.log('Done: ', result);
     window.weather = new Weather('https://api.openweathermap.org/data/2.5/forecast?mode=json&units=metric&APPID=0bc7c6edc6e5bc381e503d32151b71c9');
-    window.googleMaps = new GoogleMaps("map", "right-panel");
+    window.googleMaps = new GoogleMaps("map");
     googleMaps.initializeMap(66.788890, 93.775280, 3);
     googleMaps.addListenerOnDirChange(refreshWeatherOnDirChange);
     buttonSubmit.disabled = false;
@@ -40,13 +40,16 @@ function callback() {
 }
 
 function refreshWeatherOnDirChange() {
+  googleMaps.setOffset(inputOffset.value);
   let prom = weather.weatherForecast(googleMaps.getRoute());
   prom.then(
     response => {
       console.log(weather.assignWeatherToRoute(googleMaps.getRoute(), response));
+      //charts('myChart');
     });
 }
 
+charts('myChart');
 
 
 

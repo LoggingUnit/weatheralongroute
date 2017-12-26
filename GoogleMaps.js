@@ -4,9 +4,8 @@
  */
 class GoogleMaps {
 
-  constructor(mountPointMap, mountPointPanel) {
+  constructor(mountPointMap) {
     this.mountPointMap = mountPointMap;
-    this.mountPointPanel = mountPointPanel;
     this.directions;
     this.directionsDisplay;
     this.routeSimple;
@@ -42,7 +41,6 @@ class GoogleMaps {
     this.directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,
       map: this.map,
-      panel: document.getElementById(this.mountPointPanel)
     });
   }
 

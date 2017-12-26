@@ -25,6 +25,7 @@ class SimpleRoute {
            timeStart - start step time in milliseconds since first point of first step (it was 0 ms)
            timeEnd - same but about steps end
            stepDistance - actual step distance of current step
+           city - city near the step
          */
         this.stepProto = {
             stepId: 0,
@@ -35,6 +36,8 @@ class SimpleRoute {
             timeStart: 0,
             timeEnd: 0,
             stepDistance: 0,
+            city: '',
+            movementHeading: ''
         }
     }
 
@@ -56,6 +59,8 @@ class SimpleRoute {
             timeStart: 0,
             timeEnd: 0,
             stepDistance: 0,
+            city: '',
+            movementHeading: ''
         }
 
         //Define a zero element with start coordinates to use as _calcStep stepLast parameter
@@ -183,6 +188,7 @@ class SimpleRoute {
         }
         stepNew.stepDistance = stepDistancePrev + libSpher.computeDistanceBetween(stepNew.coordStepEnd, newPoint);
         stepNew.coordStepEnd = newPoint;
+        stepNew.movementHeading = heading;
         
         //console.log(stepNew);
         return stepNew;

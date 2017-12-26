@@ -11,7 +11,7 @@ class Weather {
   /**
    * A method to apply propper forecast to each step from simple step array
    * routeSimple - route with simplified step with fixed intervals 
-   * weatherForecast - forecast array with all forecasts
+   * weatherForecast - forecast array with all forecasts for current step
    * @param {routeSimple, weatherForecast}
    * @return {routeWithWeather}
    */
@@ -45,6 +45,7 @@ class Weather {
         }
       }
       
+      singleStep.city = singleWeather.city;
       singleStep.weather = singleWeather.list[idOfMinimal];
       return singleStep;
     }
