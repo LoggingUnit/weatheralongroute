@@ -22,7 +22,7 @@ promiseServicesLoaded
   .then(
   result => {
     console.log('Done: ', result);
-    window.weather = new Weather('https://api.openweathermap.org/data/2.5/forecast?mode=json&units=metric&APPID=0bc7c6edc6e5bc381e503d32151b71c9');
+    window.weather = new Weather('https://api.openweathermap.org/data/2.5/forecast?mode=json&units=metric&APPID=0bc7c6edc6e5bc381e503d32151b71c9&lang=ru');
     window.googleMaps = new GoogleMaps("map");
     googleMaps.initializeMap(66.788890, 93.775280, 3);
     googleMaps.addListenerOnDirChange(refreshWeatherOnDirChange);
@@ -44,12 +44,11 @@ function refreshWeatherOnDirChange() {
   let prom = weather.weatherForecast(googleMaps.getRoute());
   prom.then(
     response => {
-      console.log(weather.assignWeatherToRoute(googleMaps.getRoute(), response));
-      //charts('myChart');
+      charts('myChart', weather.assignWeatherToRoute(googleMaps.getRoute(), response)); 
     });
 }
 
-charts('myChart');
+
 
 
 

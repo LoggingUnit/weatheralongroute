@@ -83,7 +83,7 @@ class Weather {
     let lat = input.coordStepEnd.lat().toFixed(6);
     let lng = input.coordStepEnd.lng().toFixed(6);
     var url = `${this.endpointAddress}&lat=${lat}&lon=${lng}`;
-    alert(url);
+    //alert(url);
     
     return new Promise(function(resolve, reject) {
 
