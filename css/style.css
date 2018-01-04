@@ -39,8 +39,3 @@ html, body {
   overflow: auto;
 }
 
-#chart-panel {
-  float: left;
-  height: 30%;
-  width: 64%;
-}

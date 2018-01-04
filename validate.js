@@ -20,7 +20,7 @@ function validate(arg) {
         break;
 
         case 'inputStep':
-        if (arg.value>250) {
+        if (arg.value>=5) {
             return true;
         }
         return false;

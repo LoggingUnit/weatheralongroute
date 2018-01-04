@@ -1,4 +1,5 @@
 'use strict';
+var myChart = null;
 
 var buttonSubmit = document.getElementById('buttonGo');
 buttonSubmit.addEventListener('click', callback);
@@ -35,7 +36,7 @@ function callback() {
 
   if (validate(inputFrom) && validate(inputTo) && validate(inputOffset) && validate(inputStep)) {
     console.log('form validated');
-    googleMaps.calcRoute(inputFrom.value, inputTo.value, inputStep.value*1000);
+    googleMaps.calcRoute(inputFrom.value, inputTo.value, inputStep.value * 1000);
   }
 }
 
@@ -44,7 +45,7 @@ function refreshWeatherOnDirChange() {
   let prom = weather.weatherForecast(googleMaps.getRoute());
   prom.then(
     response => {
-      charts('myChart', weather.assignWeatherToRoute(googleMaps.getRoute(), response)); 
+      drawChart('chart-canvas', weather.assignWeatherToRoute(googleMaps.getRoute(), response));
     });
 }
 

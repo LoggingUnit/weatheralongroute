@@ -14,6 +14,11 @@ class GoogleMaps {
     this.map;
   }
 
+  /**
+   * Method allows to add listener of directions_changed event of directionsDisplay object
+   * fu - callback function
+   * @param {*} fu 
+   */
   addListenerOnDirChange(fu) {
     var that = this;
     this.directionsDisplay.addListener('directions_changed', function () {
@@ -86,7 +91,7 @@ class GoogleMaps {
   getRoute() {
     // console.log("dots count original: ", this.directions.routes[0].overview_path.length);
     // console.log("dots count simple: ", this.routeSimple.length);
-    // console.log(this.directions);
+    console.log(this.routeSimple);
     return this.routeSimple;
   }
 
@@ -98,9 +103,12 @@ class GoogleMaps {
    * @return none
    */
   setOffset(offset) {
+    console.log(offset);
     var offsetMilliSec = offset * 3600 * 1000;
     for (var i = 1; i < this.routeSimple.length; i++) {
+      console.log(this.routeSimple[i].timeStart);
       this.routeSimple[i].timeStart += offsetMilliSec;
+      console.log(this.routeSimple[i].timeStart);
       this.routeSimple[i].timeEnd += offsetMilliSec;
     }
   }

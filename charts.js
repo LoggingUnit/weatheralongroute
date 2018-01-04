@@ -1,4 +1,4 @@
-function charts(elem, arr) {
+function drawChart(chartCanvas, arr) {
   console.log(arr);
 
   var labels = [];
@@ -11,6 +11,21 @@ function charts(elem, arr) {
     temp[i] = arr[i].weather.main.temp;
   }
 
+  var wind = [];
+  for (let i = 0; i <= arr.length - 1; i++) {
+    wind[i] = arr[i].weather.wind.speed;
+  }
+
+  var precipitation = [];
+  for (let i = 0; i <= arr.length - 1; i++) {
+    console.log(precipitation);
+    if (arr[i].weather.snow) {
+      precipitation[i] = arr[i].weather.snow['3h'];
+      continue;
+    }
+    precipitation[i] = arr[i].weather.rain['3h'];
+  }
+
   var dataTemperature = {
     label: "Temperature (*C)",
     data: temp,
@@ -21,15 +36,16 @@ function charts(elem, arr) {
     pointBorderColor: 'red',
     pointBackgroundColor: 'lightgreen',
     pointRadius: 5,
-    pointHoverRadius: 15,
-    pointHitRadius: 30,
+    pointHoverRadius: 10,
+    pointHitRadius: 10,
     pointBorderWidth: 2,
-    pointStyle: 'rect'
+    pointStyle: 'rect',
+    yAxisID: "y-axis-1"
   };
 
-  var dataSecond = {
-    label: "Car B - Speed (mph)",
-    data: [20, 15, 60, 60, 65, 30, 70],
+  var dataPrecipitation = {
+    label: "Precipitation (mm/3h)",
+    data: precipitation,
     lineTension: 0.3,
     fill: false,
     borderColor: 'purple',
@@ -37,14 +53,15 @@ function charts(elem, arr) {
     pointBorderColor: 'purple',
     pointBackgroundColor: 'lightgreen',
     pointRadius: 5,
-    pointHoverRadius: 15,
-    pointHitRadius: 30,
-    pointBorderWidth: 2
+    pointHoverRadius: 10,
+    pointHitRadius: 10,
+    pointBorderWidth: 2,
+    yAxisID: "y-axis-2"
   };
 
   var routeData = {
     labels: labels,
-    datasets: [dataTemperature], //dataSecond]
+    datasets: [dataTemperature, dataPrecipitation]
   };
 
   var chartOptions = {
@@ -55,14 +72,59 @@ function charts(elem, arr) {
         boxWidth: 80,
         fontColor: 'black'
       }
-    }
-  };
+    },
+    title: {
+      display: false,
+      text: 'Weather on road'
+    },
+    scales: {
+      yAxes: [{
+        type: "linear",
+        display: true,
+        position: "left",
+        id: "y-axis-1",
+      }, {
+        type: "linear",
+        display: true,
+        position: "right",
+        id: "y-axis-2",
 
-  var ctx = document.getElementById(elem).getContext('2d');
-  var myChart = new Chart(ctx, {
+        gridLines: {
+          drawOnChartArea: false,
+        },
+      }],
+    }
+  }
+  
+  if(myChart!=null){
+    myChart.destroy();
+  }
+  
+  var ctx = document.getElementById(chartCanvas).getContext("2d");
+  myChart = new Chart(ctx, {
     type: 'line',
     data: routeData,
     options: chartOptions
   });
+
+  document.getElementById(chartCanvas).onmousemove = function (evt) {
+    var activePoints = myChart.getElementAtEvent(evt);
+
+    if (activePoints.length > 0) {
+      //get the internal index of slice in pie chart`
+      var clickedElementindex = activePoints[0]["_index"];
+
+      //get specific label by index 
+      var label = myChart.data.labels[clickedElementindex];
+
+      //get value by index      
+      var value = myChart.data.datasets[0].data[clickedElementindex];
+
+      console.log(clickedElementindex);
+
+      /* other stuff that requires slice's label and value */
+    }
+  }
+
 }
 
