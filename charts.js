@@ -5,9 +5,10 @@
 
 class Charts {
 
-  constructor(mountPointChart) {
+  constructor(mp) {
+    this.myChart = null;
     this.stepArr = null;
-    this.mountPointChart = mountPointChart;
+    this.mountPointChart = document.getElementById(mp);
 
     this.chartOptions = {
       legend: {
@@ -80,14 +81,69 @@ class Charts {
       labels: this._getData('labels'),
       datasets: [this._getDataset(curve1, 'left'), this._getDataset(curve2, 'right')]
     };
-
     console.log(routeData);
 
+    if (this.myChart != null) {
+      this.myChart.destroy();
+    }
+
+    var ctx = this.mountPointChart.getContext('2d');
+    this.myChart = new Chart(ctx, {
+      type: 'line',
+      data: routeData,
+      options: this.chartOptions
+    });
 
   }
 
-  _getDataset(param, place) {
-    console.log(param, place);
+  _getLabelForDataset(param) {
+    switch (param) {
+      case 'temperature':
+        var label = 'Temperature (*C)'
+        return label;
+        break;
+
+      case 'precipitation':
+        var label = 'Precipitation (mm/3h)'
+        return label;
+        break;
+
+      case 'wind':
+        var label = 'Wind speed (m/s)'
+        return label;
+        break;
+
+      case 'clouds':
+        var label = 'Cloudness (%)'
+        return label;
+        break;
+
+      default:
+        console.error("no label for: ", param);
+        return null;
+    }
+  }
+
+  _getDataset(param, placement) {
+    var that = this;
+
+    switch (placement) {
+      case 'left':
+        that.datasetLeft.label = that._getLabelForDataset(param);
+        that.datasetLeft.data = that._getData(param);
+        return that.datasetLeft;
+        break;
+
+      case 'right':
+        that.datasetRight.label = that._getLabelForDataset(param);
+        that.datasetRight.data = that._getData(param);
+        return that.datasetRight;
+        break;
+
+      default:
+        console.error("no dataset for: ", placement);
+        return null;
+    }
   }
 
   _getData(param) {
@@ -145,149 +201,39 @@ class Charts {
         return outputArr;
         break;
 
+
       default:
+        console.error("no data for: ", param);
         return outputArr;
     }
 
   }
 
+  addEventListenerOnMouseMove(fu) {
+    var that = this;
+    this.mountPointChart.onmousemove = function (evt) {
+      var activePoints = that.myChart.getElementAtEvent(evt);
+
+      if (activePoints.length > 0) {
+        //get the internal index of slice in pie chart`
+        var clickedElementindex = activePoints[0]["_index"];
+
+        //get specific label by index 
+        var label = that.myChart.data.labels[clickedElementindex];
+
+        //get value by index      
+        var value = that.myChart.data.datasets[0].data[clickedElementindex];
+
+        console.log(clickedElementindex);
+
+        /* other stuff that requires slice's label and value */
+      }
+    }
+  }
 }
 
-function drawChart(chartCanvas, arr) {
-  console.log(arr);
 
-  var labels = [];
-  for (let i = 0; i <= arr.length - 1; i++) {
-    labels[i] = arr[i].city.name;
-  }
 
-  var temperature = [];
-  for (let i = 0; i <= arr.length - 1; i++) {
-    temperature[i] = arr[i].weather.main.temp;
-  }
 
-  var wind = [];
-  for (let i = 0; i <= arr.length - 1; i++) {
-    wind[i] = arr[i].weather.wind.speed;
-  }
 
-  var precipitation = [];
-  for (let i = 0; i <= arr.length - 1; i++) {
-    let prec = 0;
-    //console.log(precipitation);
-    if (arr[i].weather.snow) {
-      if (arr[i].weather.snow['3h']) {
-        prec += arr[i].weather.snow['3h'];
-      }
-    }
-    if (arr[i].weather.rain) {
-      if (arr[i].weather.rain['3h']) {
-        prec += arr[i].weather.rain['3h'];
-      }
-    }
-
-    precipitation[i] = prec;
-  }
-
-  var dataTemperature = {
-    label: "Temperature (*C)",
-    data: temperature,
-    lineTension: 0.3,
-    fill: false,
-    borderColor: 'red',
-    backgroundColor: 'transparent',
-    pointBorderColor: 'red',
-    pointBackgroundColor: 'lightgreen',
-    pointRadius: 5,
-    pointHoverRadius: 10,
-    pointHitRadius: 10,
-    pointBorderWidth: 2,
-    pointStyle: 'rect',
-    yAxisID: "y-axis-1"
-  };
-
-  var dataPrecipitation = {
-    label: "Precipitation (mm/3h)",
-    data: precipitation,
-    lineTension: 0.3,
-    fill: false,
-    borderColor: 'purple',
-    backgroundColor: 'transparent',
-    pointBorderColor: 'purple',
-    pointBackgroundColor: 'lightgreen',
-    pointRadius: 5,
-    pointHoverRadius: 10,
-    pointHitRadius: 10,
-    pointBorderWidth: 2,
-    yAxisID: "y-axis-2"
-  };
-
-  var routeData = {
-    labels: labels,
-    datasets: [dataTemperature, dataPrecipitation]
-  };
-
-  var chartOptions = {
-    legend: {
-      display: true,
-      position: 'top',
-      labels: {
-        boxWidth: 80,
-        fontColor: 'black'
-      }
-    },
-    title: {
-      display: false,
-      text: 'Weather on road'
-    },
-    scales: {
-      yAxes: [{
-        type: "linear",
-        display: true,
-        position: "left",
-        id: "y-axis-1",
-      }, {
-        type: "linear",
-        display: true,
-        position: "right",
-        id: "y-axis-2",
-
-        gridLines: {
-          drawOnChartArea: false,
-        },
-      }],
-    }
-  }
-
-  if (myChart != null) {
-    myChart.destroy();
-  }
-
-  var ctx = document.getElementById(chartCanvas).getContext("2d");
-  myChart = new Chart(ctx, {
-    type: 'line',
-    data: routeData,
-    options: chartOptions
-  });
-
-  document.getElementById(chartCanvas).onmousemove = function (evt) {
-    var activePoints = myChart.getElementAtEvent(evt);
-
-    if (activePoints.length > 0) {
-      //get the internal index of slice in pie chart`
-      var clickedElementindex = activePoints[0]["_index"];
-
-      //get specific label by index 
-      var label = myChart.data.labels[clickedElementindex];
-
-      //get value by index      
-      var value = myChart.data.datasets[0].data[clickedElementindex];
-
-      console.log(clickedElementindex);
-
-      /* other stuff that requires slice's label and value */
-    }
-  }
-
-}
 

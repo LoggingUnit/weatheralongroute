@@ -1,5 +1,4 @@
 'use strict';
-var myChart = null;
 
 var buttonSubmit = document.getElementById('buttonGo');
 buttonSubmit.addEventListener('click', callback);
@@ -50,7 +49,7 @@ function refreshWeatherOnDirChange() {
     response => {
       let lekUltrakek = weather.assignWeatherToRoute(googleMaps.getRoute(), response);
       charts.plotData(lekUltrakek, 'temperature', 'precipitation');
-      drawChart('chart-canvas', lekUltrakek);
+      charts.addEventListenerOnMouseMove(); 
     });
 }
 
