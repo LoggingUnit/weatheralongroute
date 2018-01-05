@@ -91,7 +91,7 @@ class GoogleMaps {
   getRoute() {
     // console.log("dots count original: ", this.directions.routes[0].overview_path.length);
     // console.log("dots count simple: ", this.routeSimple.length);
-    console.log(this.routeSimple);
+    //console.log(this.routeSimple);
     return this.routeSimple;
   }
 
@@ -106,9 +106,9 @@ class GoogleMaps {
     console.log(offset);
     var offsetMilliSec = offset * 3600 * 1000;
     for (var i = 1; i < this.routeSimple.length; i++) {
-      console.log(this.routeSimple[i].timeStart);
+      // console.log(this.routeSimple[i].timeStart);
       this.routeSimple[i].timeStart += offsetMilliSec;
-      console.log(this.routeSimple[i].timeStart);
+      // console.log(this.routeSimple[i].timeStart);
       this.routeSimple[i].timeEnd += offsetMilliSec;
     }
   }

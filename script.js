@@ -25,6 +25,9 @@ promiseServicesLoaded
     console.log('Done: ', result);
     window.weather = new Weather('https://api.openweathermap.org/data/2.5/forecast?mode=json&units=metric&APPID=0bc7c6edc6e5bc381e503d32151b71c9&lang=ru');
     window.googleMaps = new GoogleMaps("map");
+
+    window.charts = new Charts('chart-canvas');
+    
     googleMaps.initializeMap(66.788890, 93.775280, 3);
     googleMaps.addListenerOnDirChange(refreshWeatherOnDirChange);
     buttonSubmit.disabled = false;
@@ -45,7 +48,9 @@ function refreshWeatherOnDirChange() {
   let prom = weather.weatherForecast(googleMaps.getRoute());
   prom.then(
     response => {
-      drawChart('chart-canvas', weather.assignWeatherToRoute(googleMaps.getRoute(), response));
+      let lekUltrakek = weather.assignWeatherToRoute(googleMaps.getRoute(), response);
+      charts.plotData(lekUltrakek, 'temperature', 'precipitation');
+      drawChart('chart-canvas', lekUltrakek);
     });
 }
 
