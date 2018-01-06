@@ -75,6 +75,17 @@ class Charts {
 
   }
 
+  /**
+   * A method wich creates a chart in div defined as constructor argument.
+   * stepArr - array with step combined with weather data
+   * curve1 - curve parameter for left chart
+   * curve2 - curve parameter for right chart
+   * curve options available: 'temperature', 'precipitation', 'wind', 'clouds'.
+   * @param {*} stepArr 
+   * @param {*} curve1 
+   * @param {*} curve2 
+   * @return {none}
+   */
   plotData(stepArr, curve1, curve2) {
     this.stepArr = stepArr;
     var routeData = {
@@ -96,6 +107,13 @@ class Charts {
 
   }
 
+  /**
+   * A method wich returns chart label according to input parameter.
+   * Params available: 'temperature', 'precipitation', 'wind', 'clouds'.
+   * Returns appropriate label for chart
+   * @param {*} param
+   * @return {*} label 
+   */
   _getLabelForDataset(param) {
     switch (param) {
       case 'temperature':
@@ -124,6 +142,17 @@ class Charts {
     }
   }
 
+  /**
+   * A method wich returns dataset according to input parameters.
+   * param - a curve to build in a chart
+   * Params currently available: 'temperature', 'precipitation', 'wind', 'clouds'.
+   * placement - chart 'y' axis position on chart panel
+   * Placements currently available: 'left', 'right'.
+   * Returns datasets according to input data
+   * @param {*} param 
+   * @param {*} placement 
+   * @return {dataset}
+   */
   _getDataset(param, placement) {
     var that = this;
 
@@ -146,6 +175,14 @@ class Charts {
     }
   }
 
+  /**
+   * A method wich returns data according to input parameters. It gets data from input stepArr.
+   * param - a data to extract from input stepArr.
+   * Params currently available: 'temperature', 'precipitation', 'wind', 'clouds'.
+   * Return - array with all data with defined parameter.
+   * @param {*} param 
+   * @return {arr}
+   */
   _getData(param) {
     var stepArr = this.stepArr;
 
@@ -209,6 +246,13 @@ class Charts {
 
   }
 
+  /**
+   * A method wich adds event listener on onmousemove over data dots on chart.
+   * As soon mouse is over dot callback 'fu' is called.
+   * fu - callback function wich called on event
+   * @param {*} fu 
+   * @return none
+   */
   addEventListenerOnMouseMove(fu) {
     var that = this;
     this.mountPointChart.onmousemove = function (evt) {

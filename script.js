@@ -48,7 +48,7 @@ function refreshWeatherOnDirChange() {
   prom.then(
     response => {
       let lekUltrakek = weather.assignWeatherToRoute(googleMaps.getRoute(), response);
-      charts.plotData(lekUltrakek, 'temperature', 'precipitation');
+      charts.plotData(lekUltrakek, 'precipitation', 'wind');
       charts.addEventListenerOnMouseMove(); 
     });
 }
