@@ -24,7 +24,7 @@ class GoogleMaps {
     this.directionsDisplay.addListener('directions_changed', function () {
       that.directions = that.directionsDisplay.getDirections();
       that._simplifyRoute(that._getDefinedStep());
-      that._viewMarkers();
+      //that._viewMarkers();
       that._computeTotalDistance();
       if (fu) {
         fu();
@@ -74,11 +74,18 @@ class GoogleMaps {
         that._viewRoute();
         that.addListenerOnDirChange(); 
         that._simplifyRoute(step);
-        that._viewMarkers();
+        //that._viewMarkers();
       } else {
         alert('Could not display directions due to: ' + status);
       }
     });
+  }
+
+  centerAt(point) {
+    console.log(point.coordStepEnd);
+    console.log(this);
+    this.map.panTo(point.coordStepEnd);
+    this.map.setZoom(10);
   }
 
   /**
@@ -151,7 +158,7 @@ class GoogleMaps {
    * When method received array of LatLng obj it creates and displays markers;
    * @param {none} 
    */
-  _viewMarkers() {
+  viewMarkers() {
     var that = this;
     var arrRoute = this.routeSimple;
     let i = 0;
@@ -177,7 +184,8 @@ class GoogleMaps {
       var marker = new google.maps.Marker({
         position: myLatLng,
         map: that.map,
-        title: title
+        title: title,
+        icon: `weather-icons/${arrRoute[i].weather.weather[0].icon}.png`
       })
 
       that.markers.push(marker);

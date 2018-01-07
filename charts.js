@@ -269,11 +269,43 @@ class Charts {
         var value = that.myChart.data.datasets[0].data[clickedElementindex];
 
         console.log(clickedElementindex);
+        fu(that.stepArr[clickedElementindex]);
 
         /* other stuff that requires slice's label and value */
       }
     }
   }
+
+  /**
+   * A method wich adds event listener on onmouseclick over data dots on chart.
+   * As soon mouse is over dot callback 'fu' is called.
+   * fu - callback function wich called on event
+   * @param {*} fu 
+   * @return none
+   */
+  addEventListenerOnMouseClick(fu) {
+    var that = this;
+    this.mountPointChart.onclick = function (evt) {
+      var activePoints = that.myChart.getElementAtEvent(evt);
+
+      if (activePoints.length > 0) {
+        //get the internal index of slice in pie chart`
+        var clickedElementindex = activePoints[0]["_index"];
+
+        //get specific label by index 
+        var label = that.myChart.data.labels[clickedElementindex];
+
+        //get value by index      
+        var value = that.myChart.data.datasets[0].data[clickedElementindex];
+
+        console.log(clickedElementindex);
+        fu(that.stepArr[clickedElementindex]);
+
+        /* other stuff that requires slice's label and value */
+      }
+    }
+  }
+
 }
 
 
