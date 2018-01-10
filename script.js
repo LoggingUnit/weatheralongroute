@@ -48,7 +48,7 @@ function refreshWeatherOnDirChange() {
   prom.then(
     response => {
       let stepWithWeatherAssigned = weather.assignWeatherToRoute(googleMaps.getRoute(), response);
-      googleMaps.viewMarkers();
+      googleMaps.drawMarkers();
       console.log(stepWithWeatherAssigned);
 
       charts.plotData(stepWithWeatherAssigned, 'temperature', 'precipitation');

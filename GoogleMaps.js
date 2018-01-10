@@ -24,7 +24,6 @@ class GoogleMaps {
     this.directionsDisplay.addListener('directions_changed', function () {
       that.directions = that.directionsDisplay.getDirections();
       that._simplifyRoute(that._getDefinedStep());
-      //that._viewMarkers();
       that._computeTotalDistance();
       if (fu) {
         fu();
@@ -72,9 +71,8 @@ class GoogleMaps {
       if (status === 'OK') {
         that.directions = response;
         that._viewRoute();
-        that.addListenerOnDirChange(); 
+        that.addListenerOnDirChange();
         that._simplifyRoute(step);
-        //that._viewMarkers();
       } else {
         alert('Could not display directions due to: ' + status);
       }
@@ -158,7 +156,7 @@ class GoogleMaps {
    * When method received array of LatLng obj it creates and displays markers;
    * @param {none} 
    */
-  viewMarkers() {
+  drawMarkers() {
     var that = this;
     var arrRoute = this.routeSimple;
     let i = 0;
@@ -179,8 +177,8 @@ class GoogleMaps {
       var lat = arrRoute[i].coordStepEnd.lat();
       var lng = arrRoute[i].coordStepEnd.lng();
       var title = arrRoute[i].stepId.toString();
-      
-      var myLatLng = {lat, lng};
+
+      var myLatLng = { lat, lng };
       var marker = new google.maps.Marker({
         position: myLatLng,
         map: that.map,
@@ -192,6 +190,34 @@ class GoogleMaps {
 
       i++;
     }
+
+    var styles = [[{
+      url: 'weather-icons/01d.png',
+      height: 35,
+      width: 35,
+      anchor: [16, 0],
+      textColor: '#ff00ff',
+      textSize: 10
+    }, {
+      url: 'weather-icons/01d.png',
+      height: 45,
+      width: 45,
+      anchor: [24, 0],
+      textColor: '#ff0000',
+      textSize: 11
+    }, {
+      url: 'weather-icons/01d.png',
+      height: 55,
+      width: 55,
+      anchor: [32, 0],
+      textColor: '#ffffff',
+      textSize: 12
+    }]];
+    // var markerCluster = new MarkerClusterer(this.map, this.markers, {
+    //   maxZoom: null,
+    //   gridSize: null,
+    //   styles: styles[0],
+    // });
   }
 
   /**
@@ -205,6 +231,6 @@ class GoogleMaps {
     this.directionsDisplay.setMap(null);
     this.directionsDisplay.setMap(this.map);
     this.directionsDisplay.setDirections(this.directions);
-    
+
   }
 }
