@@ -96,7 +96,7 @@ class GoogleMaps {
   getRoute() {
     // console.log("dots count original: ", this.directions.routes[0].overview_path.length);
     // console.log("dots count simple: ", this.routeSimple.length);
-    //console.log(this.routeSimple);
+    console.log(this.routeSimple);
     return this.routeSimple;
   }
 
