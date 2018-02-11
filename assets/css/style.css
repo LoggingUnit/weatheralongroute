@@ -23,9 +23,8 @@ html, body {
 }
 
 #map {
-  height: 70%;
-  float: left;
-  width: 63%;
+  height: 400px;
+  width: 100%;
 }
 
 #right-panel {
