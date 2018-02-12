@@ -183,7 +183,7 @@ class GoogleMaps {
         position: myLatLng,
         map: that.map,
         title: title,
-        icon: `weather-icons/${arrRoute[i].weather.weather[0].icon}.png`
+        icon: `images/weather-icons/${arrRoute[i].weather.weather[0].icon}.png`
       })
 
       that.markers.push(marker);
