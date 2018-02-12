@@ -12,7 +12,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 	<link rel="stylesheet" href="assets/css/main.css" />
-	<link rel="stylesheet" href="assets/css/style.css" />
+	<link rel="stylesheet" href="assets/css/fullcalendar.min.css" />
+	<link rel="stylesheet" href="assets/css/fullcalendar.print.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 	<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 </head>
@@ -245,12 +246,12 @@
 				<header>
 					<h2>Trip calendar</h2>
 				</header>
-
+				<div id='calendar'></div>
 				<p>Elementum sem parturient nulla quam placerat viverra mauris non cum elit tempus ullamcorper dolor. Libero rutrum ut lacinia
 					donec curae mus. Eleifend id porttitor ac ultricies lobortis sem nunc orci ridiculus faucibus a consectetur. Porttitor
 					curae mauris urna mi dolor.</p>
 
-				<form method="post" action="#">
+				<!-- <form method="post" action="#">
 					<div class="row">
 						<div class="6u 12u$(mobile)">
 							<input type="text" name="name" placeholder="Name" />
@@ -265,7 +266,7 @@
 							<input type="submit" value="Send Message" />
 						</div>
 					</div>
-				</form>
+				</form> -->
 
 			</div>
 		</section>
@@ -285,7 +286,7 @@
 
 	</div>
 
-	<!-- Scripts -->
+	<!-- Page scripts -->
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/js/jquery.scrolly.min.js"></script>
 	<script src="assets/js/jquery.scrollzer.min.js"></script>
@@ -295,6 +296,9 @@
 	<script src="assets/js/main.js"></script>
 	<script src="assets/js/main.js"></script>
 
+	<!-- Weather on route scripts -->
+	<script src='assets/js/moment.min.js'></script>
+	<script src='assets/js/fullcalendar.min.js'></script>
 	<script type="text/javascript" src="assets/js/markerclusterer.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
 	<script src="assets/js/Charts.js"></script>
@@ -304,6 +308,7 @@
 	 async defer></script>
 	<script src="assets/js/GoogleMaps.js"></script>
 	<script src="assets/js/SimpleRoute.js"></script>
+	<script src="assets/js/MyCalendar.js"></script>
 	<script src="assets/js/script.js"></script>
 
 </body>
