@@ -1,5 +1,10 @@
-$(document).ready(function() {
-    $('#calendar').fullCalendar({
+'use strict';
+
+class MyCalendar {
+
+  constructor(mountPointCalendar) {
+
+    $(mountPointCalendar).fullCalendar({
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -9,19 +14,27 @@ $(document).ready(function() {
       navLinks: true, // can click day/week names to navigate views
       selectable: true,
       selectHelper: true,
-      select: function(start, end) {
-        var title = prompt('Event Title:');
-        var eventData;
-        if (title) {
-          eventData = {
-            title: title,
-            start: start,
-            end: end
-          };
-          $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-        }
-        $('#calendar').fullCalendar('unselect');
+      dayClick: function (calEvent, jsEvent, view) {
+        lel();
+        $(mountPointCalendar).fullCalendar('changeView', 'agendaDay');
+        alert('Event: ' + calEvent.title);
+        alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+        alert('View: ' + view.name);
       },
+      // select: function (start, end) {
+      //   var title = prompt('Event Title:');
+      //   var eventData;
+      //   if (title) {
+      //     eventData = {
+      //       title: title,
+      //       start: start,
+      //       end: end
+      //     };
+      //     $(mountPointCalendar).fullCalendar('renderEvent', eventData, true); // stick? = true
+      //   }
+      //   $(mountPointCalendar).fullCalendar('unselect');
+      //   $(mountPointCalendar).fullCalendar('changeView', 'agendaDay');
+      // },
       editable: true,
       eventLimit: true, // allow "more" link when too many events
       events: [
@@ -81,4 +94,20 @@ $(document).ready(function() {
         }
       ]
     });
-  });
+
+  }
+
+  // addCallbackOnClick(fu) {
+  //   $('#calendar').fullCalendar({
+  //     dayClick: function (calEvent, jsEvent, view) {
+  //       fu('lol');
+  //       alert('Event: ' + calEvent.title);
+  //       alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+  //       alert('View: ' + view.name);
+  //     }
+  //   });
+  // }
+}
+
+
+

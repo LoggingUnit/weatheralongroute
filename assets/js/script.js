@@ -8,6 +8,12 @@ var inputTo = document.getElementById('inputTo');
 var inputOffset = document.getElementById('inputOffset');
 var inputStep = document.getElementById('inputStep');
 
+function lel() {console.log('lel')};
+
+$(document).ready(function() {
+  window.myCalendar = new MyCalendar('#calendar');
+});
+
 let promiseServicesLoaded = new Promise(function (resolve, reject) {
   var googleapiScript = document.getElementById('googleapisScript');
   googleapiScript.onload = function () {
