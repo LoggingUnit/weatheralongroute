@@ -1,18 +1,12 @@
 'use strict';
 
 var buttonSubmit = document.getElementById('buttonGo');
-buttonSubmit.addEventListener('click', callback);
+buttonSubmit.addEventListener('click', callbackButton);
 
 var inputFrom = document.getElementById('inputFrom');
 var inputTo = document.getElementById('inputTo');
 var inputOffset = document.getElementById('inputOffset');
 var inputStep = document.getElementById('inputStep');
-
-function lel() {console.log('lel')};
-
-$(document).ready(function() {
-  window.myCalendar = new MyCalendar('#calendar');
-});
 
 let promiseServicesLoaded = new Promise(function (resolve, reject) {
   var googleapiScript = document.getElementById('googleapisScript');
@@ -23,6 +17,13 @@ let promiseServicesLoaded = new Promise(function (resolve, reject) {
     reject(new Error('googleapisScripts is unable to load'));
   }
 });
+
+$(document).ready(function() {
+  window.myPopUpManager = new PopUpManager('modal','modal__form_route');
+  window.myCalendar = new MyCalendar('#calendar', myPopUpManager.popUpShow());
+});
+
+
 
 promiseServicesLoaded
   .then(
@@ -40,8 +41,7 @@ promiseServicesLoaded
   error => console.log('Error: ', error.message)
   );
 
-function callback() {
-
+function callbackButton() {
   if (validate(inputFrom) && validate(inputTo) && validate(inputOffset) && validate(inputStep)) {
     console.log('form validated');
     googleMaps.calcRoute(inputFrom.value, inputTo.value, inputStep.value * 1000);

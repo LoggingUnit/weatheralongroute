@@ -1704,8 +1704,6 @@ button,
   /* Full width */
   height: 100%;
   /* Full height */
-  background-color: black;
-  /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4);
   /* Black w/ opacity */ }
   .modal > * {
@@ -1717,7 +1715,8 @@ button,
     -webkit-flex-grow: 0;
     -ms-flex-grow: 0;
     flex-grow: 0; }
-  .modal__form {
+  .modal__form_route {
+    display: none;
     background-color: #dce3e2;
     border-radius: 0.35em;
     padding: 0.75em 1em 0.75em 1em;

@@ -2,9 +2,11 @@
 
 class MyCalendar {
 
-  constructor(mountPointCalendar) {
-
-    $(mountPointCalendar).fullCalendar({
+  constructor(mountPointCalendar, popUpShow) {
+    this.popUpShow = popUpShow;
+    // popUpShow('modal__form_route');
+    this.mountPointCalendar = mountPointCalendar;
+    this.calendar = $(mountPointCalendar).fullCalendar({
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -14,13 +16,7 @@ class MyCalendar {
       navLinks: true, // can click day/week names to navigate views
       selectable: true,
       selectHelper: true,
-      dayClick: function (calEvent, jsEvent, view) {
-        lel();
-        $(mountPointCalendar).fullCalendar('changeView', 'agendaDay');
-        alert('Event: ' + calEvent.title);
-        alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-        alert('View: ' + view.name);
-      },
+      dayClick: this.dayClick,
       // select: function (start, end) {
       //   var title = prompt('Event Title:');
       //   var eventData;
@@ -94,19 +90,15 @@ class MyCalendar {
         }
       ]
     });
-
   }
-
-  // addCallbackOnClick(fu) {
-  //   $('#calendar').fullCalendar({
-  //     dayClick: function (calEvent, jsEvent, view) {
-  //       fu('lol');
-  //       alert('Event: ' + calEvent.title);
-  //       alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-  //       alert('View: ' + view.name);
-  //     }
-  //   });
-  // }
+  
+  dayClick (calEvent, jsEvent, view) {
+      $(this.mountPointCalendar).fullCalendar('changeView', 'agendaDay');
+      window.myPopUpManager.popUpShow('modal__form_route'); //???
+      console.log('Event: ' + calEvent.title);
+      console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+      console.log('View: ' + view.name);
+  }
 }
 
 
