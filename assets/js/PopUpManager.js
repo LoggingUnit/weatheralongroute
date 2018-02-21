@@ -3,10 +3,9 @@
 class PopUpManager {
 
     constructor(...args) {
-        this.timeSpanClass = "modal__form_time";
-        this.timeSpan = document.getElementsByClassName(this.timeSpanClass)[0];
         this.collection = {};
         this.modal = args[0];
+
         this.popUpShow = this.popUpShow.bind(this);
         this.setTime = this.setTime.bind(this);
         args.map((item, i, arr) => this.collection[item] = document.getElementsByClassName(item));
@@ -31,7 +30,7 @@ class PopUpManager {
     popUpHide(objWithClass) {
         if (!objWithClass) {
             console.log("close all pop-up windows");
-            console.log(this.collection);
+            // console.log(this.collection);
             for (var popUp in this.collection) {
                 console.log(`${popUp} closed`);
                 this.collection[popUp][0].style.display = 'none';
@@ -42,9 +41,9 @@ class PopUpManager {
         } else { console.log(`PopUpManager.popUpHide(param) did not found element with CSS: ${objWithClass}`) };
     }
 
-    setTime(time) {
-        console.log(time);
-        console.log(this.timeSpan);
-        this.timeSpan.innerHTML = time;
+    setTime(inputTimeTripBegin) {
+        // console.log(time);
+        // console.log(this.timeSpan);
+        window.inputTimeTripBegin.innerHTML = inputTimeTripBegin;
     }
 }

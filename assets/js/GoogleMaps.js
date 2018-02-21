@@ -57,7 +57,7 @@ class GoogleMaps {
    * @param {origin, destination, step}
    * @return nope
    */
-  calcRoute(origin, destination, step) {
+  calcRoute(origin, destination, step, timeTripBegin) {
     this.definedStep = step;
     var that = this;
     var directionsService = new google.maps.DirectionsService;
@@ -73,6 +73,7 @@ class GoogleMaps {
         that._viewRoute();
         that.addListenerOnDirChange();
         that._simplifyRoute(step);
+        that._setTimeTripBegin(timeTripBegin);
       } else {
         alert('Could not display directions due to: ' + status);
       }
@@ -96,26 +97,29 @@ class GoogleMaps {
   getRoute() {
     // console.log("dots count original: ", this.directions.routes[0].overview_path.length);
     // console.log("dots count simple: ", this.routeSimple.length);
-    console.log(this.routeSimple);
     return this.routeSimple;
   }
 
   /**
-   * Method corrects timeStart and timeEnd for each step according to fixed offset value
+   * Method corrects timeStart and timeEnd for each step according to inputed timeTripBegin value
    * to give to a use ability to change time of route start
-   * offset - offset value in hours
+   * timeTripBegin - timeTripBegin 
    * @param {offset}
    * @return none
    */
-  setOffset(offset) {
-    console.log(offset);
-    var offsetMilliSec = offset * 3600 * 1000;
-    for (var i = 1; i < this.routeSimple.length; i++) {
-      // console.log(this.routeSimple[i].timeStart);
-      this.routeSimple[i].timeStart += offsetMilliSec;
-      // console.log(this.routeSimple[i].timeStart);
-      this.routeSimple[i].timeEnd += offsetMilliSec;
-    }
+  _setTimeTripBegin(timeTripBegin) {
+    var date = new Date(); 
+    console.log('GoogleMaps class timeTripBegin: ',timeTripBegin);
+    console.log('GoogleMaps class timeTripBegin UNIX: ', moment(timeTripBegin).unix());
+    console.log('Date.now()/1000', date.getTime()/1000);
+    console.log('diff ', moment(timeTripBegin).unix()-date.getTime()/1000);
+    // var offsetMilliSec = offset * 3600 * 1000;
+    // for (var i = 1; i < this.routeSimple.length; i++) {
+    //   // console.log(this.routeSimple[i].timeStart);
+    //   this.routeSimple[i].timeStart += offsetMilliSec;
+    //   // console.log(this.routeSimple[i].timeStart);
+    //   this.routeSimple[i].timeEnd += offsetMilliSec;
+    // }
   }
 
   /**

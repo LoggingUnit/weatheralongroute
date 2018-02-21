@@ -10,7 +10,7 @@ class MyCalendar {
         center: 'title',
         right: 'month,agendaDay'
       },
-      defaultDate: '2018-02-12',
+      // defaultDate: '2018-02-12',
       navLinks: true, // can click day/week names to navigate views
       selectable: true,
       selectHelper: true,
@@ -19,6 +19,7 @@ class MyCalendar {
         if (view.name == 'month') {
           $(mountPointCalendar).fullCalendar('changeView', 'agendaDay');
         } else {
+          console.log(date);
           setTime(date);
           popUpShow('modal__form_route');
         }

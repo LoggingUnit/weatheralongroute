@@ -92,7 +92,7 @@ class Charts {
       labels: this._getData('labels'),
       datasets: [this._getDataset(curve1, 'left'), this._getDataset(curve2, 'right')]
     };
-    console.log(routeData);
+    console.log('Charts class routeData: ', routeData);
 
     if (this.myChart != null) {
       this.myChart.destroy();
@@ -186,7 +186,7 @@ class Charts {
   _getData(param) {
     var stepArr = this.stepArr;
 
-    console.log(param);
+    // console.log(param);
 
     let outputArr = [];
 

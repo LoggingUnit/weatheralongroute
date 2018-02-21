@@ -5,8 +5,9 @@ buttonSubmit.addEventListener('click', callbackButton);
 
 var inputFrom = document.getElementById('inputFrom');
 var inputTo = document.getElementById('inputTo');
-var inputOffset = document.getElementById('inputOffset');
+var inputTimeTripBegin = document.getElementsByClassName("modal__form_time")[0];
 var inputStep = document.getElementById('inputStep');
+
 
 let promiseServicesLoaded = new Promise(function (resolve, reject) {
   var googleapiScript = document.getElementById('googleapisScript');
@@ -42,21 +43,21 @@ promiseServicesLoaded
   );
 
 function callbackButton() {
-  if (validate(inputFrom) && validate(inputTo) && validate(inputOffset) && validate(inputStep)) {
+  if (validate(inputFrom) && validate(inputTo) && validate(inputStep)) {
     console.log('form validated');
-    googleMaps.calcRoute(inputFrom.value, inputTo.value, inputStep.value * 1000);
+    googleMaps.calcRoute(inputFrom.value, inputTo.value, inputStep.value * 1000, inputTimeTripBegin.innerHTML);
+    document.getElementById('map').scrollIntoView();
     window.myPopUpManager.popUpHide('modal__form_route');
   }
 }
 
 function refreshWeatherOnDirChange() {
-  googleMaps.setOffset(inputOffset.value);
   let prom = weather.weatherForecast(googleMaps.getRoute());
   prom.then(
     response => {
       let stepWithWeatherAssigned = weather.assignWeatherToRoute(googleMaps.getRoute(), response);
       googleMaps.drawMarkers();
-      console.log(stepWithWeatherAssigned);
+      console.log('stepWithWeatherAssigned: ', stepWithWeatherAssigned);
 
       charts.plotData(stepWithWeatherAssigned, 'temperature', 'precipitation');
       charts.addEventListenerOnMouseClick(googleMaps.centerAt.bind(googleMaps)); 
