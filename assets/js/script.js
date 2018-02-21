@@ -20,7 +20,7 @@ let promiseServicesLoaded = new Promise(function (resolve, reject) {
 
 $(document).ready(function() {
   window.myPopUpManager = new PopUpManager('modal','modal__form_route');
-  window.myCalendar = new MyCalendar('#calendar', myPopUpManager.popUpShow());
+  window.myCalendar = new MyCalendar('#calendar', myPopUpManager.popUpShow, myPopUpManager.setTime);
 });
 
 
@@ -45,6 +45,7 @@ function callbackButton() {
   if (validate(inputFrom) && validate(inputTo) && validate(inputOffset) && validate(inputStep)) {
     console.log('form validated');
     googleMaps.calcRoute(inputFrom.value, inputTo.value, inputStep.value * 1000);
+    window.myPopUpManager.popUpHide('modal__form_route');
   }
 }
 

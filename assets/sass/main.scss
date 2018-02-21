@@ -1065,7 +1065,7 @@
 		display: none;
 		justify-content: center; 
 		position: fixed; /* Stay in place */
-		z-index: 1; /* Sit on top */
+		z-index: 999999999; /* Sit on top */
 		left: 0;
 		top: 0;
 		width: 100%; /* Full width */
@@ -1073,6 +1073,7 @@
 		background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 
 		&__form_route {
+			z-index: 999999999;
 			display: none;
 			background-color: #dce3e2;
 			border-radius: 0.35em;
@@ -1081,4 +1082,8 @@
 			border: solid 1px rgba(0, 0, 0, 0.15);
 			overflow: auto;
 		}
+	}
+
+	.row__no-padding-top {
+		padding: 0 0 0 20px;
 	}

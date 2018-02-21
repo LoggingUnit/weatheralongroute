@@ -282,23 +282,44 @@
 	<div class="container 100% modal">
 		<form class="modal__form_route" method="post" action="#">
 			<div class="row">
+				<div class="12u 12u$(mobile)">
+					<h3>Please assign your route</h3>
+				</div>
+			</div>
+			<div class="row">
+				<div class="3u 12u$(mobile)">
+					<span>Start time: </span>
+				</div>
 				<div class="6u 12u$(mobile)">
-					<span>Please align the route</span>
+					<span class="modal__form_time">time</span>
 				</div>
 			</div>
 			<div class="row">
 				<div class="6u 12u$(mobile)">
-					<input type="text" id="inputFrom" title="From" value="Петербург">
+					<span>From: </span>
 				</div>
 				<div class="6u 12u$(mobile)">
+					<span>To: </span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="6u 12u$(mobile) row__no-padding-top">
+					<input type="text" id="inputFrom" title="From" value="Петербург">
+				</div>
+				<div class="6u 12u$(mobile) row__no-padding-top">
 					<input type="text" id="inputTo" title="To" value="Осло">
 				</div>
 			</div>
 			<div class="row">
 				<div class="6u 12u$(mobile)">
+					<span>Step: </span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="6u 12u$(mobile) row__no-padding-top">
 					<input type="text" id="inputStep" title="Step (km)" value="30">
 				</div>
-				<div class="6u 12u$(mobile)">
+				<div class="6u 12u$(mobile) row__no-padding-top">
 					<input class="button" type="button" id="buttonGo" value="GO" disabled>
 				</div>
 				<input _type="number" id="inputOffset" title="Offset" value="0" hidden>
