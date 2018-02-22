@@ -8,7 +8,8 @@
  */
 class SimpleRoute {
 
-    constructor(dir, distPerStep) {
+    constructor(dir, distPerStep, timeTripBeginUnix) {
+        this.timeTripBeginUnix = timeTripBeginUnix*1000;
         this.dir = dir;
         this.distPerStep = distPerStep;
                 
@@ -66,6 +67,7 @@ class SimpleRoute {
         //Define a zero element with start coordinates to use as _calcStep stepLast parameter
         zeroStep.coordStepStart = this.originalRoute[0];
         zeroStep.coordStepEnd = this.originalRoute[0];
+        zeroStep.timeEnd = this.timeTripBeginUnix;
         this.stepArr[0] = zeroStep;
 
         let length = this._calcLengthStepArr(this.originalRoute, this.distPerStep);
@@ -100,18 +102,12 @@ class SimpleRoute {
         //Calculation of a time consumed by rest steps (full steps with same time)
         var timeEachFullStep = (timeToRoute - timeLastStep)/(length-2);
         
-        for (var i = 0; i < length; i++) {
-            if (i===0) {
-                //apply current time in millisecs for GMT+0 (UTC) since 1970 year 1 jan 
-                var date = new Date(); 
-                stepArr[i].timeEnd = date.getTime(); 
-                continue;
-            }
+        for (var i = 1; i < length; i++) {
             stepArr[i].timeStart = stepArr[i-1].timeEnd;
             stepArr[i].timeEnd = stepArr[i].timeStart + timeEachFullStep;
         }
 
-        stepArr[length-1].timeEnd = timeToRoute + date.getTime();
+        stepArr[length-1].timeEnd = timeToRoute + this.timeTripBeginUnix;
     }
 
     /**

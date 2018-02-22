@@ -72,7 +72,7 @@ class GoogleMaps {
         that.directions = response;
         that._viewRoute();
         that.addListenerOnDirChange();
-        that._simplifyRoute(step);
+        that._simplifyRoute(step, moment(timeTripBegin).unix());
         that._setTimeTripBegin(timeTripBegin);
       } else {
         alert('Could not display directions due to: ' + status);
@@ -150,8 +150,8 @@ class GoogleMaps {
    * Step - how many meters between route coordinate points in simplified route.
    * @param {step} 
    */
-  _simplifyRoute(step) {
-    var simpleRoute = new SimpleRoute(this.directions, step);
+  _simplifyRoute(step, timeTripBeginUnix) {
+    var simpleRoute = new SimpleRoute(this.directions, step, timeTripBeginUnix);
     this.routeSimple = simpleRoute.simplifyRoute();
   }
 

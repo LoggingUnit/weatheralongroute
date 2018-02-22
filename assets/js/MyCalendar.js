@@ -10,20 +10,17 @@ class MyCalendar {
         center: 'title',
         right: 'month,agendaDay'
       },
-      // defaultDate: '2018-02-12',
       navLinks: true, // can click day/week names to navigate views
       selectable: true,
       selectHelper: true,
-      timeZone: 'local',
-      dayClick: (date, jsEvent, view) => {
+      select: (start, end, jsEvent, view) => {
         if (view.name == 'month') {
           $(mountPointCalendar).fullCalendar('changeView', 'agendaDay');
         } else {
-          console.log(date);
-          setTime(date);
+          console.log(start.format());
+          setTime(start.format());
           popUpShow('modal__form_route');
         }
-        
       },
       // dayClick: this.dayClick,
       // select: function (start, end) {
@@ -99,6 +96,7 @@ class MyCalendar {
         }
       ]
     });
+    $(mountPointCalendar ).fullCalendar('option', 'timezone', 'local');
   }
 }
 
