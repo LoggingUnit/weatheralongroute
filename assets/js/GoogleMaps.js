@@ -73,8 +73,7 @@ class GoogleMaps {
         that._viewRoute();
         that.addListenerOnDirChange();
         that._simplifyRoute(step, moment(timeTripBegin).unix());
-        that._setTimeTripBegin(timeTripBegin);
-      } else {
+        } else {
         alert('Could not display directions due to: ' + status);
       }
     });

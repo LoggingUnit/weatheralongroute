@@ -14,10 +14,12 @@ class MyCalendar {
       selectable: true,
       selectHelper: true,
       select: (start, end, jsEvent, view) => {
+        console.log(start);
         if (view.name == 'month') {
+          $(mountPointCalendar).fullCalendar( 'gotoDate', start);
           $(mountPointCalendar).fullCalendar('changeView', 'agendaDay');
         } else {
-          console.log(start.format());
+          console.log(start);
           setTime(start.format());
           popUpShow('modal__form_route');
         }
