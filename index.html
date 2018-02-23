@@ -26,8 +26,16 @@
 				<span class="image avatar48">
 					<img src="images/avatar.jpg" alt="" />
 				</span>
-				<h1 id="title">Andrey Serafimov</h1>
-				<p>Registred user</p>
+				<h1 class='header__username' id="title">Anonymous user</h1>
+				<nav class='header__container-login'>
+					<a class='header__login' href='#'>
+						<p>Login</p>
+					</a>
+					<p> | </p>
+					<a class='header__register' href='#'>
+						<p>Register</p>
+					</a>
+				</nav>
 			</div>
 
 			<!-- Nav -->
@@ -125,7 +133,7 @@
 				</header>
 
 				<footer>
-					<a href="#features" class="button scrolly">Magna Aliquam</a>
+					<a href="#features" class="button scrolly">Tell me more</a>
 				</footer>
 
 			</div>
@@ -278,8 +286,9 @@
 
 	</div>
 
-	<!-- Modal-origin-destination-->
+	<!-- PopUps modal windows -->
 	<div class="container 100% modal">
+		<!-- Modal-origin-destination-->
 		<form class="modal__form_route" method="post" action="#">
 			<div class="row">
 				<div class="12u 12u$(mobile)">
@@ -320,12 +329,82 @@
 					<input type="text" id="inputStep" title="Step (km)" value="30">
 				</div>
 				<div class="6u 12u$(mobile) row__no-padding-top">
-					<input class="button" type="button" id="buttonGo" value="GO" disabled>
+					<input class="button" type="button" id="buttonSubmit" value="GO" disabled>
 				</div>
 				<input type="number" id="inputTimeTripBegin" title="timeTripBegin" value="0" hidden>
 			</div>
 		</form>
+		<!-- Modal-register-register -->
+		<form class="modal__form_register" method="post" action="#">
+			<div class="row">
+				<div class="12u 12u$(mobile)">
+					<h3>Register new profile:</h3>
+				</div>
+			</div>
+			<div class="row">
+				<div class="6u 12u$(mobile)">
+					<span>E-mail: </span>
+				</div>
+				<div class="6u 12u$(mobile)">
+					<span>Password: </span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="6u 12u$(mobile) row__no-padding-top">
+					<input type="text" id="inputEmail" title="Your E-mail" value="Петербург">
+				</div>
+				<div class="6u 12u$(mobile) row__no-padding-top">
+					<input type="password" id="inputPassword" title="Your password" value="Осло">
+				</div>
+			</div>
+			<div class="row">
+				<div class="6u 12u$(mobile)">
+					<span>Username: </span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="6u 12u$(mobile) row__no-padding-top">
+					<input type="text" id="inputUsername" title="Username" value="user">
+				</div>
+				<div class="6u 12u$(mobile) row__no-padding-top">
+					<input class="button" type="button" id="buttonSubmitRegistration" value="GO" disabled>
+				</div>
+			</div>
+		</form>
+		<!-- Modal-register-login -->
+		<form class="modal__form_login" method="post" action="#">
+			<div class="row">
+				<div class="12u 12u$(mobile)">
+					<h3>Login:</h3>
+				</div>
+			</div>
+			<div class="row">
+				<div class="6u 12u$(mobile)">
+					<span>E-mail: </span>
+				</div>
+				<div class="6u 12u$(mobile)">
+					<span>Password: </span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="6u 12u$(mobile) row__no-padding-top">
+					<input type="text" id="inputEmail" title="Your E-mail" value="Петербург">
+				</div>
+				<div class="6u 12u$(mobile) row__no-padding-top">
+					<input type="password" id="inputPassword" title="Your password" value="Осло">
+				</div>
+			</div>
+			<div class="row">
+				<div class="6u 12u$(mobile)">
+					<input class="button" type="button" id="buttonSubmitLogin" value="GO" disabled>
+				</div>
+			</div>
+		</form>
 	</div>
+
+
+
+
 
 	<!-- Page scripts -->
 	<script src="assets/js/jquery.min.js"></script>

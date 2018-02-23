@@ -1,7 +1,11 @@
 'use strict';
 
-var buttonSubmit = document.getElementById('buttonGo');
-buttonSubmit.addEventListener('click', callbackButton);
+var buttonSubmit = document.getElementById('buttonSubmit');
+buttonSubmit.addEventListener('click', callbackButtonSubmit);
+var buttonRegister = document.getElementsByClassName("header__register")[0];
+buttonRegister.addEventListener('click', callbackButtonRegister);
+var buttonLogin = document.getElementsByClassName("header__login")[0];
+buttonLogin.addEventListener('click', callbackButtonLogin);
 
 var inputFrom = document.getElementById('inputFrom');
 var inputTo = document.getElementById('inputTo');
@@ -20,11 +24,9 @@ let promiseServicesLoaded = new Promise(function (resolve, reject) {
 });
 
 $(document).ready(function() {
-  window.myPopUpManager = new PopUpManager('modal','modal__form_route');
+  window.myPopUpManager = new PopUpManager('modal','modal__form_route','modal__form_register','modal__form_login');
   window.myCalendar = new MyCalendar('#calendar', myPopUpManager.popUpShow, myPopUpManager.setTime);
 });
-
-
 
 promiseServicesLoaded
   .then(
@@ -42,13 +44,23 @@ promiseServicesLoaded
   error => console.log('Error: ', error.message)
   );
 
-function callbackButton() {
+function callbackButtonSubmit() {
   if (validate(inputFrom) && validate(inputTo) && validate(inputStep)) {
     console.log('form validated');
     googleMaps.calcRoute(inputFrom.value, inputTo.value, inputStep.value * 1000, inputTimeTripBegin.innerHTML);
     document.getElementById('map').scrollIntoView();
     window.myPopUpManager.popUpHide('modal__form_route');
   }
+}
+
+function callbackButtonRegister() {
+  console.log('script.js callbackButtonRegister activated');
+  window.myPopUpManager.popUpShow('modal__form_register');
+}
+
+function callbackButtonLogin() {
+  console.log('script.js callbackButtonLogin activated');
+  window.myPopUpManager.popUpShow('modal__form_login');
 }
 
 function refreshWeatherOnDirChange() {

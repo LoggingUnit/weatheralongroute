@@ -9,6 +9,7 @@ class PopUpManager {
         this.popUpShow = this.popUpShow.bind(this);
         this.setTime = this.setTime.bind(this);
         args.map((item, i, arr) => this.collection[item] = document.getElementsByClassName(item));
+        // console.log(this.collection);
 
         //?????//
         window.onkeydown = function (event) {
@@ -42,8 +43,6 @@ class PopUpManager {
     }
 
     setTime(inputTimeTripBegin) {
-        // console.log(time);
-        // console.log(this.timeSpan);
         window.inputTimeTripBegin.innerHTML = inputTimeTripBegin;
     }
 }
