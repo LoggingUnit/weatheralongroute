@@ -12,8 +12,7 @@ var inputTo = document.getElementById('inputTo');
 var inputTimeTripBegin = document.getElementsByClassName("modal__form_time")[0];
 var inputStep = document.getElementById('inputStep');
 
-
-let promiseServicesLoaded = new Promise(function (resolve, reject) {
+let promiseGoServicesLoaded = new Promise(function (resolve, reject) {
   var googleapiScript = document.getElementById('googleapisScript');
   googleapiScript.onload = function () {
     resolve('googleapisScripts loaded succesfully');
@@ -23,26 +22,34 @@ let promiseServicesLoaded = new Promise(function (resolve, reject) {
   }
 });
 
-$(document).ready(function() {
-  window.myPopUpManager = new PopUpManager('modal','modal__form_route','modal__form_register','modal__form_login');
+var myStorage = new MyStorage('local');
+myStorage.getItem('lastUserName')
+  .then(
+    result => {
+      console.log(`MyStorage.js last user found: ${result}`)},
+    error => {console.log(error)}
+  );
+
+promiseGoServicesLoaded
+  .then(
+    result => {
+      console.log('Done: ', result);
+      window.weather = new Weather('https://api.openweathermap.org/data/2.5/forecast?mode=json&units=metric&APPID=0bc7c6edc6e5bc381e503d32151b71c9&lang=ru');
+      window.googleMaps = new GoogleMaps("map");
+
+      window.charts = new Charts('chart-canvas');
+
+      googleMaps.initializeMap(66.788890, 93.775280, 3);
+      googleMaps.addListenerOnDirChange(refreshWeatherOnDirChange);
+      buttonSubmit.disabled = false;
+    },
+    error => console.log('Error: ', error.message)
+  );
+
+$(document).ready(function () {
+  window.myPopUpManager = new PopUpManager('modal', 'modal__form_route', 'modal__form_register', 'modal__form_login');
   window.myCalendar = new MyCalendar('#calendar', myPopUpManager.popUpShow, myPopUpManager.setTime);
 });
-
-promiseServicesLoaded
-  .then(
-  result => {
-    console.log('Done: ', result);
-    window.weather = new Weather('https://api.openweathermap.org/data/2.5/forecast?mode=json&units=metric&APPID=0bc7c6edc6e5bc381e503d32151b71c9&lang=ru');
-    window.googleMaps = new GoogleMaps("map");
-
-    window.charts = new Charts('chart-canvas');
-    
-    googleMaps.initializeMap(66.788890, 93.775280, 3);
-    googleMaps.addListenerOnDirChange(refreshWeatherOnDirChange);
-    buttonSubmit.disabled = false;
-  },
-  error => console.log('Error: ', error.message)
-  );
 
 function callbackButtonSubmit() {
   if (validate(inputFrom) && validate(inputTo) && validate(inputStep)) {
@@ -72,11 +79,11 @@ function refreshWeatherOnDirChange() {
       console.log('stepWithWeatherAssigned: ', stepWithWeatherAssigned);
 
       charts.plotData(stepWithWeatherAssigned, 'temperature', 'precipitation');
-      charts.addEventListenerOnMouseClick(googleMaps.centerAt.bind(googleMaps)); 
+      charts.addEventListenerOnMouseClick(googleMaps.centerAt.bind(googleMaps));
     });
 }
 
-  
+
 
 
 
