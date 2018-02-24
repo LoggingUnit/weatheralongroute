@@ -6,11 +6,19 @@ var buttonRegister = document.getElementsByClassName("header__register")[0];
 buttonRegister.addEventListener('click', callbackButtonRegister);
 var buttonLogin = document.getElementsByClassName("header__login")[0];
 buttonLogin.addEventListener('click', callbackButtonLogin);
+var buttonSubmitRegistration = document.getElementById('buttonSubmitRegistration');
+buttonSubmitRegistration.addEventListener('click', callbackButtonSubmitRegistration);
+var buttonSubmitLogin = document.getElementById('buttonSubmitLogin');
+buttonSubmitLogin.addEventListener('click', callbackButtonSubmitLogin);
 
 var inputFrom = document.getElementById('inputFrom');
 var inputTo = document.getElementById('inputTo');
 var inputTimeTripBegin = document.getElementsByClassName("modal__form_time")[0];
 var inputStep = document.getElementById('inputStep');
+
+var inputEmailRegister = document.getElementById('inputEmailRegister');
+var inputPasswordRegister = document.getElementById('inputPasswordRegister');
+var inputUsernameRegister = document.getElementById('inputUsernameRegister');
 
 let promiseGoServicesLoaded = new Promise(function (resolve, reject) {
   var googleapiScript = document.getElementById('googleapisScript');
@@ -22,12 +30,16 @@ let promiseGoServicesLoaded = new Promise(function (resolve, reject) {
   }
 });
 
+
 var myStorage = new MyStorage('local');
+var userAccount = new UserAccount(myStorage.getItem, myStorage.setItem);
 myStorage.getItem('lastUserName')
   .then(
     result => {
-      console.log(`MyStorage.js last user found: ${result}`)},
-    error => {console.log(error)}
+      console.log(`MyStorage.js last user found: ${result}`);
+      userAccount.getAccDataByUsername(result)
+    },
+    error => { console.log(error) }
   );
 
 promiseGoServicesLoaded
@@ -52,6 +64,7 @@ $(document).ready(function () {
 });
 
 function callbackButtonSubmit() {
+  console.log('script.js callbackButtonSubmit activated');
   if (validate(inputFrom) && validate(inputTo) && validate(inputStep)) {
     console.log('form validated');
     googleMaps.calcRoute(inputFrom.value, inputTo.value, inputStep.value * 1000, inputTimeTripBegin.innerHTML);
@@ -63,11 +76,31 @@ function callbackButtonSubmit() {
 function callbackButtonRegister() {
   console.log('script.js callbackButtonRegister activated');
   window.myPopUpManager.popUpShow('modal__form_register');
+
+  //add validation of input data here
+  if ('if valid check with validator to be here') {
+    buttonSubmitRegistration.disabled = false;
+  }
+}
+
+function callbackButtonSubmitRegistration() {
+  console.log('script.js callbackButtonSubmitRegistration activated');
+
+  var userObj = { inputUsernameRegister: inputUsernameRegister.value,
+                  inputEmailRegister: inputEmailRegister.value,
+                  inputPasswordRegister: inputPasswordRegister.value };
+  userAccount.createUser(userObj);
+  window.myPopUpManager.popUpHide('modal__form_register');
 }
 
 function callbackButtonLogin() {
   console.log('script.js callbackButtonLogin activated');
   window.myPopUpManager.popUpShow('modal__form_login');
+}
+
+function callbackButtonSubmitLogin() {
+  console.log('script.js callbackButtonSubmitLogin activated');
+  window.myPopUpManager.popUpHide('modal__form_login');
 }
 
 function refreshWeatherOnDirChange() {
