@@ -4,17 +4,19 @@ class MyStorage {
 
     constructor(mode) {
         this.mode = mode;
-        this.userName = '';
+
+        this.getItem = this.getItem.bind(this);
+        this.setItem = this.setItem.bind(this);
     }
 
     getItem(keyName) {
         switch (this.mode) {
             case 'local':
                 return new Promise((resolve, reject) => {
-                    if (localStorage[`${this.userName}_${keyName}`]) {
-                        let output = localStorage.getItem(`${this.userName}_${keyName}`);
+                    if (localStorage[`${keyName}`]) {
+                        let output = localStorage.getItem(`${keyName}`);
                         resolve(JSON.parse(output));
-                    } else reject(`MyStorage.js ${this.userName}_${keyName} not found in localStorage`);
+                    } else reject(`MyStorage.js ${keyName} not found in localStorage`);
                 });
                 break;
 
@@ -27,7 +29,7 @@ class MyStorage {
         switch (this.mode) {
             case 'local':
                 return new Promise((resolve, reject) => {
-                    localStorage.setItem(`${this.userName}_${keyName}`, JSON.stringify(keyValue));
+                    localStorage.setItem(`${keyName}`, JSON.stringify(keyValue));
                     resolve();
                 });
                 break;
@@ -35,10 +37,5 @@ class MyStorage {
             default:
                 console.log('MyStorage.js undefined storage mode');
         }
-    }
-
-    setUsername(userName) {
-        this.userName = userName;
-        console.log(`MyStorage.js user name set as ${userName}`);
     }
 }

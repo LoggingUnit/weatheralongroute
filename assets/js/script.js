@@ -20,6 +20,9 @@ var inputEmailRegister = document.getElementById('inputEmailRegister');
 var inputPasswordRegister = document.getElementById('inputPasswordRegister');
 var inputUsernameRegister = document.getElementById('inputUsernameRegister');
 
+var inputPasswordLogin = document.getElementById('inputPasswordLogin');
+var inputUsernameLogin = document.getElementById('inputUsernameLogin');
+
 let promiseGoServicesLoaded = new Promise(function (resolve, reject) {
   var googleapiScript = document.getElementById('googleapisScript');
   googleapiScript.onload = function () {
@@ -29,7 +32,6 @@ let promiseGoServicesLoaded = new Promise(function (resolve, reject) {
     reject(new Error('googleapisScripts is unable to load'));
   }
 });
-
 
 var myStorage = new MyStorage('local');
 var userAccount = new UserAccount(myStorage.getItem, myStorage.setItem);
@@ -76,7 +78,6 @@ function callbackButtonSubmit() {
 function callbackButtonRegister() {
   console.log('script.js callbackButtonRegister activated');
   window.myPopUpManager.popUpShow('modal__form_register');
-
   //add validation of input data here
   if ('if valid check with validator to be here') {
     buttonSubmitRegistration.disabled = false;
@@ -86,9 +87,11 @@ function callbackButtonRegister() {
 function callbackButtonSubmitRegistration() {
   console.log('script.js callbackButtonSubmitRegistration activated');
 
-  var userObj = { inputUsernameRegister: inputUsernameRegister.value,
-                  inputEmailRegister: inputEmailRegister.value,
-                  inputPasswordRegister: inputPasswordRegister.value };
+  var userObj = {
+    userName: inputUsernameRegister.value,
+    userEmail: inputEmailRegister.value,
+    userPassword: inputPasswordRegister.value
+  };
   userAccount.createUser(userObj);
   window.myPopUpManager.popUpHide('modal__form_register');
 }
@@ -96,10 +99,20 @@ function callbackButtonSubmitRegistration() {
 function callbackButtonLogin() {
   console.log('script.js callbackButtonLogin activated');
   window.myPopUpManager.popUpShow('modal__form_login');
+  //add validation of input data here
+  if ('if valid check with validator to be here') {
+    buttonSubmitLogin.disabled = false;
+  }
 }
 
 function callbackButtonSubmitLogin() {
   console.log('script.js callbackButtonSubmitLogin activated');
+  var userObj = {
+    userName: inputUsernameLogin.value,
+    userEmail: null,
+    userPassword: inputPasswordLogin.value
+  };
+  userAccount.loginUser(userObj);
   window.myPopUpManager.popUpHide('modal__form_login');
 }
 
