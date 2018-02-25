@@ -1742,6 +1742,8 @@ button,
     box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
     border: solid 1px rgba(0, 0, 0, 0.15);
     overflow: auto; }
+    .modal__form_login__alert {
+      display: none; }
 
 .row__no-padding-top {
   padding: 0 0 0 20px; }
@@ -1749,3 +1751,9 @@ button,
 .header__container-login {
   display: flex;
   justify-content: flex-end; }
+
+.header__logout {
+  display: none; }
+
+.header__profile {
+  display: none; }

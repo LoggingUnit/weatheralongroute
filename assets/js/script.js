@@ -1,14 +1,17 @@
 'use strict';
 
 var buttonSubmit = document.getElementById('buttonSubmit');
-buttonSubmit.addEventListener('click', callbackButtonSubmit);
 var buttonRegister = document.getElementsByClassName("header__register")[0];
-buttonRegister.addEventListener('click', callbackButtonRegister);
 var buttonLogin = document.getElementsByClassName("header__login")[0];
-buttonLogin.addEventListener('click', callbackButtonLogin);
+var buttonLogout = document.getElementsByClassName("header__logout")[0];
 var buttonSubmitRegistration = document.getElementById('buttonSubmitRegistration');
-buttonSubmitRegistration.addEventListener('click', callbackButtonSubmitRegistration);
 var buttonSubmitLogin = document.getElementById('buttonSubmitLogin');
+
+buttonSubmit.addEventListener('click', callbackButtonSubmit);
+buttonRegister.addEventListener('click', callbackButtonRegister);
+buttonLogin.addEventListener('click', callbackButtonLogin);
+buttonLogout.addEventListener('click', callbackButtonLogout);
+buttonSubmitRegistration.addEventListener('click', callbackButtonSubmitRegistration);
 buttonSubmitLogin.addEventListener('click', callbackButtonSubmitLogin);
 
 var inputFrom = document.getElementById('inputFrom');
@@ -39,7 +42,7 @@ myStorage.getItem('lastUserName')
   .then(
     result => {
       console.log(`MyStorage.js last user found: ${result}`);
-      userAccount.getAccDataByUsername(result)
+      userAccount._restoreLastUser(result)
     },
     error => { console.log(error) }
   );
@@ -105,6 +108,10 @@ function callbackButtonLogin() {
   }
 }
 
+function callbackButtonLogout() {
+  userAccount.logoutUser();
+}
+
 function callbackButtonSubmitLogin() {
   console.log('script.js callbackButtonSubmitLogin activated');
   var userObj = {
@@ -112,8 +119,7 @@ function callbackButtonSubmitLogin() {
     userEmail: null,
     userPassword: inputPasswordLogin.value
   };
-  userAccount.loginUser(userObj);
-  window.myPopUpManager.popUpHide('modal__form_login');
+  userAccount.loginUser(userObj, myPopUpManager.popUpHide.bind(myPopUpManager));
 }
 
 function refreshWeatherOnDirChange() {
