@@ -6,6 +6,7 @@ var buttonLogin = document.getElementsByClassName("header__login")[0];
 var buttonLogout = document.getElementsByClassName("header__logout")[0];
 var buttonSubmitRegistration = document.getElementById('buttonSubmitRegistration');
 var buttonSubmitLogin = document.getElementById('buttonSubmitLogin');
+var buttonTripAdd = document.getElementsByClassName("trip-route__add-trip")[0];
 
 buttonSubmit.addEventListener('click', callbackButtonSubmit);
 buttonRegister.addEventListener('click', callbackButtonRegister);
@@ -13,6 +14,7 @@ buttonLogin.addEventListener('click', callbackButtonLogin);
 buttonLogout.addEventListener('click', callbackButtonLogout);
 buttonSubmitRegistration.addEventListener('click', callbackButtonSubmitRegistration);
 buttonSubmitLogin.addEventListener('click', callbackButtonSubmitLogin);
+buttonTripAdd.addEventListener('click', callbackButtonTripAdd);
 
 var inputFrom = document.getElementById('inputFrom');
 var inputTo = document.getElementById('inputTo');
@@ -64,8 +66,9 @@ promiseGoServicesLoaded
   );
 
 $(document).ready(function () {
-  window.myPopUpManager = new PopUpManager('modal', 'modal__form_route', 'modal__form_register', 'modal__form_login');
+  window.myPopUpManager = new PopUpManager('modal', 'modal__form_route', 'modal__form_register', 'modal__form_login', 'modal__alert_reg');
   window.myCalendar = new MyCalendar('#calendar', myPopUpManager.popUpShow, myPopUpManager.setTime);
+  console.log('CALENDAR CREATED');
 });
 
 function callbackButtonSubmit() {
@@ -80,6 +83,7 @@ function callbackButtonSubmit() {
 
 function callbackButtonRegister() {
   console.log('script.js callbackButtonRegister activated');
+  myPopUpManager.popUpHide('modal__alert_reg');
   window.myPopUpManager.popUpShow('modal__form_register');
   //add validation of input data here
   if ('if valid check with validator to be here') {
@@ -101,6 +105,7 @@ function callbackButtonSubmitRegistration() {
 
 function callbackButtonLogin() {
   console.log('script.js callbackButtonLogin activated');
+  myPopUpManager.popUpHide('modal__alert_reg');
   window.myPopUpManager.popUpShow('modal__form_login');
   //add validation of input data here
   if ('if valid check with validator to be here') {
@@ -120,6 +125,16 @@ function callbackButtonSubmitLogin() {
     userPassword: inputPasswordLogin.value
   };
   userAccount.loginUser(userObj, myPopUpManager.popUpHide.bind(myPopUpManager));
+}
+
+function callbackButtonTripAdd () {
+  console.log('script.js callbackButtonTripAdd activated');
+  if (userAccount.isUserLoggedIn()) {
+  } else {
+    myPopUpManager.popUpShow('modal__alert_reg');
+    document.getElementById('modal__alert_reg_reg').addEventListener('click', callbackButtonRegister);
+    document.getElementById('modal__alert_reg_log').addEventListener('click', callbackButtonLogin);
+  }
 }
 
 function refreshWeatherOnDirChange() {

@@ -49,7 +49,12 @@ class UserAccount {
         document.getElementsByClassName("header__logout")[0].style.display = 'none';
         document.getElementsByClassName("header__profile")[0].style.display = 'none';
         this.userData.userObj = null;
-        this._setLastUser({userName: null});
+        this._setLastUser({ userName: null });
+    }
+
+    isUserLoggedIn() {
+        console.log(this.userData.userObj);
+        return this.userData.userObj;
     }
 
     _addDataToServer(keyName, keyValue) {
@@ -78,6 +83,7 @@ class UserAccount {
     _restoreUserData(userObj) {
         this.getItem(`${userObj.userName}_userObj`)
             .then(result => {
+                console.log('USER DATA RESTORED');
                 this.userData.userObj = result;
                 document.getElementsByClassName("header__username")[0].innerHTML = this.userData.userObj.userName;
                 document.getElementsByClassName("header__login")[0].style.display = 'none';
