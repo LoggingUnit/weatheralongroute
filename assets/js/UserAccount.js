@@ -2,7 +2,7 @@
 
 class UserAccount {
 
-    constructor(getItem, setItem) {
+    constructor(calendar, getItem, setItem) {
         this.setItem = setItem;
         this.getItem = getItem;
         this.userData = {
