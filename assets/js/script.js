@@ -112,6 +112,7 @@ function callbackButtonSubmitLogin() {
 function callbackButtonTripAdd() {
   console.log('script.js callbackButtonTripAdd activated');
   if (userAccount.isUserLoggedIn()) {
+    userAccount.applyTripFromUserBuffer();
   } else {
     myPopUpManager.popUpShow('modal__alert_reg');
     document.getElementById('modal__alert_reg_reg').addEventListener('click', callbackButtonRegister);
@@ -126,7 +127,7 @@ function refreshWeatherOnDirChange() {
       let stepWithWeatherAssigned = weather.assignWeatherToRoute(googleMaps.getRoute(), response);
       googleMaps.drawMarkers();
       console.log('stepWithWeatherAssigned: ', stepWithWeatherAssigned);
-
+      userAccount.addTripToUserBuffer(inputFrom.value, inputTo.value, stepWithWeatherAssigned);
       charts.plotData(stepWithWeatherAssigned, 'temperature', 'precipitation');
       charts.addEventListenerOnMouseClick(googleMaps.centerAt.bind(googleMaps));
     });

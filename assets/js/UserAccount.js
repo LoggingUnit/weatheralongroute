@@ -3,15 +3,44 @@
 class UserAccount {
 
     constructor(calendar, getItem, setItem) {
+        this.calendar = calendar;
+        //console.log(calendar);
         this.setItem = setItem;
         this.getItem = getItem;
         this.userData = {
             userObj: {
-                userName: '',
-                userPassword: '',
-                userEmail: '',
-            }
-        };
+                userName: null,
+                userPassword: null,
+                userEmail: null,
+            },
+            tripsObj: []
+        }
+        this.tripTemp = {
+            tripOrigin: '',
+            tripDest: '',
+            tripData: ''
+        }
+    }
+
+    addTripToUserBuffer(origin, destination, tripWithWeather) {
+        console.log('UserAccount.js addTripToUserBuffer with tripWithWeather: ', origin, destination, tripWithWeather);
+        let temp = {
+            tripOrigin: '',
+            tripDest: '',
+            tripData: ''
+        }
+        temp['tripOrigin'] = origin;
+        temp['tripDest'] = destination;
+        temp['tripData'] = tripWithWeather;
+        this.tripTemp = temp;
+        console.log(this.userData);
+    }
+
+    applyTripFromUserBuffer() {
+        console.log('UserAccount.js applyTripFromUserBuffer activated');
+        this.userData.tripsObj.push(this.tripTemp);
+        this._addDataToServer(`tripsObj`, this.userData.tripsObj);
+        this._addDataToCalendar(this.userData.tripsObj);
     }
 
     createUser(userObj) {
@@ -48,13 +77,14 @@ class UserAccount {
         document.getElementsByClassName("header__register")[0].style.display = 'block';
         document.getElementsByClassName("header__logout")[0].style.display = 'none';
         document.getElementsByClassName("header__profile")[0].style.display = 'none';
-        this.userData.userObj = null;
+        this.userData.userObj.userName = null;
+        this.userData.tripsObj = [];
         this._setLastUser({ userName: null });
     }
 
     isUserLoggedIn() {
-        console.log(this.userData.userObj);
-        return this.userData.userObj;
+        console.log(this.userData.userObj.userName);
+        return this.userData.userObj.userName;
     }
 
     _addDataToServer(keyName, keyValue) {
@@ -63,6 +93,26 @@ class UserAccount {
             .then(result => { console.log('UserAccount.js data: ', keyValue, 'added with key: ', `${this.userData.userObj.userName}_${keyName}`) },
                 error => console.log);
     }
+
+    _addDataToCalendar(tripsObj) {
+        console.log('UserAccounts.js _addToCalendar with ', tripsObj);
+
+        for (let i = 0; i < tripsObj.length; i++) {
+            let start = moment(tripsObj[i].tripData[0].timeEnd).format();
+            let end = moment(tripsObj[i].tripData[tripsObj[i].tripData.length - 1].timeEnd).format();
+            let title = `${tripsObj[i].tripOrigin}-${tripsObj[i].tripDest}`;
+
+            var eventData = {
+                title: title,
+                start: start,
+                end: end
+            }
+
+            this.calendar.addEventToCalendar(eventData);
+        }
+
+    }
+
 
     _setLastUser(userObj) {
         this.setItem(`lastUserName`, userObj.userName)
@@ -83,13 +133,24 @@ class UserAccount {
     _restoreUserData(userObj) {
         this.getItem(`${userObj.userName}_userObj`)
             .then(result => {
-                console.log('USER DATA RESTORED');
+                console.log('UserAccount.js _restoreUserData restored', result);
                 this.userData.userObj = result;
                 document.getElementsByClassName("header__username")[0].innerHTML = this.userData.userObj.userName;
                 document.getElementsByClassName("header__login")[0].style.display = 'none';
                 document.getElementsByClassName("header__register")[0].style.display = 'none';
                 document.getElementsByClassName("header__logout")[0].style.display = 'block';
                 document.getElementsByClassName("header__profile")[0].style.display = 'block';
-            }, error => console.log('UserAccount.js unable to restore user with username: ', userName));
+            }, error => console.log('UserAccount.js unable to restore user with username: ', userObj.userName));
+
+        this.getItem(`${userObj.userName}_tripsObj`)
+            .then(result => {
+                console.log('UserAccount.js _restoreUserData restored', result);
+                this.userData.tripsObj = result;
+                this._addDataToCalendar(result);
+            }, error => {
+                console.log('UserAccount.js unable to restore tripsObj with username: ', userObj.userName);
+                this._addDataToServer('tripsObj', this.userData.tripsObj);
+            });
     }
+
 }
