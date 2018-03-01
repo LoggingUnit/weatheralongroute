@@ -12,11 +12,17 @@ class MyCalendar {
       },
       navLinks: true, // can click day/week names to navigate views
       selectable: true,
+      nowIndicator: true,
+      contentHeight: "auto",
+      // height: 650,
+      // aspectRatio: 0.5,
+      allDaySlot: false,
+      slotDuration: '00:60:00',
       selectHelper: true,
       select: (start, end, jsEvent, view) => {
         console.log(start);
         if (view.name == 'month') {
-          $(mountPointCalendar).fullCalendar( 'gotoDate', start);
+          $(mountPointCalendar).fullCalendar('gotoDate', start);
           $(mountPointCalendar).fullCalendar('changeView', 'agendaDay');
         } else {
           console.log(start);
@@ -24,31 +30,29 @@ class MyCalendar {
           popUpShow('modal__form_route');
         }
       },
-      // dayClick: this.dayClick,
-      // select: function (start, end) {
-      //   var title = prompt('Event Title:');
-      //   var eventData;
-      //   if (title) {
-      //     eventData = {
-      //       title: title,
-      //       start: start,
-      //       end: end
-      //     };
-      //     $(mountPointCalendar).fullCalendar('renderEvent', eventData, true); // stick? = true
-      //   }
-      //   $(mountPointCalendar).fullCalendar('unselect');
-      //   $(mountPointCalendar).fullCalendar('changeView', 'agendaDay');
-      // },
       editable: true,
       eventLimit: true, // allow "more" link when too many events
-     });
-    $(mountPointCalendar ).fullCalendar('option', 'timezone', 'local');
+    });
+    $(mountPointCalendar).fullCalendar('option', 'timezone', 'local');
   }
 
-  addEventToCalendar(eventData) {
+  // addArrOfEventToCalendar(eventArr) {
+  //   console.log('MyCalendar.js addArrOfEventToCalendar with: ', eventArr);
+  //   $(this.mountPointCalendar).fullCalendar({events: eventArr});
+  //   $(this.mountPointCalendar).fullCalendar( 'rerenderEvents' );
+  // }
+
+  addSingleEventToCalendar(eventData) {
     console.log('MyCalendar.js addEventToCalendar with: ', eventData);
     $(this.mountPointCalendar).fullCalendar('renderEvent', eventData, true); // stick? = true
   }
+
+  removeEventsFromCalendar(idOrFilter) {
+    console.log('MyCalendar.js removeEventsFromCalendar with: ', idOrFilter);
+    $(this.mountPointCalendar).fullCalendar( 'removeEvents', idOrFilter);
+  }
+
+
 }
 
 

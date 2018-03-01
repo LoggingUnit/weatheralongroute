@@ -1675,7 +1675,7 @@ button,
   width: 100%; }
 
 #calendar {
-  max-width: 900px;
+  max-width: auto;
   margin: 0 auto; }
 
 .modal {
@@ -1766,3 +1766,8 @@ button,
 
 .header__profile {
   display: none; }
+
+.fc-time-grid .fc-slats tr {
+  height: 10px;
+  font-size: 10px;
+  line-height: 10px; }

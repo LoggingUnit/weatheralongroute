@@ -79,6 +79,7 @@ class UserAccount {
         document.getElementsByClassName("header__profile")[0].style.display = 'none';
         this.userData.userObj.userName = null;
         this.userData.tripsObj = [];
+        this.calendar.removeEventsFromCalendar();
         this._setLastUser({ userName: null });
     }
 
@@ -96,20 +97,25 @@ class UserAccount {
 
     _addDataToCalendar(tripsObj) {
         console.log('UserAccounts.js _addToCalendar with ', tripsObj);
+        this.calendar.removeEventsFromCalendar();
 
+        // var eventArr = [];
         for (let i = 0; i < tripsObj.length; i++) {
             let start = moment(tripsObj[i].tripData[0].timeEnd).format();
             let end = moment(tripsObj[i].tripData[tripsObj[i].tripData.length - 1].timeEnd).format();
             let title = `${tripsObj[i].tripOrigin}-${tripsObj[i].tripDest}`;
 
-            var eventData = {
+            let eventData = {
                 title: title,
                 start: start,
                 end: end
             }
 
-            this.calendar.addEventToCalendar(eventData);
+            // eventArr.push(eventData);
+
+        this.calendar.addSingleEventToCalendar(eventData);
         }
+        // this.calendar.addArrOfEventToCalendar(eventArr);
 
     }
 

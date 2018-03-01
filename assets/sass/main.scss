@@ -1056,7 +1056,7 @@
 	  }
 
 	#calendar {
-		max-width: 900px;
+		max-width: auto;
 		margin: 0 auto;
 	  }
 
@@ -1139,4 +1139,10 @@
 			display: none;
 		}
 	}
-		
+
+	.fc-time-grid .fc-slats tr {
+		height: 10px;
+		font-size: 10px;
+		line-height: 10px;
+	}
+
