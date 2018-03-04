@@ -2,9 +2,9 @@
 
 class UserAccount {
 
-    constructor(calendar, getItem, setItem) {
-        this.calendar = calendar;
-        //console.log(calendar);
+    constructor(mainCalendar, profileCalendar, getItem, setItem) {
+        this.mainCalendar = mainCalendar;
+        this.profileCalendar = profileCalendar;
         this.setItem = setItem;
         this.getItem = getItem;
         this.userData = {
@@ -37,10 +37,12 @@ class UserAccount {
     }
 
     applyTripFromUserBuffer() {
-        console.log('UserAccount.js applyTripFromUserBuffer activated');
-        this.userData.tripsObj.push(this.tripTemp);
-        this._addDataToServer(`tripsObj`, this.userData.tripsObj);
-        this._addDataToCalendar(this.userData.tripsObj);
+        if (this.tripTemp.tripOrigin) {
+            console.log('UserAccount.js applyTripFromUserBuffer activated');
+            this.userData.tripsObj.push(this.tripTemp);
+            this._addDataToServer(`tripsObj`, this.userData.tripsObj);
+            this._addDataToCalendar(this.userData.tripsObj);
+        }
     }
 
     createUser(userObj) {
@@ -79,7 +81,8 @@ class UserAccount {
         document.getElementsByClassName("header__profile")[0].style.display = 'none';
         this.userData.userObj.userName = null;
         this.userData.tripsObj = [];
-        this.calendar.removeEventsFromCalendar();
+        this.mainCalendar.removeEventsFromCalendar();
+        this.profileCalendar.removeEventsFromCalendar();
         this._setLastUser({ userName: null });
     }
 
@@ -97,7 +100,8 @@ class UserAccount {
 
     _addDataToCalendar(tripsObj) {
         console.log('UserAccounts.js _addToCalendar with ', tripsObj);
-        this.calendar.removeEventsFromCalendar();
+        this.mainCalendar.removeEventsFromCalendar();
+        this.profileCalendar.removeEventsFromCalendar();
 
         // var eventArr = [];
         for (let i = 0; i < tripsObj.length; i++) {
@@ -106,6 +110,7 @@ class UserAccount {
             let title = `${tripsObj[i].tripOrigin}-${tripsObj[i].tripDest}`;
 
             let eventData = {
+                id: i,
                 title: title,
                 start: start,
                 end: end
@@ -113,7 +118,8 @@ class UserAccount {
 
             // eventArr.push(eventData);
 
-        this.calendar.addSingleEventToCalendar(eventData);
+            this.mainCalendar.addSingleEventToCalendar(eventData);
+            this.profileCalendar.addSingleEventToCalendar(eventData);
         }
         // this.calendar.addArrOfEventToCalendar(eventArr);
 
@@ -146,6 +152,8 @@ class UserAccount {
                 document.getElementsByClassName("header__register")[0].style.display = 'none';
                 document.getElementsByClassName("header__logout")[0].style.display = 'block';
                 document.getElementsByClassName("header__profile")[0].style.display = 'block';
+
+
             }, error => console.log('UserAccount.js unable to restore user with username: ', userObj.userName));
 
         this.getItem(`${userObj.userName}_tripsObj`)

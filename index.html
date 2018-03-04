@@ -224,7 +224,7 @@
 				<header>
 					<h2>Trip calendar</h2>
 				</header>
-				<div id='calendar'></div>
+				<div id='mainCalendar'></div>
 				<p>Elementum sem parturient nulla quam placerat viverra mauris non cum elit tempus ullamcorper dolor. Libero rutrum ut lacinia
 					donec curae mus. Eleifend id porttitor ac ultricies lobortis sem nunc orci ridiculus faucibus a consectetur. Porttitor
 					curae mauris urna mi dolor.</p>
@@ -273,7 +273,7 @@
 					elementum aliquet nec vitae </p>
 
 
-				<a href="#calendar" class="button scrolly trip-route__add-trip">Add trip</a>
+				<a href="#mainCalendar" class="button scrolly trip-route__add-trip">Add trip</a>
 
 			</div>
 
@@ -413,6 +413,47 @@
 				</div>
 			</div>
 		</form>
+		<!-- Modal-my-profile -->
+		<form class="modal__form_profile" method="post" action="#">
+			<div class="row">
+				<div class="12u 12u$(mobile)  row__no-padding-top">
+					<h3>
+						<span class="modal__form_profile__username">username</span>
+						profile
+					</h3>
+				</div>
+			</div>
+			<div class="row">
+				<div class="12u 12u$(mobile)  row__no-padding-top">
+					<span>Username:
+						<span class="modal__form_profile__username">username</span>
+					</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="12u 12u$(mobile) row__no-padding-top">
+					<span>E-mail:
+						<span class="modal__form_profile__email">email</span>
+					</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="12u 12u$(mobile) row__no-padding-top">
+					<span>Planned trips:</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="12u 12u$(mobile)">
+					<div id='profileCalendar'></div>
+				</div>
+
+			</div>
+			<div class="row">
+				<div class="6u 12u$(mobile)">
+					<input class="button" type="button" id="modal__form_profile__close" value="Close">
+				</div>
+			</div>
+		</form>
 		<!-- Modal-need-registration-alert -->
 		<form class="modal__alert_reg" method="post" action="#">
 			<div class="row">
@@ -470,7 +511,8 @@
 	<script src="assets/js/MyStorage.js"></script>
 	<script src="assets/js/GoogleMaps.js"></script>
 	<script src="assets/js/SimpleRoute.js"></script>
-	<script src="assets/js/MyCalendar.js"></script>
+	<script src="assets/js/MainCalendar.js"></script>
+	<script src="assets/js/ProfileCalendar.js"></script>
 	<script src="assets/js/script.js"></script>
 
 </body>

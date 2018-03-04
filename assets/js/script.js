@@ -4,6 +4,7 @@ var buttonSubmit = document.getElementById('buttonSubmit');
 var buttonRegister = document.getElementsByClassName("header__register")[0];
 var buttonLogin = document.getElementsByClassName("header__login")[0];
 var buttonLogout = document.getElementsByClassName("header__logout")[0];
+var buttonProfile = document.getElementsByClassName("header__profile")[0];
 var buttonSubmitRegistration = document.getElementById('buttonSubmitRegistration');
 var buttonSubmitLogin = document.getElementById('buttonSubmitLogin');
 var buttonTripAdd = document.getElementsByClassName("trip-route__add-trip")[0];
@@ -12,6 +13,7 @@ buttonSubmit.addEventListener('click', callbackButtonSubmit);
 buttonRegister.addEventListener('click', callbackButtonRegister);
 buttonLogin.addEventListener('click', callbackButtonLogin);
 buttonLogout.addEventListener('click', callbackButtonLogout);
+buttonProfile.addEventListener('click', callbackButtonProfile)
 buttonSubmitRegistration.addEventListener('click', callbackButtonSubmitRegistration);
 buttonSubmitLogin.addEventListener('click', callbackButtonSubmitLogin);
 buttonTripAdd.addEventListener('click', callbackButtonTripAdd);
@@ -30,8 +32,10 @@ var inputUsernameLogin = document.getElementById('inputUsernameLogin');
 
 document.getElementById('googleapisScript').onload = function () {
   console.log('googleapisScripts loaded succesfully');
-  window.myPopUpManager = new PopUpManager('modal', 'modal__form_route', 'modal__form_register', 'modal__form_login', 'modal__alert_reg');
-  var calendar = new MyCalendar('#calendar', myPopUpManager.popUpShow, myPopUpManager.setTime);
+  window.myPopUpManager = new PopUpManager('modal', 'modal__form_route', 'modal__form_register', 'modal__form_login', 'modal__form_profile', 'modal__alert_reg');
+  var mainCalendar = new MainCalendar('#mainCalendar', myPopUpManager.popUpShow, myPopUpManager.setTime);
+  var profileCalendar = new ProfileCalendar('#profileCalendar', myPopUpManager.popUpShow, myPopUpManager.setTime);
+
   window.myStorage = new MyStorage('local');
   window.myStorage.getItem('lastUserName')
     .then(
@@ -41,7 +45,7 @@ document.getElementById('googleapisScript').onload = function () {
       },
       error => { console.log(error) }
     );
-  window.userAccount = new UserAccount(calendar, myStorage.getItem, myStorage.setItem);
+  window.userAccount = new UserAccount(mainCalendar, profileCalendar, myStorage.getItem, myStorage.setItem);
   window.weather = new Weather('https://api.openweathermap.org/data/2.5/forecast?mode=json&units=metric&APPID=0bc7c6edc6e5bc381e503d32151b71c9&lang=ru');
   window.googleMaps = new GoogleMaps("map");
   window.charts = new Charts('chart-canvas');
@@ -97,6 +101,11 @@ function callbackButtonLogin() {
 
 function callbackButtonLogout() {
   userAccount.logoutUser();
+}
+
+function callbackButtonProfile() {
+  console.log('script.js callbackButtonProfile activated');
+  window.myPopUpManager.popUpShow('modal__form_profile');
 }
 
 function callbackButtonSubmitLogin() {

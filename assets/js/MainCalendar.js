@@ -1,6 +1,6 @@
 'use strict';
 
-class MyCalendar {
+class MainCalendar {
 
   constructor(mountPointCalendar, popUpShow, setTime) {
     this.mountPointCalendar = mountPointCalendar;
@@ -43,12 +43,12 @@ class MyCalendar {
   // }
 
   addSingleEventToCalendar(eventData) {
-    console.log('MyCalendar.js addEventToCalendar with: ', eventData);
+    console.log('MainCalendar.js addEventToCalendar with: ', eventData);
     $(this.mountPointCalendar).fullCalendar('renderEvent', eventData, true); // stick? = true
   }
 
   removeEventsFromCalendar(idOrFilter) {
-    console.log('MyCalendar.js removeEventsFromCalendar with: ', idOrFilter);
+    console.log('MainCalendar.js removeEventsFromCalendar with: ', idOrFilter);
     $(this.mountPointCalendar).fullCalendar( 'removeEvents', idOrFilter);
   }
 
