@@ -2,9 +2,9 @@
 
 class UserAccount {
 
-    constructor(mainCalendar, profileCalendar, getItem, setItem) {
-        this.mainCalendar = mainCalendar;
-        this.profileCalendar = profileCalendar;
+    constructor(myPopUpManager, getItem, setItem) {
+        this.mainCalendar = new MainCalendar('#mainCalendar', myPopUpManager.popUpShow, myPopUpManager.setTime);
+        this.profileCalendar = new ProfileCalendar('#profileCalendar', this.eventDeleteByCalendarButtonClick.bind(this));
         this.setItem = setItem;
         this.getItem = getItem;
         this.userData = {
@@ -51,6 +51,13 @@ class UserAccount {
         this._addDataToServer('userObj', userObj);
         this._restoreUserData(userObj);
         this._setLastUser(userObj);
+    }
+
+    eventDeleteByCalendarButtonClick(eventId) {
+        console.log(eventId);
+        console.log(this.userData.tripsObj.splice(eventId,1));
+        this._addDataToServer(`tripsObj`, this.userData.tripsObj);
+        this._addDataToCalendar(this.userData.tripsObj);
     }
 
     loginUser(userObj, popUpHide) {
@@ -124,7 +131,6 @@ class UserAccount {
         // this.calendar.addArrOfEventToCalendar(eventArr);
 
     }
-
 
     _setLastUser(userObj) {
         this.setItem(`lastUserName`, userObj.userName)

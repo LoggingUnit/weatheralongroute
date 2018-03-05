@@ -1756,9 +1756,7 @@ button,
     padding: 0.75em 1em 0.75em 1em;
     box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
     border: solid 1px rgba(0, 0, 0, 0.15);
-    overflow-y: hidden;
-    min-height: 50%;
-    max-height: 100%; }
+    overflow: auto; }
   .modal__alert_reg {
     z-index: 999999999;
     display: none;

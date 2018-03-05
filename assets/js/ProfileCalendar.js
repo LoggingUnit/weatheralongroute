@@ -2,7 +2,7 @@
 
 class ProfileCalendar {
 
-  constructor(mountPointCalendar, popUpShow, setTime) {
+  constructor(mountPointCalendar, eventDeleteByCalendarButtonClick) {
     this.mountPointCalendar = mountPointCalendar;
     this.calendar = $(mountPointCalendar).fullCalendar({
       header: {
@@ -16,37 +16,25 @@ class ProfileCalendar {
       nowIndicator: false,
       header: false,
       handleWindowResize: true,
-      // contentHeight: 300,
-      // height: 300,
-      // aspectRatio: 0.5,
       allDaySlot: false,
       slotDuration: '00:60:00',
       selectHelper: true,
-      // select: (start, end, jsEvent, view) => {
-      //   console.log(start);
-      //   if (view.name == 'month') {
-      //     $(mountPointCalendar).fullCalendar('gotoDate', start);
-      //     $(mountPointCalendar).fullCalendar('changeView', 'agendaDay');
-      //   } else {
-      //     console.log(start);
-      //     setTime(start.format());
-      //     popUpShow('modal__form_route');
-      //   }
-      // },
-      eventClick: function (calEvent, jsEvent, view) {
-        console.log('Event: ', calEvent);
+      eventRender: (event, element) => {
+        console.log('event', event);
+        console.log('element', element);
+        element.append("<td><button type='button' id='btnDeleteEvent'>X</button></td>");
+        element.find("#btnDeleteEvent").click(function () {
+          eventDeleteByCalendarButtonClick(event.id);
+        });
       },
+      eventAfterRender: (event, element, view) => {
+        element.prev().append("<td><span>Delete</span></td>");
+      }, 
       editable: true,
       eventLimit: true, // allow "more" link when too many events
     });
     $(mountPointCalendar).fullCalendar('option', 'timezone', 'local');
   }
-
-  // addArrOfEventToCalendar(eventArr) {
-  //   console.log('MyCalendar.js addArrOfEventToCalendar with: ', eventArr);
-  //   $(this.mountPointCalendar).fullCalendar({events: eventArr});
-  //   $(this.mountPointCalendar).fullCalendar( 'rerenderEvents' );
-  // }
 
   addSingleEventToCalendar(eventData) {
     console.log('MainCalendar.js addEventToCalendar with: ', eventData);
@@ -57,6 +45,8 @@ class ProfileCalendar {
     console.log('MainCalendar.js removeEventsFromCalendar with: ', idOrFilter);
     $(this.mountPointCalendar).fullCalendar('removeEvents', idOrFilter);
   }
+
+
 
 
 }
