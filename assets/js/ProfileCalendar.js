@@ -29,6 +29,7 @@ class ProfileCalendar {
       },
       eventAfterRender: (event, element, view) => {
         element.prev().append("<td><span>Delete</span></td>");
+        $(mountPointCalendar).fullCalendar('option', 'contentHeight', 200);
       }, 
       editable: true,
       eventLimit: true, // allow "more" link when too many events

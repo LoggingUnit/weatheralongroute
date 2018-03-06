@@ -8,6 +8,7 @@ var buttonProfile = document.getElementsByClassName("header__profile")[0];
 var buttonSubmitRegistration = document.getElementById('buttonSubmitRegistration');
 var buttonSubmitLogin = document.getElementById('buttonSubmitLogin');
 var buttonTripAdd = document.getElementsByClassName("trip-route__add-trip")[0];
+var buttonProfileClose = document.getElementById('modal__form_profile__close');
 
 buttonSubmit.addEventListener('click', callbackButtonSubmit);
 buttonRegister.addEventListener('click', callbackButtonRegister);
@@ -17,6 +18,7 @@ buttonProfile.addEventListener('click', callbackButtonProfile)
 buttonSubmitRegistration.addEventListener('click', callbackButtonSubmitRegistration);
 buttonSubmitLogin.addEventListener('click', callbackButtonSubmitLogin);
 buttonTripAdd.addEventListener('click', callbackButtonTripAdd);
+buttonProfileClose.addEventListener('click', callbackButtonProfileClose);
 
 var inputFrom = document.getElementById('inputFrom');
 var inputTo = document.getElementById('inputTo');
@@ -88,7 +90,7 @@ function callbackButtonSubmitRegistration() {
 
 function callbackButtonLogin() {
   console.log('script.js callbackButtonLogin activated');
-  myPopUpManager.popUpHide('modal__alert_reg');
+  window.myPopUpManager.popUpHide('modal__alert_reg');
   window.myPopUpManager.popUpShow('modal__form_login');
   //add validation of input data here
   if ('if valid check with validator to be here') {
@@ -124,6 +126,10 @@ function callbackButtonTripAdd() {
     document.getElementById('modal__alert_reg_reg').addEventListener('click', callbackButtonRegister);
     document.getElementById('modal__alert_reg_log').addEventListener('click', callbackButtonLogin);
   }
+}
+
+function callbackButtonProfileClose() {
+  window.myPopUpManager.popUpHide('modal__form_profile');
 }
 
 function refreshWeatherOnDirChange() {

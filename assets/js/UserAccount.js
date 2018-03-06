@@ -158,7 +158,9 @@ class UserAccount {
                 document.getElementsByClassName("header__register")[0].style.display = 'none';
                 document.getElementsByClassName("header__logout")[0].style.display = 'block';
                 document.getElementsByClassName("header__profile")[0].style.display = 'block';
-
+                document.getElementsByClassName("modal__form_profile__username")[0].innerHTML = this.userData.userObj.userName;
+                document.getElementsByClassName("modal__form_profile__username")[1].innerHTML = this.userData.userObj.userName;
+                document.getElementsByClassName("modal__form_profile__email")[0].innerHTML = this.userData.userObj.userEmail;
 
             }, error => console.log('UserAccount.js unable to restore user with username: ', userObj.userName));
 
