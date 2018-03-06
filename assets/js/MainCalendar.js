@@ -36,23 +36,16 @@ class MainCalendar {
     $(mountPointCalendar).fullCalendar('option', 'timezone', 'local');
   }
 
-  // addArrOfEventToCalendar(eventArr) {
-  //   console.log('MyCalendar.js addArrOfEventToCalendar with: ', eventArr);
-  //   $(this.mountPointCalendar).fullCalendar({events: eventArr});
-  //   $(this.mountPointCalendar).fullCalendar( 'rerenderEvents' );
-  // }
-
   addSingleEventToCalendar(eventData) {
     console.log('MainCalendar.js addEventToCalendar with: ', eventData);
     $(this.mountPointCalendar).fullCalendar('renderEvent', eventData, true); // stick? = true
+    $(this.mountPointCalendar).fullCalendar('changeView', 'month');
   }
 
   removeEventsFromCalendar(idOrFilter) {
     console.log('MainCalendar.js removeEventsFromCalendar with: ', idOrFilter);
     $(this.mountPointCalendar).fullCalendar( 'removeEvents', idOrFilter);
   }
-
-
 }
 
 

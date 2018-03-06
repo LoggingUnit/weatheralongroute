@@ -121,6 +121,7 @@ function callbackButtonTripAdd() {
   console.log('script.js callbackButtonTripAdd activated');
   if (userAccount.isUserLoggedIn()) {
     userAccount.applyTripFromUserBuffer();
+    
   } else {
     myPopUpManager.popUpShow('modal__alert_reg');
     document.getElementById('modal__alert_reg_reg').addEventListener('click', callbackButtonRegister);
