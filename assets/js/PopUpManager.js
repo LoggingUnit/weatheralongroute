@@ -16,7 +16,6 @@ class PopUpManager {
             var that = this;
             if (event.keyCode == 27) {
                 myPopUpManager.popUpHide();
-                // console.log( 'escape pressed' );
             }
         };
     }

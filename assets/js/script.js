@@ -1,8 +1,6 @@
 'use strict';
 
 var buttonSubmit = document.getElementsByClassName('form-route__submit-button')[0];
-var buttonRegister = document.getElementsByClassName("header-menu__register-button")[0];
-var buttonLogin = document.getElementsByClassName("header-menu__login-button")[0];
 var buttonLogout = document.getElementsByClassName("header-menu__logout-button")[0];
 var buttonProfile = document.getElementsByClassName("header-menu__profile-button")[0];
 var buttonSubmitRegistration = document.getElementsByClassName('form-register__submit-button')[0];
@@ -11,14 +9,23 @@ var buttonTripAdd = document.getElementsByClassName("trip-route__add-trip")[0];
 var buttonProfileClose = document.getElementsByClassName('form-profile__close-button')[0];
 
 buttonSubmit.addEventListener('click', callbackButtonSubmit);
-buttonRegister.addEventListener('click', callbackButtonRegister);
-buttonLogin.addEventListener('click', callbackButtonLogin);
 buttonLogout.addEventListener('click', callbackButtonLogout);
 buttonProfile.addEventListener('click', callbackButtonProfile)
 buttonSubmitRegistration.addEventListener('click', callbackButtonSubmitRegistration);
 buttonSubmitLogin.addEventListener('click', callbackButtonSubmitLogin);
 buttonTripAdd.addEventListener('click', callbackButtonTripAdd);
 buttonProfileClose.addEventListener('click', callbackButtonProfileClose);
+
+var buttonRegisterCollection = document.getElementsByClassName("register-button");
+var buttonLoginCollection = document.getElementsByClassName("login-button");
+
+for (let i=0; i<buttonRegisterCollection.length; i++) {
+  buttonRegisterCollection[i].addEventListener('click', callbackButtonRegister);
+}
+
+for (let i=0; i<buttonLoginCollection.length; i++) {
+  buttonLoginCollection[i].addEventListener('click', callbackButtonLogin);
+}
 
 var inputFrom = document.getElementsByClassName('form-route__origin-input')[0];
 var inputTo = document.getElementsByClassName('form-route__destination-input')[0];
@@ -124,13 +131,11 @@ function callbackButtonTripAdd() {
     
   } else {
     myPopUpManager.popUpShow('alert-login-required');
-    document.getElementsByClassName('alert-login-required__register-button')[0].addEventListener('click', callbackButtonRegister);
-    document.getElementsByClassName('alert-login-required__login-button')[0].addEventListener('click', callbackButtonLogin);
   }
 }
 
 function callbackButtonProfileClose() {
-  window.myPopUpManager.popUpHide('form-profile');
+  myPopUpManager.popUpHide('form-profile');
 }
 
 function refreshWeatherOnDirChange() {

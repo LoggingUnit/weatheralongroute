@@ -14,12 +14,6 @@ function validate(arg) {
                 }
                 break;
 
-            case 'inputOffset':
-                if ((arg.value >= 0) && (arg.value <= 36)) {
-                    output = true;
-                }
-                break;
-
             case 'form-route__step-input':
                 if (arg.value >= 30) {
                     output = true;
