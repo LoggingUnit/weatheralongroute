@@ -1669,7 +1669,7 @@ button,
     #footer .copyright li:first-child {
       margin-top: 0; } }
 
-/*Weather on route part	*/
+/* Weather on route part */
 #map {
   height: 400px;
   width: 100%; }
@@ -1719,66 +1719,50 @@ button,
     -webkit-flex-grow: 0;
     -ms-flex-grow: 0;
     flex-grow: 0; }
-  .modal__form_route {
-    z-index: 999999999;
-    display: none;
-    background-color: #dce3e2;
-    border-radius: 0.35em;
-    padding: 0.75em 1em 0.75em 1em;
-    box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
-    border: solid 1px rgba(0, 0, 0, 0.15);
-    overflow: auto; }
-  .modal__form_register {
-    z-index: 999999999;
-    display: none;
-    background-color: #dce3e2;
-    border-radius: 0.35em;
-    padding: 0.75em 1em 0.75em 1em;
-    box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
-    border: solid 1px rgba(0, 0, 0, 0.15);
-    overflow: auto; }
-  .modal__form_login {
-    z-index: 999999999;
-    display: none;
-    background-color: #dce3e2;
-    border-radius: 0.35em;
-    padding: 0.75em 1em 0.75em 1em;
-    box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
-    border: solid 1px rgba(0, 0, 0, 0.15);
-    overflow: auto; }
-    .modal__form_login__alert {
+
+.form, .form-route, .form-register, .form-login, .form-profile {
+  z-index: 999999999;
+  background-color: #dce3e2;
+  border-radius: 0.35em;
+  padding: 0.75em 1em 0.75em 1em;
+  box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
+  border: solid 1px rgba(0, 0, 0, 0.15);
+  overflow: auto; }
+  .form-route {
+    display: none; }
+  .form-register {
+    display: none; }
+  .form-login {
+    display: none; }
+    .form-login__alert-txt {
       display: none; }
-  .modal__form_profile {
-    z-index: 999999999;
-    display: none;
-    background-color: #dce3e2;
-    border-radius: 0.35em;
-    padding: 0.75em 1em 0.75em 1em;
-    box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
-    border: solid 1px rgba(0, 0, 0, 0.15);
-    max-height: 93%; }
-  .modal__alert_reg {
-    z-index: 999999999;
-    display: none;
-    background-color: #dce3e2;
-    border-radius: 0.35em;
-    padding: 0.75em 1em 0.75em 1em;
-    box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
-    border: solid 1px rgba(0, 0, 0, 0.15);
-    overflow: auto; }
+  .form-profile {
+    max-height: 93%;
+    display: none; }
 
-.row__no-padding-top {
-  padding: 0 0 0 20px; }
+.alert, .alert-login-required {
+  z-index: 999999999;
+  background-color: #dce3e2;
+  border-radius: 0.35em;
+  padding: 0.75em 1em 0.75em 1em;
+  box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
+  border: solid 1px rgba(0, 0, 0, 0.15);
+  overflow: auto; }
+  .alert-login-required {
+    display: none; }
 
-.header__container-login {
+.header-menu__logout-button {
+  display: none; }
+
+.header-menu__profile-button {
+  display: none; }
+
+.header-menu__container {
   display: flex;
   justify-content: flex-end; }
 
-.header__logout {
-  display: none; }
-
-.header__profile {
-  display: none; }
+.row__no-padding-top {
+  padding: 0 0 0 20px; }
 
 .fc-time-grid .fc-slats tr {
   height: 10px;

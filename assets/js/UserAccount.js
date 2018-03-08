@@ -66,26 +66,26 @@ class UserAccount {
             .then(result => {
                 if (result.userPassword == userObj.userPassword) {
                     console.log(`UserAccount.js user: ${userObj.userName} succesfully passed`);
-                    popUpHide('modal__form_login');
-                    document.getElementsByClassName("modal__form_login__alert")[0].style.display = 'none';
+                    popUpHide('form-login');
+                    document.getElementsByClassName("form-login__alert-txt")[0].style.display = 'none';
                     this._setLastUser(userObj);
                     this._restoreUserData(userObj);
                 } else {
                     console.log(`UserAccount.js user: ${userObj.userName} did no pass`);
-                    document.getElementsByClassName("modal__form_login__alert")[0].style.display = 'block';
+                    document.getElementsByClassName("form-login__alert-txt")[0].style.display = 'block';
                 }
             }, error => {
-                document.getElementsByClassName("modal__form_login__alert")[0].style.display = 'block';
+                document.getElementsByClassName("form-login__alert-txt")[0].style.display = 'block';
             });
     }
 
     logoutUser() {
         console.log('UserAccount.js logoutUser()');
-        document.getElementsByClassName("header__username")[0].innerHTML = "Anonymous user";
-        document.getElementsByClassName("header__login")[0].style.display = 'block';
-        document.getElementsByClassName("header__register")[0].style.display = 'block';
-        document.getElementsByClassName("header__logout")[0].style.display = 'none';
-        document.getElementsByClassName("header__profile")[0].style.display = 'none';
+        document.getElementsByClassName("header-menu__username-txt")[0].innerHTML = "Anonymous user";
+        document.getElementsByClassName("header-menu__login-button")[0].style.display = 'block';
+        document.getElementsByClassName("header-menu__register-button")[0].style.display = 'block';
+        document.getElementsByClassName("header-menu__logout-button")[0].style.display = 'none';
+        document.getElementsByClassName("header-menu__profile-button")[0].style.display = 'none';
         this.userData.userObj.userName = null;
         this.userData.tripsObj = [];
         this.mainCalendar.removeEventsFromCalendar();
@@ -153,14 +153,14 @@ class UserAccount {
             .then(result => {
                 console.log('UserAccount.js _restoreUserData restored', result);
                 this.userData.userObj = result;
-                document.getElementsByClassName("header__username")[0].innerHTML = this.userData.userObj.userName;
-                document.getElementsByClassName("header__login")[0].style.display = 'none';
-                document.getElementsByClassName("header__register")[0].style.display = 'none';
-                document.getElementsByClassName("header__logout")[0].style.display = 'block';
-                document.getElementsByClassName("header__profile")[0].style.display = 'block';
-                document.getElementsByClassName("modal__form_profile__username")[0].innerHTML = this.userData.userObj.userName;
-                document.getElementsByClassName("modal__form_profile__username")[1].innerHTML = this.userData.userObj.userName;
-                document.getElementsByClassName("modal__form_profile__email")[0].innerHTML = this.userData.userObj.userEmail;
+                document.getElementsByClassName("header-menu__username-txt")[0].innerHTML = this.userData.userObj.userName;
+                document.getElementsByClassName("header-menu__login-button")[0].style.display = 'none';
+                document.getElementsByClassName("header-menu__register-button")[0].style.display = 'none';
+                document.getElementsByClassName("header-menu__logout-button")[0].style.display = 'block';
+                document.getElementsByClassName("header-menu__profile-button")[0].style.display = 'block';
+                document.getElementsByClassName("form-profile__username-txt")[0].innerHTML = this.userData.userObj.userName;
+                document.getElementsByClassName("form-profile__username-txt")[1].innerHTML = this.userData.userObj.userName;
+                document.getElementsByClassName("form-profile__email-txt")[0].innerHTML = this.userData.userObj.userEmail;
 
             }, error => console.log('UserAccount.js unable to restore user with username: ', userObj.userName));
 

@@ -1049,14 +1049,16 @@
 
 	}
 	
-	/*Weather on route part	*/
+	
+/* Weather on route part */
+
 	#map {
-		height: 400px;
+	height: 400px;
 		width: 100%;
 	}
 
 	#mainCalendar {
-		max-width: auto;
+	max-width: auto;
 		margin: 0 auto;
 	}
 
@@ -1076,86 +1078,74 @@
 		width: 100%; /* Full width */
 		height: 100%; /* Full height */
 		background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	}
 
-		&__form_route {
-			z-index: 999999999;
+	.form {
+		z-index: 999999999;
+		background-color: #dce3e2;
+		border-radius: 0.35em;
+		padding: 0.75em 1em 0.75em 1em;
+		box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
+		border: solid 1px rgba(0, 0, 0, 0.15);
+		overflow: auto;
+
+		&-route {
+			@extend .form;
 			display: none;
-			background-color: #dce3e2;
-			border-radius: 0.35em;
-			padding: 0.75em 1em 0.75em 1em;
-			box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
-			border: solid 1px rgba(0, 0, 0, 0.15);
-			overflow: auto;
 		}
 
-		&__form_register {
-			z-index: 999999999;
+		&-register {
+			@extend .form;
 			display: none;
-			background-color: #dce3e2;
-			border-radius: 0.35em;
-			padding: 0.75em 1em 0.75em 1em;
-			box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
-			border: solid 1px rgba(0, 0, 0, 0.15);
-			overflow: auto;
 		}
 
-		&__form_login {
-			z-index: 999999999;
+		&-login {
+			@extend .form;
 			display: none;
-			background-color: #dce3e2;
-			border-radius: 0.35em;
-			padding: 0.75em 1em 0.75em 1em;
-			box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
-			border: solid 1px rgba(0, 0, 0, 0.15);
-			overflow: auto;
-
-			&__alert {
+			&__alert-txt {
 				display: none;
 			}
 		}
 
-		&__form_profile {
-			z-index: 999999999;
-			display: none;
-			background-color: #dce3e2;
-			border-radius: 0.35em;
-			padding: 0.75em 1em 0.75em 1em;
-			box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
-			border: solid 1px rgba(0, 0, 0, 0.15);
-			// overflow-y: scroll;
-			// min-height: 50%;
+		&-profile {
+			@extend .form;
 			max-height: 93%;
-		}
-
-		&__alert_reg {
-			z-index: 999999999;
 			display: none;
-			background-color: #dce3e2;
-			border-radius: 0.35em;
-			padding: 0.75em 1em 0.75em 1em;
-			box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
-			border: solid 1px rgba(0, 0, 0, 0.15);
-			overflow: auto;
 		}
 	}
 
-	.row__no-padding-top {
-		padding: 0 0 0 20px;
+	.alert {
+		z-index: 999999999;
+		background-color: #dce3e2;
+		border-radius: 0.35em;
+		padding: 0.75em 1em 0.75em 1em;
+		box-shadow: inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.05);
+		border: solid 1px rgba(0, 0, 0, 0.15);
+		overflow: auto;
+
+		&-login-required {
+			@extend .alert;
+			display: none;
+		}
 	}
 
-	.header__container-login {
+	.header-menu {
+		&__logout-button {
+			display: none;
+		}
+
+		&__profile-button {
+			display: none;
+		}
+	}
+
+	.header-menu__container {
 		display: flex;
 		justify-content: flex-end;
 	}
 
-	.header {
-		&__logout {
-			display: none;
-		}
-
-		&__profile {
-			display: none;
-		}
+	.row__no-padding-top {
+		padding: 0 0 0 20px;
 	}
 
 	.fc-time-grid .fc-slats tr {

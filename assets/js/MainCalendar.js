@@ -27,7 +27,7 @@ class MainCalendar {
         } else {
           console.log(start);
           setTime(start.format());
-          popUpShow('modal__form_route');
+          popUpShow('form-route');
         }
       },
       editable: true,

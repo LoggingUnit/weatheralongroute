@@ -1,32 +1,33 @@
 function validate(arg) {
-    switch (arg.id) {
-        case 'inputFrom':
-            if (arg.value) {
-                return true;
-            }
-            break;
+    let output = false;
+    arg.classList.forEach(element => {
+        switch (element) {
+            case 'form-route__origin-input':
+                if (arg.value) {
+                    output = true;
+                }
+                break;
 
-        case 'inputTo':
-            if (arg.value) {
-                return true;
-            }
-            break;
+            case 'form-route__destination-input':
+                if (arg.value) {
+                    output = true;
+                }
+                break;
 
-        case 'inputOffset':
-            if ((arg.value >= 0) && (arg.value <= 36)) {
-                return true;
-            }
-            return false;
-            break;
+            case 'inputOffset':
+                if ((arg.value >= 0) && (arg.value <= 36)) {
+                    output = true;
+                }
+                break;
 
-        case 'inputStep':
-            if (arg.value >= 30) {
-                return true;
-            }
-            return false;
-            break;
+            case 'form-route__step-input':
+                if (arg.value >= 30) {
+                    output = true;
+                }
+                break;
 
-        default:
-            return false;
-    }
+            default: break;
+        }
+    });
+    return output;
 }

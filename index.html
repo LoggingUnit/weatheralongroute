@@ -26,19 +26,19 @@
 				<span class="image avatar48">
 					<img src="images/avatar.jpg" alt="" />
 				</span>
-				<h1 class='header__username' id="title">Anonymous user</h1>
-				<nav class='header__container-login'>
-					<a class='header__login' href='#'>
+				<h1 class='header-menu__username-txt' id="title">Anonymous user</h1>
+				<nav class='header-menu__container'>
+					<a class='header-menu__login-button' href='#'>
 						<p>Login</p>
 					</a>
-					<a class='header__logout' href='#'>
+					<a class='header-menu__logout-button' href='#'>
 						<p>Logout</p>
 					</a>
 					<p> | </p>
-					<a class='header__register' href='#'>
+					<a class='header-menu__register-button' href='#'>
 						<p>Register</p>
 					</a>
-					<a class='header__profile' href='#'>
+					<a class='header-menu__profile-button' href='#'>
 						<p>My profile</p>
 					</a>
 				</nav>
@@ -298,7 +298,7 @@
 	<!-- PopUps modal windows -->
 	<div class="container 100% modal">
 		<!-- Modal-origin-destination-->
-		<form class="modal__form_route" method="post" action="#">
+		<form class="form-route" method="post" action="#">
 			<div class="row">
 				<div class="12u 12u$(mobile)">
 					<h3>Please assign your route</h3>
@@ -309,7 +309,7 @@
 					<span>Start time: </span>
 				</div>
 				<div class="6u 12u$(mobile)">
-					<span class="modal__form_time">time</span>
+					<span class="form-route__time-txt">time</span>
 				</div>
 			</div>
 			<div class="row">
@@ -322,10 +322,10 @@
 			</div>
 			<div class="row">
 				<div class="6u 12u$(mobile) row__no-padding-top">
-					<input type="text" id="inputFrom" title="From" value="Петербург">
+					<input type="text" class="form-route__origin-input" title="From" value="Петербург">
 				</div>
 				<div class="6u 12u$(mobile) row__no-padding-top">
-					<input type="text" id="inputTo" title="To" value="Осло">
+					<input type="text" class="form-route__destination-input" title="To" value="Осло">
 				</div>
 			</div>
 			<div class="row">
@@ -335,15 +335,15 @@
 			</div>
 			<div class="row">
 				<div class="6u 12u$(mobile) row__no-padding-top">
-					<input type="text" id="inputStep" title="Step (km)" value="50">
+					<input type="text" class="form-route__step-input" title="Step (km)" value="50">
 				</div>
 				<div class="6u 12u$(mobile) row__no-padding-top">
-					<input class="button" type="button" id="buttonSubmit" value="GO" disabled>
+					<input type="button" class="form-route__submit-button button" value="GO" disabled>
 				</div>
 			</div>
 		</form>
 		<!-- Modal-register-register -->
-		<form class="modal__form_register" method="post" action="#">
+		<form class="form-register" method="post" action="#">
 			<div class="row">
 				<div class="12u 12u$(mobile)">
 					<h3>Register new profile:</h3>
@@ -359,10 +359,10 @@
 			</div>
 			<div class="row">
 				<div class="6u 12u$(mobile) row__no-padding-top">
-					<input type="text" id="inputEmailRegister" title="Your E-mail" value="andreserafimov@gmail.com">
+					<input type="text" class="form-register__email-input" title="Your E-mail" value="andreserafimov@gmail.com">
 				</div>
 				<div class="6u 12u$(mobile) row__no-padding-top">
-					<input type="password" id="inputPasswordRegister" title="Your password" value="">
+					<input type="password" class="form-register__password-input" title="Your password" value="">
 				</div>
 			</div>
 			<div class="row">
@@ -372,15 +372,15 @@
 			</div>
 			<div class="row">
 				<div class="6u 12u$(mobile) row__no-padding-top">
-					<input type="text" id="inputUsernameRegister" title="Username" value="user">
+					<input type="text" class="form-register__username-input" title="Username" value="user">
 				</div>
 				<div class="6u 12u$(mobile) row__no-padding-top">
-					<input class="button" type="button" id="buttonSubmitRegistration" value="GO" disabled>
+					<input type="button" class="form-register__submit-button button" value="GO" disabled>
 				</div>
 			</div>
 		</form>
 		<!-- Modal-register-login -->
-		<form class="modal__form_login" method="post" action="#">
+		<form class="form-login" method="post" action="#">
 			<div class="row">
 				<div class="12u 12u$(mobile)">
 					<h3>Login:</h3>
@@ -388,7 +388,7 @@
 			</div>
 			<div class="row">
 				<div class="12u 12u$(mobile)">
-					<span class="modal__form_login__alert">Incorrect username or password, please check and try again</span>
+					<span class="form-login__alert-txt">Incorrect username or password, please check and try again</span>
 				</div>
 			</div>
 			<div class="row">
@@ -401,24 +401,24 @@
 			</div>
 			<div class="row">
 				<div class="6u 12u$(mobile) row__no-padding-top">
-					<input type="text" id="inputUsernameLogin" title="Your username" value="ASerafimov">
+					<input type="text" class="form-login__username-input" title="Your username" value="ASerafimov">
 				</div>
 				<div class="6u 12u$(mobile) row__no-padding-top">
-					<input type="password" id="inputPasswordLogin" title="Your password" value="">
+					<input type="password" class="form-login__password-input" title="Your password" value="">
 				</div>
 			</div>
 			<div class="row">
 				<div class="6u 12u$(mobile)">
-					<input class="button" type="button" id="buttonSubmitLogin" value="GO" disabled>
+					<input type="button" class="form-login__submit-button button" value="GO" disabled>
 				</div>
 			</div>
 		</form>
 		<!-- Modal-my-profile -->
-		<form class="modal__form_profile" method="post" action="#">
+		<form class="form-profile" method="post" action="#">
 			<div class="row">
 				<div class="12u 12u$(mobile)  row__no-padding-top">
 					<h3>
-						<span class="modal__form_profile__username">username</span>
+						<span class="form-profile__username-txt">username</span>
 						profile
 					</h3>
 				</div>
@@ -426,14 +426,14 @@
 			<div class="row">
 				<div class="12u 12u$(mobile)  row__no-padding-top">
 					<span>Username:
-						<span class="modal__form_profile__username">username</span>
+						<span class="form-profile__username-txt">username</span>
 					</span>
 				</div>
 			</div>
 			<div class="row">
 				<div class="12u 12u$(mobile) row__no-padding-top">
 					<span>E-mail:
-						<span class="modal__form_profile__email">email</span>
+						<span class="form-profile__email-txt">email</span>
 					</span>
 				</div>
 			</div>
@@ -450,12 +450,12 @@
 			</div>
 			<div class="row">
 				<div class="6u 12u$(mobile)">
-					<input class="button" type="button" id="modal__form_profile__close" value="Close">
+					<input type="button" class="form-profile__close-button button" value="Close">
 				</div>
 			</div>
 		</form>
-		<!-- Modal-need-registration-alert -->
-		<form class="modal__alert_reg" method="post" action="#">
+		<!-- Modal-login-required-alert -->
+		<form class="alert-login-required" method="post" action="#">
 			<div class="row">
 				<div class="12u 12u$(mobile)">
 					<h3>Please login</h3>
@@ -473,10 +473,10 @@
 			</div>
 			<div class="row">
 				<div class="6u 12u$(mobile)">
-					<input class="button" type="button" id="modal__alert_reg_reg" value="Register">
+					<input type="button" class='alert-login-required__register-button button' value="Register">
 				</div>
 				<div class="6u 12u$(mobile)">
-					<input class="button" type="button" id="modal__alert_reg_log" value="Login">
+					<input type="button" class='alert-login-required__login-button button' value="Login">
 				</div>
 			</div>
 		</form>
@@ -514,7 +514,6 @@
 	<script src="assets/js/MainCalendar.js"></script>
 	<script src="assets/js/ProfileCalendar.js"></script>
 	<script src="assets/js/script.js"></script>
-
 </body>
 
 </html>
