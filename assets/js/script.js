@@ -42,6 +42,7 @@ var inputUsernameLogin = document.getElementsByClassName('form-login__username-i
 document.getElementById('googleapisScript').onload = function () {
   console.log('googleapisScripts loaded succesfully');
   window.myPopUpManager = new PopUpManager('modal', 'form-route', 'form-register', 'form-login', 'form-profile', 'alert-login-required');
+  window.myUserInterfaceManager = new UserInterfaceManager();
   window.myStorage = new MyStorage('local');
   window.myStorage.getItem('lastUserName')
     .then(
@@ -51,7 +52,7 @@ document.getElementById('googleapisScript').onload = function () {
       },
       error => { console.log(error) }
     );
-  window.userAccount = new UserAccount(myPopUpManager, myStorage.getItem, myStorage.setItem);
+  window.userAccount = new UserAccount(myPopUpManager, myUserInterfaceManager, myStorage.getItem, myStorage.setItem);
   window.weather = new Weather('https://api.openweathermap.org/data/2.5/forecast?mode=json&units=metric&APPID=0bc7c6edc6e5bc381e503d32151b71c9&lang=ru');
   window.googleMaps = new GoogleMaps("map");
   window.charts = new Charts('chart-canvas');

@@ -2,7 +2,7 @@
 
 class UserAccount {
 
-    constructor(myPopUpManager, getItem, setItem) {
+    constructor(myPopUpManager, myUserInterfaceManager, getItem, setItem) {
         this.mainCalendar = new MainCalendar('#mainCalendar', myPopUpManager.popUpShow, myPopUpManager.setTime);
         this.profileCalendar = new ProfileCalendar('#profileCalendar', this.eventDeleteByCalendarButtonClick.bind(this));
         this.setItem = setItem;
@@ -55,7 +55,7 @@ class UserAccount {
 
     eventDeleteByCalendarButtonClick(eventId) {
         console.log(eventId);
-        console.log(this.userData.tripsObj.splice(eventId,1));
+        console.log(this.userData.tripsObj.splice(eventId, 1));
         this._addDataToServer(`tripsObj`, this.userData.tripsObj);
         this._addDataToCalendar(this.userData.tripsObj);
     }
@@ -81,11 +81,7 @@ class UserAccount {
 
     logoutUser() {
         console.log('UserAccount.js logoutUser()');
-        document.getElementsByClassName("header-menu__username-txt")[0].innerHTML = "Anonymous user";
-        document.getElementsByClassName("header-menu__login-button")[0].style.display = 'block';
-        document.getElementsByClassName("header-menu__register-button")[0].style.display = 'block';
-        document.getElementsByClassName("header-menu__logout-button")[0].style.display = 'none';
-        document.getElementsByClassName("header-menu__profile-button")[0].style.display = 'none';
+        this._restoreDefaultUIView();
         this.userData.userObj.userName = null;
         this.userData.tripsObj = [];
         this.mainCalendar.removeEventsFromCalendar();
@@ -122,7 +118,6 @@ class UserAccount {
                 start: start,
                 end: end
             }
-
             // eventArr.push(eventData);
 
             this.mainCalendar.addSingleEventToCalendar(eventData);
@@ -148,20 +143,18 @@ class UserAccount {
             }, error => console.log('UserAccount.js unable to restore user with username: ', userName));
     }
 
+    _restoreDefaultUIView() {
+        myUserInterfaceManager.uiElementSetValue('username-txt', "Anonymous user");
+        myUserInterfaceManager.uiElementHide("header-menu__logout-button", "header-menu__profile-button");
+        myUserInterfaceManager.uiElementShow("header-menu__login-button", "header-menu__register-button");
+    }
+
     _restoreUserData(userObj) {
         this.getItem(`${userObj.userName}_userObj`)
             .then(result => {
                 console.log('UserAccount.js _restoreUserData restored', result);
                 this.userData.userObj = result;
-                document.getElementsByClassName("header-menu__username-txt")[0].innerHTML = this.userData.userObj.userName;
-                document.getElementsByClassName("header-menu__login-button")[0].style.display = 'none';
-                document.getElementsByClassName("header-menu__register-button")[0].style.display = 'none';
-                document.getElementsByClassName("header-menu__logout-button")[0].style.display = 'block';
-                document.getElementsByClassName("header-menu__profile-button")[0].style.display = 'block';
-                document.getElementsByClassName("form-profile__username-txt")[0].innerHTML = this.userData.userObj.userName;
-                document.getElementsByClassName("form-profile__username-txt")[1].innerHTML = this.userData.userObj.userName;
-                document.getElementsByClassName("form-profile__email-txt")[0].innerHTML = this.userData.userObj.userEmail;
-
+                this._restoreUserUIView(this.userData.userObj);
             }, error => console.log('UserAccount.js unable to restore user with username: ', userObj.userName));
 
         this.getItem(`${userObj.userName}_tripsObj`)
@@ -175,4 +168,10 @@ class UserAccount {
             });
     }
 
+    _restoreUserUIView(userObj) {
+        myUserInterfaceManager.uiElementSetValue('username-txt', userObj.userName);
+        myUserInterfaceManager.uiElementSetValue('email-txt', userObj.userEmail);
+        myUserInterfaceManager.uiElementShow("header-menu__logout-button", "header-menu__profile-button");
+        myUserInterfaceManager.uiElementHide("header-menu__login-button", "header-menu__register-button");
+    }
 }
