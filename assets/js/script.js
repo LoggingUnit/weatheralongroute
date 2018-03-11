@@ -38,17 +38,18 @@ document.getElementById('googleapisScript').onerror = function () {
 
 function callbackButtonSubmit() {
   console.log('script.js callbackButtonSubmit activated');
-  // if (validate(inputFrom) && validate(inputTo) && validate(inputStep)) {
-  // console.log('form validated');
+
   let inputFromValue = myUIManager.uiElementGetValue('form-route__origin-input');
   let inputToValue = myUIManager.uiElementGetValue('form-route__destination-input');
   let inputStepValue = myUIManager.uiElementGetValue('form-route__step-input');
   let inputTimeTripBeginValue = myUIManager.uiElementGetValue('form-route__time-txt');
 
-  googleMaps.calcRoute(inputFromValue, inputToValue, inputStepValue * 1000, inputTimeTripBeginValue);
-  document.getElementById('map').scrollIntoView();
-  myPopUpManager.popUpHide('form-route');
-  // }
+  if (validate('text-input', inputFromValue) && validate('text-input', inputToValue) && validate('step-input', inputStepValue)) {
+    console.log('form validated');
+    googleMaps.calcRoute(inputFromValue, inputToValue, inputStepValue * 1000, inputTimeTripBeginValue);
+    document.getElementById('map').scrollIntoView();
+    myPopUpManager.popUpHide('form-route');
+  }
 }
 
 function callbackButtonRegister() {

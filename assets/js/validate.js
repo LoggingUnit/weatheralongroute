@@ -1,27 +1,22 @@
-function validate(arg) {
+function validate(typeOfValidation, value) {
     let output = false;
-    arg.classList.forEach(element => {
-        switch (element) {
-            case 'form-route__origin-input':
-                if (arg.value) {
-                    output = true;
-                }
-                break;
 
-            case 'form-route__destination-input':
-                if (arg.value) {
-                    output = true;
-                }
-                break;
+    switch (typeOfValidation) {
+        case 'text-input':
+            if (value) {
+                output = true;
+            }
+            break;
 
-            case 'form-route__step-input':
-                if (arg.value >= 30) {
-                    output = true;
-                }
-                break;
+        case 'step-input':
+            if (value >= 30) {
+                output = true;
+            }
+            break;
 
-            default: break;
-        }
-    });
+        default: console.log('validate.js unknown validation type');
+        break;
+    }
+
     return output;
 }
