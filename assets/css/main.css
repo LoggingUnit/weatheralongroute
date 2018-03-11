@@ -1751,13 +1751,13 @@ button,
   .alert-login-required {
     display: none; }
 
-.header-menu__logout-button {
+.menu-header__logout-button {
   display: none; }
 
-.header-menu__profile-button {
+.menu-header__profile-button {
   display: none; }
 
-.header-menu__container {
+.menu-header__container {
   display: flex;
   justify-content: flex-end; }
 

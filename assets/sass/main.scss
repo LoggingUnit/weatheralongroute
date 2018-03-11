@@ -1053,12 +1053,12 @@
 /* Weather on route part */
 
 	#map {
-	height: 400px;
+		height: 400px;
 		width: 100%;
 	}
 
 	#mainCalendar {
-	max-width: auto;
+		max-width: auto;
 		margin: 0 auto;
 	}
 
@@ -1129,7 +1129,7 @@
 		}
 	}
 
-	.header-menu {
+	.menu-header {
 		&__logout-button {
 			display: none;
 		}
@@ -1137,11 +1137,11 @@
 		&__profile-button {
 			display: none;
 		}
-	}
 
-	.header-menu__container {
-		display: flex;
-		justify-content: flex-end;
+		&__container {
+			display: flex;
+			justify-content: flex-end;
+		}
 	}
 
 	.row__no-padding-top {

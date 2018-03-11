@@ -1,48 +1,19 @@
 'use strict';
+var myUIManager = new UserInterfaceManager();
 
-var buttonSubmit = document.getElementsByClassName('form-route__submit-button')[0];
-var buttonLogout = document.getElementsByClassName("header-menu__logout-button")[0];
-var buttonProfile = document.getElementsByClassName("header-menu__profile-button")[0];
-var buttonSubmitRegistration = document.getElementsByClassName('form-register__submit-button')[0];
-var buttonSubmitLogin = document.getElementsByClassName('form-login__submit-button')[0];
-var buttonTripAdd = document.getElementsByClassName("trip-route__add-trip")[0];
-var buttonProfileClose = document.getElementsByClassName('form-profile__close-button')[0];
-
-buttonSubmit.addEventListener('click', callbackButtonSubmit);
-buttonLogout.addEventListener('click', callbackButtonLogout);
-buttonProfile.addEventListener('click', callbackButtonProfile)
-buttonSubmitRegistration.addEventListener('click', callbackButtonSubmitRegistration);
-buttonSubmitLogin.addEventListener('click', callbackButtonSubmitLogin);
-buttonTripAdd.addEventListener('click', callbackButtonTripAdd);
-buttonProfileClose.addEventListener('click', callbackButtonProfileClose);
-
-var buttonRegisterCollection = document.getElementsByClassName("register-button");
-var buttonLoginCollection = document.getElementsByClassName("login-button");
-
-for (let i=0; i<buttonRegisterCollection.length; i++) {
-  buttonRegisterCollection[i].addEventListener('click', callbackButtonRegister);
-}
-
-for (let i=0; i<buttonLoginCollection.length; i++) {
-  buttonLoginCollection[i].addEventListener('click', callbackButtonLogin);
-}
-
-var inputFrom = document.getElementsByClassName('form-route__origin-input')[0];
-var inputTo = document.getElementsByClassName('form-route__destination-input')[0];
-var inputTimeTripBegin = document.getElementsByClassName('form-route__time-txt')[0];
-var inputStep = document.getElementsByClassName('form-route__step-input')[0];
-
-var inputEmailRegister = document.getElementsByClassName('form-register__email-input')[0];
-var inputPasswordRegister = document.getElementsByClassName('form-register__password-input')[0];
-var inputUsernameRegister = document.getElementsByClassName('form-register__username-input')[0];
-
-var inputPasswordLogin = document.getElementsByClassName('form-login__password-input')[0];
-var inputUsernameLogin = document.getElementsByClassName('form-login__username-input')[0];
+myUIManager.uiElementAddListenerByCSSclass('form-route__submit-button', 'click', callbackButtonSubmit);
+myUIManager.uiElementAddListenerByCSSclass('menu-header__logout-button', 'click', callbackButtonLogout);
+myUIManager.uiElementAddListenerByCSSclass('menu-header__profile-button', 'click', callbackButtonProfile);
+myUIManager.uiElementAddListenerByCSSclass('form-register__submit-button', 'click', callbackButtonSubmitRegistration);
+myUIManager.uiElementAddListenerByCSSclass('form-login__submit-button', 'click', callbackButtonSubmitLogin);
+myUIManager.uiElementAddListenerByCSSclass('trip-route__add-trip-button', 'click', callbackButtonTripAdd);
+myUIManager.uiElementAddListenerByCSSclass('form-profile__close-button', 'click', callbackButtonProfileClose);
+myUIManager.uiElementAddListenerByCSSclass('register-button', 'click', callbackButtonRegister);
+myUIManager.uiElementAddListenerByCSSclass('login-button', 'click', callbackButtonLogin);
 
 document.getElementById('googleapisScript').onload = function () {
   console.log('googleapisScripts loaded succesfully');
   window.myPopUpManager = new PopUpManager('modal', 'form-route', 'form-register', 'form-login', 'form-profile', 'alert-login-required');
-  window.myUserInterfaceManager = new UserInterfaceManager();
   window.myStorage = new MyStorage('local');
   window.myStorage.getItem('lastUserName')
     .then(
@@ -52,14 +23,14 @@ document.getElementById('googleapisScript').onload = function () {
       },
       error => { console.log(error) }
     );
-  window.userAccount = new UserAccount(myPopUpManager, myUserInterfaceManager, myStorage.getItem, myStorage.setItem);
+  window.userAccount = new UserAccount(myPopUpManager, myUIManager, myStorage.getItem, myStorage.setItem);
   window.weather = new Weather('https://api.openweathermap.org/data/2.5/forecast?mode=json&units=metric&APPID=0bc7c6edc6e5bc381e503d32151b71c9&lang=ru');
   window.googleMaps = new GoogleMaps("map");
   window.charts = new Charts('chart-canvas');
 
   googleMaps.initializeMap(66.788890, 93.775280, 3);
   googleMaps.addListenerOnDirChange(refreshWeatherOnDirChange);
-  buttonSubmit.disabled = false;
+  myUIManager.uiElementSetEnable('form-route__submit-button');
 }
 document.getElementById('googleapisScript').onerror = function () {
   reject(new Error('googleapisScripts is unable to load'));
@@ -67,30 +38,40 @@ document.getElementById('googleapisScript').onerror = function () {
 
 function callbackButtonSubmit() {
   console.log('script.js callbackButtonSubmit activated');
-  if (validate(inputFrom) && validate(inputTo) && validate(inputStep)) {
-    console.log('form validated');
-    googleMaps.calcRoute(inputFrom.value, inputTo.value, inputStep.value * 1000, inputTimeTripBegin.innerHTML);
-    document.getElementById('map').scrollIntoView();
-    myPopUpManager.popUpHide('form-route');
-  }
+  // if (validate(inputFrom) && validate(inputTo) && validate(inputStep)) {
+  // console.log('form validated');
+  let inputFromValue = myUIManager.uiElementGetValue('form-route__origin-input');
+  let inputToValue = myUIManager.uiElementGetValue('form-route__destination-input');
+  let inputStepValue = myUIManager.uiElementGetValue('form-route__step-input');
+  let inputTimeTripBeginValue = myUIManager.uiElementGetValue('form-route__time-txt');
+
+  googleMaps.calcRoute(inputFromValue, inputToValue, inputStepValue * 1000, inputTimeTripBeginValue);
+  document.getElementById('map').scrollIntoView();
+  myPopUpManager.popUpHide('form-route');
+  // }
 }
 
 function callbackButtonRegister() {
   console.log('script.js callbackButtonRegister activated');
   myPopUpManager.popUpHide('alert-login-required');
-  window.myPopUpManager.popUpShow('form-register');
+  myPopUpManager.popUpShow('form-register');
   //add validation of input data here
   if ('if valid check with validator to be here') {
-    buttonSubmitRegistration.disabled = false;
+    myUIManager.uiElementSetEnable('form-register__submit-button');
   }
 }
 
 function callbackButtonSubmitRegistration() {
   console.log('script.js callbackButtonSubmitRegistration activated');
+
+  let inputUsernameRegisterValue = myUIManager.uiElementGetValue('form-register__username-input');
+  let inputEmailRegisterValue = myUIManager.uiElementGetValue('form-register__email-input');
+  let inputPasswordRegisterValue = myUIManager.uiElementGetValue('form-register__password-input');
+
   var userObj = {
-    userName: inputUsernameRegister.value,
-    userEmail: inputEmailRegister.value,
-    userPassword: inputPasswordRegister.value
+    userName: inputUsernameRegisterValue,
+    userEmail: inputEmailRegisterValue,
+    userPassword: inputPasswordRegisterValue
   };
   userAccount.createUser(userObj);
   window.myPopUpManager.popUpHide('form-register');
@@ -102,7 +83,7 @@ function callbackButtonLogin() {
   window.myPopUpManager.popUpShow('form-login');
   //add validation of input data here
   if ('if valid check with validator to be here') {
-    buttonSubmitLogin.disabled = false;
+    myUIManager.uiElementSetEnable('form-login__submit-button');
   }
 }
 
@@ -117,10 +98,14 @@ function callbackButtonProfile() {
 
 function callbackButtonSubmitLogin() {
   console.log('script.js callbackButtonSubmitLogin activated');
+
+  let inputUsernameLoginValue = myUIManager.uiElementGetValue('form-login__username-input');
+  let inputPasswordLoginValue = myUIManager.uiElementGetValue('form-login__password-input');
+
   var userObj = {
-    userName: inputUsernameLogin.value,
+    userName: inputUsernameLoginValue,
     userEmail: null,
-    userPassword: inputPasswordLogin.value
+    userPassword: inputPasswordLoginValue
   };
   userAccount.loginUser(userObj, myPopUpManager.popUpHide.bind(myPopUpManager));
 }
@@ -129,7 +114,7 @@ function callbackButtonTripAdd() {
   console.log('script.js callbackButtonTripAdd activated');
   if (userAccount.isUserLoggedIn()) {
     userAccount.applyTripFromUserBuffer();
-    
+
   } else {
     myPopUpManager.popUpShow('alert-login-required');
   }
@@ -146,7 +131,9 @@ function refreshWeatherOnDirChange() {
       let stepWithWeatherAssigned = weather.assignWeatherToRoute(googleMaps.getRoute(), response);
       googleMaps.drawMarkers();
       console.log('stepWithWeatherAssigned: ', stepWithWeatherAssigned);
-      userAccount.addTripToUserBuffer(inputFrom.value, inputTo.value, stepWithWeatherAssigned);
+      let inputFromValue = myUIManager.uiElementGetValue('form-route__origin-input');
+      let inputToValue = myUIManager.uiElementGetValue('form-route__destination-input');
+      userAccount.addTripToUserBuffer(inputFromValue, inputToValue, stepWithWeatherAssigned);
       charts.plotData(stepWithWeatherAssigned, 'temperature', 'precipitation');
       charts.addEventListenerOnMouseClick(googleMaps.centerAt.bind(googleMaps));
     });

@@ -2,8 +2,8 @@
 
 class UserAccount {
 
-    constructor(myPopUpManager, myUserInterfaceManager, getItem, setItem) {
-        this.mainCalendar = new MainCalendar('#mainCalendar', myPopUpManager.popUpShow, myPopUpManager.setTime);
+    constructor(myPopUpManager, myUIManager, getItem, setItem) {
+        this.mainCalendar = new MainCalendar('#mainCalendar', myPopUpManager.popUpShow, myUIManager.uiElementSetValue);
         this.profileCalendar = new ProfileCalendar('#profileCalendar', this.eventDeleteByCalendarButtonClick.bind(this));
         this.setItem = setItem;
         this.getItem = getItem;
@@ -67,15 +67,15 @@ class UserAccount {
                 if (result.userPassword == userObj.userPassword) {
                     console.log(`UserAccount.js user: ${userObj.userName} succesfully passed`);
                     popUpHide('form-login');
-                    document.getElementsByClassName("form-login__alert-txt")[0].style.display = 'none';
+                    myUIManager.uiElementHide("form-login__alert-txt");
                     this._setLastUser(userObj);
                     this._restoreUserData(userObj);
                 } else {
                     console.log(`UserAccount.js user: ${userObj.userName} did no pass`);
-                    document.getElementsByClassName("form-login__alert-txt")[0].style.display = 'block';
+                    myUIManager.uiElementShow("form-login__alert-txt");
                 }
             }, error => {
-                document.getElementsByClassName("form-login__alert-txt")[0].style.display = 'block';
+                myUIManager.uiElementShow("form-login__alert-txt");
             });
     }
 
@@ -144,9 +144,9 @@ class UserAccount {
     }
 
     _restoreDefaultUIView() {
-        myUserInterfaceManager.uiElementSetValue('username-txt', "Anonymous user");
-        myUserInterfaceManager.uiElementHide("header-menu__logout-button", "header-menu__profile-button");
-        myUserInterfaceManager.uiElementShow("header-menu__login-button", "header-menu__register-button");
+        myUIManager.uiElementSetValue('username-txt', "Anonymous user");
+        myUIManager.uiElementHide("menu-header__logout-button", "menu-header__profile-button");
+        myUIManager.uiElementShow("menu-header__login-button", "menu-header__register-button");
     }
 
     _restoreUserData(userObj) {
@@ -169,9 +169,9 @@ class UserAccount {
     }
 
     _restoreUserUIView(userObj) {
-        myUserInterfaceManager.uiElementSetValue('username-txt', userObj.userName);
-        myUserInterfaceManager.uiElementSetValue('email-txt', userObj.userEmail);
-        myUserInterfaceManager.uiElementShow("header-menu__logout-button", "header-menu__profile-button");
-        myUserInterfaceManager.uiElementHide("header-menu__login-button", "header-menu__register-button");
+        myUIManager.uiElementSetValue('username-txt', userObj.userName);
+        myUIManager.uiElementSetValue('email-txt', userObj.userEmail);
+        myUIManager.uiElementShow("menu-header__logout-button", "menu-header__profile-button");
+        myUIManager.uiElementHide("menu-header__login-button", "menu-header__register-button");
     }
 }

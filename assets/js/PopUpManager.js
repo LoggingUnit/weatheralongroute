@@ -7,7 +7,7 @@ class PopUpManager {
         this.modal = args[0];
 
         this.popUpShow = this.popUpShow.bind(this);
-        this.setTime = this.setTime.bind(this);
+        this.popUpHide = this.popUpHide.bind(this);
 
         args.map((item, i, arr) => this.collection[item] = document.getElementsByClassName(item));
 
@@ -40,9 +40,5 @@ class PopUpManager {
             this.collection[objWithClass][0].style.display = 'none';
             console.log(`PopUpManager.js ${objWithClass} closed`);
         } else { console.log(`PopUpManager.popUpHide(param) did not found element with CSS: ${objWithClass}`) };
-    }
-
-    setTime(inputTimeTripBegin) {
-        window.inputTimeTripBegin.innerHTML = inputTimeTripBegin;
     }
 }

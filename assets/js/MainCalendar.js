@@ -2,7 +2,7 @@
 
 class MainCalendar {
 
-  constructor(mountPointCalendar, popUpShow, setTime) {
+  constructor(mountPointCalendar, popUpShow, uiElementSetValue) {
     this.mountPointCalendar = mountPointCalendar;
     this.calendar = $(mountPointCalendar).fullCalendar({
       header: {
@@ -26,7 +26,7 @@ class MainCalendar {
           $(mountPointCalendar).fullCalendar('changeView', 'agendaDay');
         } else {
           console.log(start);
-          setTime(start.format());
+          uiElementSetValue('form-route__time-txt', start.format());
           popUpShow('form-route');
         }
       },
