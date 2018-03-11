@@ -57,7 +57,7 @@ function callbackButtonRegister() {
   myPopUpManager.popUpHide('alert-login-required');
   myPopUpManager.popUpShow('form-register');
   //add validation of input data here
-  if ('if valid check with validator to be here') {
+  if ('prevalidator can be placed here') {
     myUIManager.uiElementSetEnable('form-register__submit-button');
   }
 }
@@ -69,13 +69,15 @@ function callbackButtonSubmitRegistration() {
   let inputEmailRegisterValue = myUIManager.uiElementGetValue('form-register__email-input');
   let inputPasswordRegisterValue = myUIManager.uiElementGetValue('form-register__password-input');
 
-  var userObj = {
-    userName: inputUsernameRegisterValue,
-    userEmail: inputEmailRegisterValue,
-    userPassword: inputPasswordRegisterValue
-  };
-  userAccount.createUser(userObj);
-  window.myPopUpManager.popUpHide('form-register');
+  if (validate('login-input', inputUsernameRegisterValue) && validate('login-input', inputPasswordRegisterValue) && validate('email-input', inputEmailRegisterValue)) {
+    var userObj = {
+      userName: inputUsernameRegisterValue,
+      userEmail: inputEmailRegisterValue,
+      userPassword: inputPasswordRegisterValue
+    };
+    userAccount.createUser(userObj);
+    window.myPopUpManager.popUpHide('form-register');
+  }
 }
 
 function callbackButtonLogin() {
@@ -83,7 +85,7 @@ function callbackButtonLogin() {
   window.myPopUpManager.popUpHide('alert-login-required');
   window.myPopUpManager.popUpShow('form-login');
   //add validation of input data here
-  if ('if valid check with validator to be here') {
+  if ('pre validation can be placed here') {
     myUIManager.uiElementSetEnable('form-login__submit-button');
   }
 }
@@ -103,12 +105,14 @@ function callbackButtonSubmitLogin() {
   let inputUsernameLoginValue = myUIManager.uiElementGetValue('form-login__username-input');
   let inputPasswordLoginValue = myUIManager.uiElementGetValue('form-login__password-input');
 
-  var userObj = {
-    userName: inputUsernameLoginValue,
-    userEmail: null,
-    userPassword: inputPasswordLoginValue
-  };
-  userAccount.loginUser(userObj, myPopUpManager.popUpHide.bind(myPopUpManager));
+  if (validate('login-input', inputUsernameLoginValue) && validate('login-input', inputPasswordLoginValue)) {
+    var userObj = {
+      userName: inputUsernameLoginValue,
+      userEmail: null,
+      userPassword: inputPasswordLoginValue
+    };
+    userAccount.loginUser(userObj, myPopUpManager.popUpHide.bind(myPopUpManager));
+  }
 }
 
 function callbackButtonTripAdd() {
