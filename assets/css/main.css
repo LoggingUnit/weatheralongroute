@@ -1737,7 +1737,8 @@ button,
     .form-login__alert-txt {
       display: none; }
   .form-profile {
-    max-height: 93%;
+    min-width: 50%;
+    min-height: 95%;
     display: none; }
 
 .alert, .alert-login-required {

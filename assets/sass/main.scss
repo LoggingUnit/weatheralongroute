@@ -1109,7 +1109,8 @@
 
 		&-profile {
 			@extend .form;
-			max-height: 93%;
+			min-width: 50%;
+			min-height: 95%;
 			display: none;
 		}
 	}
@@ -1153,4 +1154,3 @@
 		font-size: 10px;
 		line-height: 10px;
 	}
-	

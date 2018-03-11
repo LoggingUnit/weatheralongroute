@@ -15,6 +15,7 @@ class ProfileCalendar {
       selectable: true,
       nowIndicator: false,
       header: false,
+      contentHeight: 700,
       handleWindowResize: true,
       allDaySlot: false,
       slotDuration: '00:60:00',
@@ -46,10 +47,6 @@ class ProfileCalendar {
     console.log('MainCalendar.js removeEventsFromCalendar with: ', idOrFilter);
     $(this.mountPointCalendar).fullCalendar('removeEvents', idOrFilter);
   }
-
-
-
-
 }
 
 
