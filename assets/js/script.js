@@ -7,9 +7,9 @@ myUIManager.uiElementAddListenerByCSSclass('menu-header__profile-button', 'click
 myUIManager.uiElementAddListenerByCSSclass('form-register__submit-button', 'click', callbackButtonSubmitRegistration);
 myUIManager.uiElementAddListenerByCSSclass('form-login__submit-button', 'click', callbackButtonSubmitLogin);
 myUIManager.uiElementAddListenerByCSSclass('trip-route__add-trip-button', 'click', callbackButtonTripAdd);
-myUIManager.uiElementAddListenerByCSSclass('form-profile__close-button', 'click', callbackButtonProfileClose);
 myUIManager.uiElementAddListenerByCSSclass('register-button', 'click', callbackButtonRegister);
 myUIManager.uiElementAddListenerByCSSclass('login-button', 'click', callbackButtonLogin);
+myUIManager.uiElementAddListenerByCSSclass('close-button', 'click', callbackButtonClose);
 
 document.getElementById('googleapisScript').onload = function () {
   console.log('googleapisScripts loaded succesfully');
@@ -120,8 +120,8 @@ function callbackButtonTripAdd() {
   }
 }
 
-function callbackButtonProfileClose() {
-  myPopUpManager.popUpHide('form-profile');
+function callbackButtonClose(e) {
+  myPopUpManager.popUpHide(e.target.form.classList.value);
 }
 
 function refreshWeatherOnDirChange() {
