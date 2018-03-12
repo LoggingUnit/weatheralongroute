@@ -15,7 +15,6 @@ class ProfileCalendar {
       selectable: true,
       nowIndicator: false,
       header: false,
-      contentHeight: 700,
       handleWindowResize: true,
       allDaySlot: false,
       slotDuration: '00:60:00',
@@ -41,11 +40,17 @@ class ProfileCalendar {
   addSingleEventToCalendar(eventData) {
     console.log('MainCalendar.js addEventToCalendar with: ', eventData);
     $(this.mountPointCalendar).fullCalendar('renderEvent', eventData, true); // stick? = true
+    
   }
 
   removeEventsFromCalendar(idOrFilter) {
     console.log('MainCalendar.js removeEventsFromCalendar with: ', idOrFilter);
     $(this.mountPointCalendar).fullCalendar('removeEvents', idOrFilter);
+  }
+
+  rerender() {
+    $(this.mountPointCalendar).fullCalendar('render');
+    $(this.mountPointCalendar).fullCalendar('option', 'contentHeight', 300);
   }
 }
 

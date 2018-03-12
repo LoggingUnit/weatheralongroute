@@ -89,6 +89,10 @@ class UserAccount {
         this._setLastUser({ userName: null });
     }
 
+    rerenderProfileCalendar() {
+        this.profileCalendar.rerender();
+    }
+
     isUserLoggedIn() {
         console.log(this.userData.userObj.userName);
         return this.userData.userObj.userName;

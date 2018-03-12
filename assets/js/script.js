@@ -96,9 +96,8 @@ function callbackButtonLogout() {
 
 function callbackButtonProfile() {
   console.log('script.js callbackButtonProfile activated');
-  window.myPopUpManager.popUpShow('form-profile');
-  $('#profileCalendar').fullCalendar('render');
-  $('#profileCalendar').fullCalendar('option', 'contentHeight', 300);
+  myPopUpManager.popUpShow('form-profile');
+  userAccount.rerenderProfileCalendar();
 }
 
 function callbackButtonSubmitLogin() {
