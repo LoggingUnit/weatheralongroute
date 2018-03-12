@@ -39,6 +39,13 @@ class Charts {
             drawOnChartArea: false,
           },
         }],
+        xAxes: [{
+          ticks: {
+            autoSkip: false,
+            maxRotation: 90,
+            minRotation: 90
+          }
+        }],
       }
     }
     this.datasetLeft = {
