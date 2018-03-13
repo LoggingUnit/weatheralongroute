@@ -14,7 +14,7 @@ myUIManager.uiElementAddListenerByCSSclass('close-button', 'click', callbackButt
 document.getElementById('googleapisScript').onload = function () {
   console.log('googleapisScripts loaded succesfully');
   window.myPopUpManager = new PopUpManager('modal', 'form-route', 'form-register', 'form-login', 'form-profile', 'alert-login-required');
-  window.myStorage = new MyStorage('local');
+  window.myStorage = new MyLocalStorage();
   window.myStorage.getItem('lastUserName')
     .then(
       result => {
