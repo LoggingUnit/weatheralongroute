@@ -1,3 +1,6 @@
+/**
+ * A function to provide validation to user input fiels
+ */
 function validate(typeOfValidation, value) {
     let output = false;
     let regExpLogin = /^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){2,18}[a-zA-Z0-9]$/;
