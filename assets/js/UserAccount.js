@@ -16,6 +16,7 @@ class UserAccount {
     constructor(myPopUpManager, myUIManager, getItem, setItem) {
         this.mainCalendar = new MainCalendar('#mainCalendar', myPopUpManager.popUpShow, myUIManager.uiElementSetValue);
         this.profileCalendar = new ProfileCalendar('#profileCalendar', this.eventDeleteByCalendarButtonClick.bind(this));
+        this.tripService = new TripService('http://localhost:8000/trips');
         this.setItem = setItem;
         this.getItem = getItem;
         this.userData = {
@@ -24,9 +25,9 @@ class UserAccount {
                 userPassword: null,
                 userEmail: null,
             },
-            tripsObj: []
         }
         this.tripTemp = {
+            user: '',
             tripOrigin: '',
             tripDest: '',
             tripData: ''
@@ -34,7 +35,7 @@ class UserAccount {
     }
 
     /**
-     * Method for temporary storage of created tripsObj obj till it added by user into storages and calendars
+     * Method for temporary storage of created tripObj obj till it added by user into storages and calendars
      * @param {string} origin origin point of planned route
      * @param {string} destination destination point of planned route
      * @param {obj} tripWithWeather object contents route and weather combined
@@ -43,10 +44,12 @@ class UserAccount {
     addTripToUserBuffer(origin, destination, tripWithWeather) {
         console.log('UserAccount.js addTripToUserBuffer with tripWithWeather: ', origin, destination, tripWithWeather);
         let temp = {
+            user: '',
             tripOrigin: '',
             tripDest: '',
             tripData: ''
         }
+        temp['user'] = this.userData.userObj.userName;
         temp['tripOrigin'] = origin;
         temp['tripDest'] = destination;
         temp['tripData'] = tripWithWeather;
@@ -63,9 +66,13 @@ class UserAccount {
     applyTripFromUserBuffer() {
         if (this.tripTemp.tripOrigin) {
             console.log('UserAccount.js applyTripFromUserBuffer activated');
-            this.userData.tripsObj.push(this.tripTemp);
-            this._addDataToServer(`tripsObj`, this.userData.tripsObj);
-            this._addDataToCalendar(this.userData.tripsObj);
+
+            this._addDataToServerNode()
+                .then((response) => response.json())
+                .then((tripObj) => {
+                    console.log('UserAccount.js _addDataToServerNode', tripObj);
+                    this._addDataToCalendar([tripObj]);
+                });
         }
     }
 
@@ -80,7 +87,6 @@ class UserAccount {
         console.log('UserAccount.js createUser with userObj: ', userObj);
         this.userData.userObj = userObj;
         this._addDataToServer('userObj', userObj);
-        // this._restoreUserData(userObj);
         this._restoreUserUIView(userObj);
         this._setLastUser(userObj);
     }
@@ -94,9 +100,16 @@ class UserAccount {
      */
     eventDeleteByCalendarButtonClick(eventId) {
         console.log(eventId);
-        console.log(this.userData.tripsObj.splice(eventId, 1));
-        this._addDataToServer(`tripsObj`, this.userData.tripsObj);
-        this._addDataToCalendar(this.userData.tripsObj);
+
+        this.tripService.tripDelete(eventId)
+            // .then((response) => response.text())
+            .then((message) => {
+                console.log('UserAccount.js eventDeleteByCalendarButtonClick', message);
+                if (message.status === 200) {
+                    this.profileCalendar.removeEventsFromCalendar(eventId);
+                    this.mainCalendar.removeEventsFromCalendar(eventId);
+                }
+            });
     }
 
     /**
@@ -168,40 +181,40 @@ class UserAccount {
      */
     _addDataToServer(keyName, keyValue) {
         console.log('UserAccount.js _addDataToServer with keyName: ', keyName, keyValue);
+
         this.setItem(`${this.userData.userObj.userName}_${keyName}`, keyValue)
             .then(result => { console.log('UserAccount.js data: ', keyValue, 'added with key: ', `${this.userData.userObj.userName}_${keyName}`) },
                 error => console.log);
     }
 
+    _addDataToServerNode() {
+        return this.tripService.tripCreate(this.tripTemp);
+    }
+
     /**
-     * Method takes tripsObj creates fullcalendar.js events and calls related calendar methods to display data 
-     * @param {obj} tripsObj objects what represents array of single trips obj
-     * @param {string} keyValue data to write into storage
+     * Method takes tripObj arr creates fullcalendar.js events and calls related calendar methods to display data 
+     * @param {obj[]} tripsObj objects what represents single trip obj
      * @return {null}
      */
     _addDataToCalendar(tripsObj) {
         console.log('UserAccounts.js _addToCalendar with ', tripsObj);
-        this.mainCalendar.removeEventsFromCalendar();
-        this.profileCalendar.removeEventsFromCalendar();
 
-        // var eventArr = [];
         for (let i = 0; i < tripsObj.length; i++) {
             let start = moment(tripsObj[i].tripData[0].timeEnd).format();
             let end = moment(tripsObj[i].tripData[tripsObj[i].tripData.length - 1].timeEnd).format();
             let title = `${tripsObj[i].tripOrigin}-${tripsObj[i].tripDest}`;
+            let id = tripsObj[i]._id;
 
             let eventData = {
-                id: i,
+                id: id,
                 title: title,
                 start: start,
                 end: end
             }
-            // eventArr.push(eventData);
 
             this.mainCalendar.addSingleEventToCalendar(eventData);
             this.profileCalendar.addSingleEventToCalendar(eventData);
         }
-        // this.calendar.addArrOfEventToCalendar(eventArr);
 
     }
 
@@ -254,14 +267,11 @@ class UserAccount {
                 this._restoreUserUIView(this.userData.userObj);
             }, error => console.log('UserAccount.js unable to restore user with username: ', userObj.userName));
 
-        this.getItem(`${userObj.userName}_tripsObj`)
-            .then(result => {
-                console.log('UserAccount.js _restoreUserData restored', result);
-                this.userData.tripsObj = result;
-                this._addDataToCalendar(result);
-            }, error => {
-                console.log('UserAccount.js unable to restore tripsObj with username: ', userObj.userName);
-                this._addDataToServer('tripsObj', this.userData.tripsObj);
+        this.tripService.tripRead(userObj.userName)
+            .then((response) => response.json())
+            .then((tripsObj) => {
+                console.log('UserAccount.js _restoreUserData', tripsObj);
+                this._addDataToCalendar(tripsObj);
             });
     }
 

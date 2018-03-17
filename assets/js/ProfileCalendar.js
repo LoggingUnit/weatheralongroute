@@ -55,7 +55,6 @@ class ProfileCalendar {
   addSingleEventToCalendar(eventData) {
     console.log('MainCalendar.js addEventToCalendar with: ', eventData);
     $(this.mountPointCalendar).fullCalendar('renderEvent', eventData, true); // stick? = true
-
   }
 
   /**
