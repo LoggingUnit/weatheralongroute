@@ -15,11 +15,11 @@ document.getElementById('googleapisScript').onload = function () {
   console.log('googleapisScripts loaded succesfully');
   window.myPopUpManager = new PopUpManager('modal', 'form-route', 'form-register', 'form-login', 'form-profile', 'alert-login-required');
   window.myStorage = new MyLocalStorage();
-  window.myStorage.getItem('lastUserName')
+  window.myStorage.getItem('lastSessionToken')
     .then(
       result => {
-        console.log(`MyStorage.js last user found: ${result}`);
-        userAccount._restoreLastUser(result)
+        console.log(`MyStorage.js last session found: ${result}`);
+        userAccount._restoreLastSession(result)
       },
       error => { console.log(error) }
     );

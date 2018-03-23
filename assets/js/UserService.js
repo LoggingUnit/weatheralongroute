@@ -4,7 +4,12 @@
 class UserService {
     constructor(endPoint) {
         this.endPoint = endPoint;
+        this.token = null;
         console.log(this.endPoint);
+    }
+
+    setToken(token) {
+        this.token = token;
     }
 
     userCreate(userObj) {
@@ -18,15 +23,21 @@ class UserService {
         });
     }
 
-    userRead(user) {
-        return fetch(`${this.endPoint}/${user}`, {
+    userReadByToken() {
+        return fetch(`${this.endPoint}/${this.token}`, {
             method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this.token}`,
+            },
         });
     }
 
     userDelete(id) {
         return fetch(`${this.endPoint}/${id}`, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${this.token}`,
+            },
         });
     }
 }

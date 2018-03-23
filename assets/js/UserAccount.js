@@ -18,15 +18,17 @@ class UserAccount {
         this.profileCalendar = new ProfileCalendar('#profileCalendar', this.eventDeleteByCalendarButtonClick.bind(this));
         this.tripService = new TripService('http://localhost:8000/trips');
         this.userService = new UserService('http://localhost:8000/users');
+        this.authService = new AuthService('http://localhost:8000/login');
         this.setItem = setItem;
         this.getItem = getItem;
+        this.userToken = null;
         this.userObj = {
             userName: null,
             userPassword: null,
             userEmail: null,
         }
         this.tripTemp = {
-            user: '',
+            userName: '',
             tripOrigin: '',
             tripDest: '',
             tripData: ''
@@ -43,12 +45,12 @@ class UserAccount {
     addTripToUserBuffer(origin, destination, tripWithWeather) {
         console.log('UserAccount.js addTripToUserBuffer with tripWithWeather: ', origin, destination, tripWithWeather);
         let temp = {
-            user: '',
+            userName: '',
             tripOrigin: '',
             tripDest: '',
             tripData: ''
         }
-        temp['user'] = this.userObj.userName;
+        temp['userName'] = this.userObj.userName;
         temp['tripOrigin'] = origin;
         temp['tripDest'] = destination;
         temp['tripData'] = tripWithWeather;
@@ -86,9 +88,15 @@ class UserAccount {
         console.log('UserAccount.js createUser with userObj: ', userObj);
         this.userObj = userObj;
         this._addDataToLocalStorage('userObj', userObj);
-        this._addUserDataToServer();
-        this._restoreUserUIView(userObj);
-        this._setLastUser(userObj);
+        this._addUserDataToServer()
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+                this.loginUser(result, myPopUpManager.popUpHide);
+                // this._restoreUserUIView(userObj);
+                // this._setLastUser(userObj);
+            })
+            .catch(err => console.log(err));
     }
 
     /**
@@ -102,7 +110,6 @@ class UserAccount {
         console.log(eventId);
 
         this.tripService.tripDelete(eventId)
-            // .then((response) => response.text())
             .then((message) => {
                 console.log('UserAccount.js eventDeleteByCalendarButtonClick', message);
                 if (message.status === 200) {
@@ -120,22 +127,24 @@ class UserAccount {
      * @return {null}
      */
     loginUser(userObj, popUpHide) {
+        this.popUpHide = popUpHide;
         console.log('UserAccount.js loginUser with userObj: ', userObj);
-        this.getItem(`${userObj.userName}_userObj`)
-            .then(result => {
-                if (result.userPassword == userObj.userPassword) {
-                    console.log(`UserAccount.js user: ${userObj.userName} succesfully passed`);
-                    popUpHide('form-login');
-                    myUIManager.uiElementHide("form-login__alert-txt");
-                    this._setLastUser(userObj);
-                    this._restoreUserData(userObj);
-                } else {
-                    console.log(`UserAccount.js user: ${userObj.userName} did no pass`);
+        this.authService.loginUser(userObj)
+            .then(response => {
+                if (response.status !== 200) {
                     myUIManager.uiElementShow("form-login__alert-txt");
+                    return Promise.reject(response);
+                } else {
+                    return response.json();
                 }
-            }, error => {
-                myUIManager.uiElementShow("form-login__alert-txt");
-            });
+            })
+            .then(result => {
+                console.log(result);
+                this.popUpHide('form-login');
+                myUIManager.uiElementHide("form-login__alert-txt");
+                this._restoreLastSession(result._id);
+            },
+                error => console.log(error));
     }
 
     /**
@@ -150,7 +159,7 @@ class UserAccount {
         this.userObj.userName = null;
         this.mainCalendar.removeEventsFromCalendar();
         this.profileCalendar.removeEventsFromCalendar();
-        this._setLastUser({ userName: null });
+        // this._setLastUser({ userName: null });
     }
 
     /**
@@ -221,29 +230,33 @@ class UserAccount {
 
     }
 
-    /**
-     * Method takes userObj and set user as last user using storage methods
-     * @param {obj} userObj contents main user data
-     * @return {null}
-     */
-    _setLastUser(userObj) {
-        this.setItem(`lastUserName`, userObj.userName)
-            .then(result => { console.log(`UserAccount.js lastUserName set as : ${userObj.userName}`) },
+    _setSessionToken(token) {
+        this.userToken = token;
+        this.userService.setToken(token);
+        this.tripService.setToken(token);
+
+        this.setItem(`lastSessionToken`, token)
+            .then(result => { console.log(`UserAccount.js lastSessionToken set as : ${token}`) },
                 error => console.log);
     }
 
-    /**DEVELOPMENT NEEDS
-     * Method takes userName emitts related internal methods to restore last session with user
-     * @param {string} userName contents user name
+    /**
+     * Method takes last cached token emitts related internal methods to restore last session with user
+     * @param {string} token contents token of last session
      * @return {null}
      */
-    _restoreLastUser(userName) {
-        console.log(`UserAccount.js _restoreLastUser with username: "${userName}"`);
-        this.getItem(`${userName}_userObj`)
-            .then(result => {
-                this.userObj = result;
-                this._restoreUserData(result);
-            }, error => console.log('UserAccount.js unable to restore user with username: ', userName));
+    _restoreLastSession(token) {
+        console.log(`UserAccount.js _restoreLastSession with token: "${token}"`);
+        this._setSessionToken(token);
+
+        this.userService.userReadByToken()
+            .then(response => response.json())
+            .then(user => {
+                console.log(user);
+                this.userObj = user;
+                this._restoreUserUIView(user);
+                this._restoreTripData(user);
+            });
     }
 
     /**
@@ -258,22 +271,18 @@ class UserAccount {
     }
 
     /**
-     * Method takes userObj restores data related to user
+     * Method takes userObj restores data related to user`s trips
      * @param {obj} userObj contents main user data
      * @return {null}
      */
-    _restoreUserData(userObj) {
-        this.getItem(`${userObj.userName}_userObj`)
-            .then(result => {
-                console.log('UserAccount.js _restoreUserData restored', result);
-                this.userObj = result;
-                this._restoreUserUIView(this.userObj);
-            }, error => console.log('UserAccount.js unable to restore user with username: ', userObj.userName));
-
+    _restoreTripData(userObj) {
         this.tripService.tripRead(userObj.userName)
-            .then((response) => response.json())
+            .then((response) => {
+                console.log(response);
+                return response.json();
+            })
             .then((tripsObj) => {
-                console.log('UserAccount.js _restoreUserData', tripsObj);
+                console.log('UserAccount.js _restoreTripData', tripsObj);
                 this._addDataToCalendar(tripsObj);
             });
     }
