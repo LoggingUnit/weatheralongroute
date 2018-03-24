@@ -13,13 +13,15 @@ myUIManager.uiElementAddListenerByCSSclass('close-button', 'click', callbackButt
 
 document.getElementById('googleapisScript').onload = function () {
   console.log('googleapisScripts loaded succesfully');
-  window.myPopUpManager = new PopUpManager('modal', 'form-route', 'form-register', 'form-login', 'form-profile', 'alert-login-required');
+  window.myPopUpManager = new PopUpManager('modal', 'form-route', 'form-register', 'form-login', 'form-profile', 'alert-login-required', 'alert-session-expired');
   window.myStorage = new MyLocalStorage();
   window.myStorage.getItem('lastSessionToken')
     .then(
       result => {
         console.log(`MyStorage.js last session found: ${result}`);
-        userAccount._restoreLastSession(result)
+        if (!!result) {
+          userAccount._restoreLastSession(result);
+        }
       },
       error => { console.log(error) }
     );
@@ -82,7 +84,7 @@ function callbackButtonSubmitRegistration() {
 
 function callbackButtonLogin() {
   console.log('script.js callbackButtonLogin activated');
-  window.myPopUpManager.popUpHide('alert-login-required');
+  window.myPopUpManager.popUpHide();
   window.myPopUpManager.popUpShow('form-login');
   //add validation of input data here
   if ('pre validation can be placed here') {
@@ -118,9 +120,11 @@ function callbackButtonSubmitLogin() {
 
 function callbackButtonTripAdd() {
   console.log('script.js callbackButtonTripAdd activated');
-  if (userAccount.isUserLoggedIn()) {
-    userAccount.applyTripFromUserBuffer();
 
+  if (userAccount.isUserLoggedIn()) {
+    userAccount.applyTripFromUserBuffer()
+      .then(result => document.getElementById('mainCalendar').scrollIntoView())
+      .catch(err => console.log);
   } else {
     myPopUpManager.popUpShow('alert-login-required');
   }

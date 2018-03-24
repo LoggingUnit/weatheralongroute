@@ -224,11 +224,10 @@
 		<!-- Trip calendar -->
 		<section id="trip-calendar" class="three">
 			<div class="container">
-
 				<header>
 					<h2>Trip calendar</h2>
 				</header>
-				<div id='mainCalendar'></div>
+				<div id="mainCalendar"></div>
 				<p> While pick start date of your trip please keep in mind that the weather forecasts is valid only for one week since now.
 					So trips which will take more than one week will not fully covered with correct forecast, but you still are able to
 					use Weather on route service while traveling to get more precice weather forecast.</p>
@@ -256,8 +255,7 @@
 					but it is just dummy text for now, sorry.
 				</p>
 
-				<a href="#mainCalendar" class="button scrolly trip-route__add-trip-button">Add trip</a>
-
+				<a href=#void class="button scrolly trip-route__add-trip-button">Add trip</a>
 			</div>
 
 	</div>
@@ -452,6 +450,33 @@
 				</div>
 				<div class="6u 6u$(mobile)">
 					<input type="button" class='alert-login-required__login-button login-button button' value="Login">
+				</div>
+			</div>
+		</form>
+
+		<!-- Modal-session-rexpired-alert -->
+		<form class="alert-session-expired" method="post" action="#">
+			<div class="row">
+				<div class="10u 8u(mobile)">
+					<h3>Session expired</h3>
+				</div>
+				<div class="1u 1u$(mobile)">
+					<button type='button' class='button close-button'>X</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="12u 12u$(mobile)">
+					<span>Invalid session key received or session expired :((( </span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="12u 12u$(mobile)">
+					<span>Please try to login again</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="6u 6u$(mobile)">
+					<input type="button" class='alert-session-expired__login-button login-button button' value="Login">
 				</div>
 			</div>
 		</form>

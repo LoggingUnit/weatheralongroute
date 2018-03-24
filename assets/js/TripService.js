@@ -9,7 +9,6 @@ class TripService {
     }
 
     setToken(token) {
-        console.log('TripService.js setToken ', token);
         this.token = token;
     }
 

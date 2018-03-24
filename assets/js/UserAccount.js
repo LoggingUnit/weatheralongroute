@@ -16,23 +16,22 @@ class UserAccount {
     constructor(myPopUpManager, myUIManager, getItem, setItem) {
         this.mainCalendar = new MainCalendar('#mainCalendar', myPopUpManager.popUpShow, myUIManager.uiElementSetValue);
         this.profileCalendar = new ProfileCalendar('#profileCalendar', this.eventDeleteByCalendarButtonClick.bind(this));
+
         this.tripService = new TripService('http://localhost:8000/trips');
         this.userService = new UserService('http://localhost:8000/users');
-        this.authService = new AuthService('http://localhost:8000/login');
+        this.authService = new AuthService('http://localhost:8000/auth');
+
         this.setItem = setItem;
         this.getItem = getItem;
+        this.myPopUpManager = myPopUpManager;
+
         this.userToken = null;
         this.userObj = {
             userName: null,
             userPassword: null,
             userEmail: null,
         }
-        this.tripTemp = {
-            userName: '',
-            tripOrigin: '',
-            tripDest: '',
-            tripData: ''
-        }
+        this.tripTemp = null;
     }
 
     /**
@@ -65,16 +64,32 @@ class UserAccount {
      * @return {null}
      */
     applyTripFromUserBuffer() {
-        if (this.tripTemp.tripOrigin) {
-            console.log('UserAccount.js applyTripFromUserBuffer activated');
+        return new Promise((resolveExternal, rejectExternal) => {
+            if (!!this.tripTemp) {
+                console.log('UserAccount.js applyTripFromUserBuffer activated');
 
-            this._addTripDataToServer()
-                .then((response) => response.json())
-                .then((tripObj) => {
-                    console.log('UserAccount.js _addTripDataToServer', tripObj);
-                    this._addDataToCalendar([tripObj]);
-                });
-        }
+                this._addTripDataToServer()
+                    .then((response) => {
+                        console.log(response);
+                        if (response.status !== 200) {
+                            this.logoutUser();
+                            this.myPopUpManager.popUpShow('alert-session-expired');
+                            return Promise.reject(response);
+                        } else {
+                            this.tripTemp = null;
+                            return response.json();
+                        }
+                    })
+                    .then((tripObj) => {
+                        console.log('UserAccount.js _addTripDataToServer', tripObj);
+                        this._addDataToCalendar([tripObj]);
+                        resolveExternal(true);
+                    })
+                    .catch(err => console.log);
+            } else {
+                rejectExternal('UserAccount.js this.tripTemp is', this.tripTemp);
+            }
+        })
     }
 
     /**
@@ -87,14 +102,11 @@ class UserAccount {
     createUser(userObj) {
         console.log('UserAccount.js createUser with userObj: ', userObj);
         this.userObj = userObj;
-        this._addDataToLocalStorage('userObj', userObj);
         this._addUserDataToServer()
             .then(response => response.json())
             .then(result => {
                 console.log(result);
                 this.loginUser(result, myPopUpManager.popUpHide);
-                // this._restoreUserUIView(userObj);
-                // this._setLastUser(userObj);
             })
             .catch(err => console.log(err));
     }
@@ -115,8 +127,13 @@ class UserAccount {
                 if (message.status === 200) {
                     this.profileCalendar.removeEventsFromCalendar(eventId);
                     this.mainCalendar.removeEventsFromCalendar(eventId);
+                } else if (message.status === 401) {
+                    this.logoutUser();
+                    this.myPopUpManager.popUpHide();
+                    this.myPopUpManager.popUpShow('alert-session-expired');
                 }
-            });
+            })
+            .catch(err => console.log);
     }
 
     /**
@@ -143,8 +160,8 @@ class UserAccount {
                 this.popUpHide('form-login');
                 myUIManager.uiElementHide("form-login__alert-txt");
                 this._restoreLastSession(result._id);
-            },
-                error => console.log(error));
+            })
+            .catch(error => console.log(error));
     }
 
     /**
@@ -155,11 +172,18 @@ class UserAccount {
      */
     logoutUser() {
         console.log('UserAccount.js logoutUser()');
-        this._restoreDefaultUIView();
-        this.userObj.userName = null;
-        this.mainCalendar.removeEventsFromCalendar();
-        this.profileCalendar.removeEventsFromCalendar();
-        // this._setLastUser({ userName: null });
+        this.authService.logoutUser(this.userObj.userName)
+            .then(result => {
+                console.log(result);
+                if (result.status === 200) {
+                    this._restoreDefaultUIView();
+                    this.userObj.userName = null;
+                    this.mainCalendar.removeEventsFromCalendar();
+                    this.profileCalendar.removeEventsFromCalendar();
+                    this._addDataToLocalStorage('lastSessionToken', null);
+                }
+            })
+            .catch(error => console.log);
     }
 
     /**
@@ -181,6 +205,8 @@ class UserAccount {
         return this.userObj.userName;
     }
 
+
+
     /**
      * Method adds user data to storage by calling related storage functions
      * @param {string} keyName name of data to write into storage
@@ -188,11 +214,9 @@ class UserAccount {
      * @return {null}
      */
     _addDataToLocalStorage(keyName, keyValue) {
-        console.log('UserAccount.js _addDataToLocalStorage with keyName: ', keyName, keyValue);
-
-        this.setItem(`${this.userObj.userName}_${keyName}`, keyValue)
-            .then(result => { console.log('UserAccount.js data: ', keyValue, 'added with key: ', `${this.userObj.userName}_${keyName}`) },
-                error => console.log);
+        this.setItem(keyName, keyValue)
+            .then(result => { console.log('UserAccount.js data: ', keyValue, 'added with key: ', keyName) })
+            .catch(error => console.log);
     }
 
     _addTripDataToServer() {
@@ -234,10 +258,8 @@ class UserAccount {
         this.userToken = token;
         this.userService.setToken(token);
         this.tripService.setToken(token);
-
-        this.setItem(`lastSessionToken`, token)
-            .then(result => { console.log(`UserAccount.js lastSessionToken set as : ${token}`) },
-                error => console.log);
+        this.authService.setToken(token);
+        this._addDataToLocalStorage('lastSessionToken', token);
     }
 
     /**
@@ -250,13 +272,20 @@ class UserAccount {
         this._setSessionToken(token);
 
         this.userService.userReadByToken()
-            .then(response => response.json())
+            .then(response => {
+                if (response.status !== 200) {
+                    return Promise.reject(response);
+                } else {
+                    return response.json();
+                }
+            })
             .then(user => {
                 console.log(user);
                 this.userObj = user;
                 this._restoreUserUIView(user);
                 this._restoreTripData(user);
-            });
+            })
+            .catch(err => console.log);
     }
 
     /**
@@ -284,7 +313,8 @@ class UserAccount {
             .then((tripsObj) => {
                 console.log('UserAccount.js _restoreTripData', tripsObj);
                 this._addDataToCalendar(tripsObj);
-            });
+            })
+            .catch(err => console.log);
     }
 
     /**

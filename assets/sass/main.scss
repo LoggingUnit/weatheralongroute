@@ -1067,11 +1067,6 @@
 		padding-bottom: 20px;
 	}
 
-	// #chart-canvas {
-	// 	width: 100%;
-	// 	height: 30%;
-	// }
-
 	.modal {
 		@include flexgrid-base(center,true);
 		display: none;
@@ -1130,6 +1125,11 @@
 		overflow: auto;
 
 		&-login-required {
+			@extend .alert;
+			display: none;
+		}
+
+		&-session-expired {
 			@extend .alert;
 			display: none;
 		}
