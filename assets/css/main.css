@@ -1732,6 +1732,8 @@ button,
     display: none; }
   .form-register {
     display: none; }
+    .form-register__alert-userexists-txt {
+      display: none; }
   .form-login {
     display: none; }
     .form-login__alert-txt {

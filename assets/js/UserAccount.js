@@ -100,15 +100,30 @@ class UserAccount {
      * @return {null}
      */
     createUser(userObj) {
-        console.log('UserAccount.js createUser with userObj: ', userObj);
-        this.userObj = userObj;
-        this._addUserDataToServer()
-            .then(response => response.json())
-            .then(result => {
-                console.log(result);
-                this.loginUser(result, myPopUpManager.popUpHide);
-            })
-            .catch(err => console.log(err));
+        return new Promise ((externalResolve, externalError) => {
+            console.log('UserAccount.js createUser with userObj: ', userObj);
+            this.userObj = userObj;
+
+            this._addUserDataToServer()
+                .then(response => {
+                    if (response.status === 200) {
+                        return response.json();
+                    } else {
+                        myUIManager.uiElementShow("form-register__alert-userexists-txt");
+                        return Promise.reject(response);
+                    }
+                })
+                .then(result => {
+                    console.log(result);
+                    myUIManager.uiElementHide("form-register__alert-userexists-txt");
+                    this.loginUser(result, myPopUpManager.popUpHide);
+                    externalResolve(result);
+                })
+                .catch(err => {
+                    console.log(err);
+                    externalError(err);
+                });
+        })
     }
 
     /**

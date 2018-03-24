@@ -77,8 +77,12 @@ function callbackButtonSubmitRegistration() {
       userEmail: inputEmailRegisterValue,
       userPassword: inputPasswordRegisterValue
     };
-    userAccount.createUser(userObj);
-    window.myPopUpManager.popUpHide('form-register');
+    userAccount.createUser(userObj)
+      .then(result => {
+        console.log(result);
+        myPopUpManager.popUpHide('form-register');
+      })
+      .catch(err => console.log);
   }
 }
 

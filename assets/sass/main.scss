@@ -1097,6 +1097,9 @@
 		&-register {
 			@extend .form;
 			display: none;
+			&__alert-userexists-txt {
+				display: none;
+			}
 		}
 
 		&-login {
