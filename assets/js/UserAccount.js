@@ -85,9 +85,11 @@ class UserAccount {
                         this._addDataToCalendar([tripObj]);
                         resolveExternal(true);
                     })
-                    .catch(err => console.log);
+                    .catch(err =>
+                        rejectExternal('UserAccount.js applyTripFromUserBuffer: ', err)
+                    )
             } else {
-                rejectExternal('UserAccount.js this.tripTemp is', this.tripTemp);
+                resolveExternal(true);
             }
         })
     }
@@ -100,7 +102,7 @@ class UserAccount {
      * @return {null}
      */
     createUser(userObj) {
-        return new Promise ((externalResolve, externalError) => {
+        return new Promise((externalResolve, externalError) => {
             console.log('UserAccount.js createUser with userObj: ', userObj);
             this.userObj = userObj;
 
@@ -249,6 +251,7 @@ class UserAccount {
      */
     _addDataToCalendar(tripsObj) {
         console.log('UserAccounts.js _addToCalendar with ', tripsObj);
+        let eventsArray = [];
 
         for (let i = 0; i < tripsObj.length; i++) {
             let start = moment(tripsObj[i].tripData[0].timeEnd).format();
@@ -263,10 +266,11 @@ class UserAccount {
                 end: end
             }
 
-            this.mainCalendar.addSingleEventToCalendar(eventData);
-            this.profileCalendar.addSingleEventToCalendar(eventData);
+            eventsArray.push(eventData);
         }
 
+        this.mainCalendar.addMultipleEventsToCalendar(eventsArray);
+        this.profileCalendar.addMultipleEventsToCalendar(eventsArray);
     }
 
     _setSessionToken(token) {

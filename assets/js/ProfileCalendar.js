@@ -53,8 +53,18 @@ class ProfileCalendar {
    * @return {none} 
    */
   addSingleEventToCalendar(eventData) {
-    console.log('MainCalendar.js addEventToCalendar with: ', eventData);
+    console.log('ProfileCalendar.js addEventToCalendar with: ', eventData);
     $(this.mountPointCalendar).fullCalendar('renderEvent', eventData, true); // stick? = true
+  }
+
+  /**
+  * Method creates multiple fullcalendar.js event and renders it
+  * @param {obj[]} eventDataArr standart fullcalendar.js event obj
+  * @return {none} 
+  */
+  addMultipleEventsToCalendar(eventDataArr) {
+    console.log('ProfileCalendar.js addEventToCalendar with: ', eventDataArr);
+    $(this.mountPointCalendar).fullCalendar('renderEvents', eventDataArr, true); // stick? = true
   }
 
   /**
@@ -63,7 +73,7 @@ class ProfileCalendar {
    * @return {none} 
    */
   removeEventsFromCalendar(idOrFilter) {
-    console.log('MainCalendar.js removeEventsFromCalendar with: ', idOrFilter);
+    console.log('ProfileCalendar.js removeEventsFromCalendar with: ', idOrFilter);
     $(this.mountPointCalendar).fullCalendar('removeEvents', idOrFilter);
   }
 

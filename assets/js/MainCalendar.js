@@ -58,6 +58,16 @@ class MainCalendar {
   }
 
   /**
+   * Method creates multiple fullcalendar.js event and renders it
+   * @param {obj[]} eventDataArr standart fullcalendar.js event obj
+   * @return {none} 
+   */
+  addMultipleEventsToCalendar(eventDataArr) {
+    console.log('MainCalendar.js addEventToCalendar with: ', eventDataArr);
+    $(this.mountPointCalendar).fullCalendar('renderEvents', eventDataArr, true); // stick? = true
+  }
+
+  /**
    * Method removes events currently applied to instance of MainCalendar according to id or filter
    * @param {string} idOrFilter empty string matches all elements of calendar to remove
    * @return {none} 
