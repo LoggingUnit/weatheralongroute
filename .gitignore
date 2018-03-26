@@ -3,3 +3,8 @@ debug.log
 
 .gitignore
 node_modules/
+static/node_modules/
+static/.gitignore
+static/
+debug.log
+static/Procfile
