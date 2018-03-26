@@ -3,6 +3,5 @@ debug.log
 node_modules/
 static/node_modules/
 static/.gitignore
-static/
-debug.log
+static/debug.log
 static/Procfile
