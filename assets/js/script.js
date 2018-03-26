@@ -11,7 +11,7 @@ myUIManager.uiElementAddListenerByCSSclass('register-button', 'click', callbackB
 myUIManager.uiElementAddListenerByCSSclass('login-button', 'click', callbackButtonLogin);
 myUIManager.uiElementAddListenerByCSSclass('close-button', 'click', callbackButtonClose);
 
-document.getElementById('googleapisScript').onload = function () {
+window.onload = function () {
   console.log('googleapisScripts loaded succesfully');
   window.myPopUpManager = new PopUpManager('modal', 'form-route', 'form-register', 'form-login', 'form-profile', 'alert-login-required', 'alert-session-expired');
   window.myStorage = new MyLocalStorage();
@@ -34,8 +34,8 @@ document.getElementById('googleapisScript').onload = function () {
   googleMaps.addListenerOnDirChange(refreshWeatherOnDirChange);
   myUIManager.uiElementSetEnable('form-route__submit-button');
 }
-document.getElementById('googleapisScript').onerror = function () {
-  reject(new Error('googleapisScripts is unable to load'));
+window.onerror = function () {
+  console.error(new Error('googleapisScripts is unable to load'));
 }
 
 function callbackButtonSubmit() {
