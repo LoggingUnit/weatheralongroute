@@ -1,6 +1,7 @@
 module.exports = {
   allowedPaths: [
     '/',
+    '/users',
     '/favicon.ico',
     '/index.html',
     '/auth/login',
@@ -8,7 +9,6 @@ module.exports = {
     '/assets/',
     '/assets/js/',
     '/assets/css/',
-    '/users',
     '/images/',
   ]
 };
