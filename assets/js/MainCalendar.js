@@ -65,6 +65,7 @@ class MainCalendar {
   addMultipleEventsToCalendar(eventDataArr) {
     console.log('MainCalendar.js addEventToCalendar with: ', eventDataArr);
     $(this.mountPointCalendar).fullCalendar('renderEvents', eventDataArr, true); // stick? = true
+    $(this.mountPointCalendar).fullCalendar('changeView', 'month');
   }
 
   /**

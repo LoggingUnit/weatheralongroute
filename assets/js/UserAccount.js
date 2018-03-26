@@ -17,9 +17,9 @@ class UserAccount {
         this.mainCalendar = new MainCalendar('#mainCalendar', myPopUpManager.popUpShow, myUIManager.uiElementSetValue);
         this.profileCalendar = new ProfileCalendar('#profileCalendar', this.eventDeleteByCalendarButtonClick.bind(this));
 
-        this.tripService = new TripService('http://localhost:8000/trips');
-        this.userService = new UserService('http://localhost:8000/users');
-        this.authService = new AuthService('http://localhost:8000/auth');
+        this.tripService = new TripService('https://weatheralongroutenodeserver.herokuapp.com/trips');
+        this.userService = new UserService('https://weatheralongroutenodeserver.herokuapp.com/users');
+        this.authService = new AuthService('https://weatheralongroutenodeserver.herokuapp.com/auth');
 
         this.setItem = setItem;
         this.getItem = getItem;
