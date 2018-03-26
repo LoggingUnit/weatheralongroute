@@ -8,8 +8,8 @@ module.exports = {
     '/auth/logout',
     '/assets/',
     '/assets/js/',
-    '/assets/js/external-modules',
-    '/assets/js/weatheralongroute-modules',
+    '/assets/js/externalmodules',
+    '/assets/js/weatheralongroutemodules',
     '/assets/css/',
     '/images/',
   ]
