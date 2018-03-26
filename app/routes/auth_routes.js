@@ -28,7 +28,11 @@ module.exports = function (app, db) {
     if (req.method === 'OPTIONS') return true;
     let flag = false;
     allowedPaths.forEach(i => {
-      req.originalUrl.search(i) === (-1) ? null : flag = true;
+      if (req.originalUrl === '/') { 
+        req.originalUrl === i ? flag = true:null;
+      } else {
+        req.originalUrl.search(i) === (-1) ? null : flag = true;
+      }
     });
     return flag;
   }
