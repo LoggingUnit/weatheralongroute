@@ -1,6 +1,4 @@
-
 debug.log
-
 .gitignore
 node_modules/
 static/node_modules/

@@ -34,8 +34,8 @@ module.exports = function (app, db) {
   }
 
   function checkUserSession(req, res, next) {
+    console.log(req.originalUrl);
     if (isRequestAllowedWithNoAuthCheck(req)) {
-      console.log(req.originalUrl);
       next();
     } else if (!req.get('Authorization')) {
       console.log(`Access denied: no auth. header to ${req.method} by following URL:${req.originalUrl}`);
