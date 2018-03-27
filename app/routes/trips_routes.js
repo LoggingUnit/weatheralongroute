@@ -4,6 +4,7 @@ var ObjectID = require('mongodb').ObjectID;
 module.exports = function (app, db) {
 
   app.get('/trips/:user', (req, res) => {
+    console.log(`trips_routes.js tripsGetController ${req.method} to ${req.originalUrl}`);
     const user = req.params.user;
     const details = { 'userName': user };
     db.collection('trips').find(details, {}).toArray()
@@ -13,14 +14,14 @@ module.exports = function (app, db) {
   })
 
   app.post('/trips', (req, res) => {
-    console.log('[POST] trips')
+    console.log('Attempt to add trip for', req.body.userName);
     const trip = req.body;
-    // console.log(trip);
     db.collection('trips').insert(trip, (err, result) => {
       if (err) {
         res.send({ 'error': 'An error has occurred' });
       } else {
         res.send(result.ops[0]);
+        console.log('Trip added for', req.body.userName);
       }
     });
   });

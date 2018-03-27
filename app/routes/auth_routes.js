@@ -34,7 +34,6 @@ module.exports = function (app, db) {
   }
 
   function checkUserSession(req, res, next) {
-    console.log(req.originalUrl);
     if (isRequestAllowedWithNoAuthCheck(req)) {
       next();
     } else if (!req.get('Authorization')) {
@@ -128,7 +127,6 @@ module.exports = function (app, db) {
   }
 
   function setUnsafeHeaders(req, res, next) {
-    console.log('lel:', req.method, req.originalUrl);
     res.set(sessionCfg.unsafeHeaders);
     next();
   };

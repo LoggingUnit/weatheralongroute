@@ -14,7 +14,6 @@ module.exports = function (app, db) {
     findSessionByToken(token)
       .then(result => findUserByUserName(result.userName))
       .then(result => {
-        console.log(result);
         res.send(result);
       })
       .catch(error => console.log);
@@ -35,6 +34,7 @@ module.exports = function (app, db) {
             res.send({ 'error': 'An error has occurred' });
           } else {
             res.send(result.ops[0]);
+            console.log('User added with username', req.body.userName);
           }
         });
       })
