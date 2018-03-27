@@ -1,5 +1,6 @@
 debug.log
 .gitignore
+.vscode
 node_modules/
 static/node_modules/
 static/.gitignore

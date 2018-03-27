@@ -28,11 +28,7 @@ module.exports = function (app, db) {
     if (req.method === 'OPTIONS') return true;
     let flag = false;
     allowedPaths.forEach(i => {
-      if (req.originalUrl === '/' || req.originalUrl === '/users') { 
-        req.originalUrl === i ? flag = true:null;
-      } else {
-        req.originalUrl.search(i) === (-1) ? null : flag = true;
-      }
+      req.originalUrl === i ? flag = true : null;
     });
     return flag;
   }
@@ -132,6 +128,7 @@ module.exports = function (app, db) {
   }
 
   function setUnsafeHeaders(req, res, next) {
+    console.log('lel:', req.method, req.originalUrl);
     res.set(sessionCfg.unsafeHeaders);
     next();
   };
