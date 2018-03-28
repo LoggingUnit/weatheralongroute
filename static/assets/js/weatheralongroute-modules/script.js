@@ -34,23 +34,20 @@ window.onload = function () {
 
   googleMaps.initializeMap(66.788890, 93.775280, 3);
   googleMaps.addListenerOnDirChange(refreshWeatherOnDirChange);
-  myUIManager.uiElementSetEnable('form-route__submit-button');
+
+  // myUIManager.uiElementSetEnable('form-route__submit-button');
+  myUIManager.uiElementAddListenerByCSSclass('form-route__origin-input', 'input', userInputManager.processTripInput);
+  myUIManager.uiElementAddListenerByCSSclass('form-route__destination-input', 'input', userInputManager.processTripInput);
+  myUIManager.uiElementAddListenerByCSSclass('form-route__step-input', 'input', userInputManager.processTripInput);
 }
 
 function callbackButtonSubmit() {
   console.log('script.js callbackButtonSubmit activated');
 
-  let inputFromValue = myUIManager.uiElementGetValue('form-route__origin-input');
-  let inputToValue = myUIManager.uiElementGetValue('form-route__destination-input');
-  let inputStepValue = myUIManager.uiElementGetValue('form-route__step-input');
-  let inputTimeTripBeginValue = myUIManager.uiElementGetValue('form-route__time-txt');
-
-  if (validate('text-input', inputFromValue) && validate('text-input', inputToValue) && validate('step-input', inputStepValue)) {
-    console.log('form validated');
-    googleMaps.calcRoute(inputFromValue, inputToValue, inputStepValue * 1000, inputTimeTripBeginValue);
-    document.getElementById('map').scrollIntoView();
-    myPopUpManager.popUpHide('form-route');
-  }
+  let tripRequestObj = userInputManager.getTripData();
+  googleMaps.calcRoute(tripRequestObj);
+  document.getElementById('map').scrollIntoView();
+  myPopUpManager.popUpHide('form-route');
 }
 
 function callbackButtonRegister() {
@@ -61,44 +58,27 @@ function callbackButtonRegister() {
   myUIManager.uiElementAddListenerByCSSclass('form-register__username-input', 'input', userInputManager.processRegisterInput);
   myUIManager.uiElementAddListenerByCSSclass('form-register__email-input', 'input', userInputManager.processRegisterInput);
   myUIManager.uiElementAddListenerByCSSclass('form-register__password-input', 'input', userInputManager.processRegisterInput);
-  
-
-  // //add validation of input data here
-  // if ('prevalidator can be placed here') {
-  //   myUIManager.uiElementSetEnable('form-register__submit-button');
-  // }
 }
 
 function callbackButtonSubmitRegistration() {
   console.log('script.js callbackButtonSubmitRegistration activated');
 
-  let inputUsernameRegisterValue = myUIManager.uiElementGetValue('form-register__username-input');
-  let inputEmailRegisterValue = myUIManager.uiElementGetValue('form-register__email-input');
-  let inputPasswordRegisterValue = myUIManager.uiElementGetValue('form-register__password-input');
-
-  if (validate('login-input', inputUsernameRegisterValue) && validate('login-input', inputPasswordRegisterValue) && validate('email-input', inputEmailRegisterValue)) {
-    var userObj = {
-      userName: inputUsernameRegisterValue,
-      userEmail: inputEmailRegisterValue,
-      userPassword: inputPasswordRegisterValue
-    };
-    userAccount.createUser(userObj)
-      .then(result => {
-        console.log(result);
-        myPopUpManager.popUpHide('form-register');
-      })
-      .catch(err => console.log);
-  }
+  let userObj = userInputManager.getRegistrationData();
+  userAccount.createUser(userObj)
+    .then(result => {
+      console.log(result);
+      myPopUpManager.popUpHide('form-register');
+    })
+    .catch(err => console.log);
 }
 
 function callbackButtonLogin() {
   console.log('script.js callbackButtonLogin activated');
   window.myPopUpManager.popUpHide();
   window.myPopUpManager.popUpShow('form-login');
-  //add validation of input data here
-  if ('pre validation can be placed here') {
-    myUIManager.uiElementSetEnable('form-login__submit-button');
-  }
+
+  myUIManager.uiElementAddListenerByCSSclass('form-login__username-input', 'input', userInputManager.processLoginInput);
+  myUIManager.uiElementAddListenerByCSSclass('form-login__password-input', 'input', userInputManager.processLoginInput);
 }
 
 function callbackButtonLogout() {
@@ -114,17 +94,8 @@ function callbackButtonProfile() {
 function callbackButtonSubmitLogin() {
   console.log('script.js callbackButtonSubmitLogin activated');
 
-  let inputUsernameLoginValue = myUIManager.uiElementGetValue('form-login__username-input');
-  let inputPasswordLoginValue = myUIManager.uiElementGetValue('form-login__password-input');
-
-  if (validate('login-input', inputUsernameLoginValue) && validate('login-input', inputPasswordLoginValue)) {
-    var userObj = {
-      userName: inputUsernameLoginValue,
-      userEmail: null,
-      userPassword: inputPasswordLoginValue
-    };
-    userAccount.loginUser(userObj, myPopUpManager.popUpHide.bind(myPopUpManager));
-  }
+  let userObj = userInputManager.getLoginData();
+  userAccount.loginUser(userObj, myPopUpManager.popUpHide.bind(myPopUpManager));
 }
 
 function callbackButtonTripAdd() {

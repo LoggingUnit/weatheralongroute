@@ -57,13 +57,15 @@ class GoogleMaps {
    * @param {origin, destination, step}
    * @return nope
    */
-  calcRoute(origin, destination, step, timeTripBegin) {
-    this.definedStep = step;
+  calcRoute(tripRequestObj) {
+    console.log(tripRequestObj);
+    //origin, destination, step, timeTripBegin
+    this.definedStep = tripRequestObj.step;
     var that = this;
     var directionsService = new google.maps.DirectionsService;
     directionsService.route({
-      origin: origin,
-      destination: destination,
+      origin: tripRequestObj.origin,
+      destination: tripRequestObj.destination,
       //waypoints: [{location: 'Adelaide, SA'}, {location: 'Broken Hill, NSW'}],
       travelMode: 'DRIVING',
       avoidTolls: true
@@ -72,7 +74,7 @@ class GoogleMaps {
         that.directions = response;
         that._viewRoute();
         that.addListenerOnDirChange();
-        that._simplifyRoute(step, moment(timeTripBegin).unix());
+        that._simplifyRoute(tripRequestObj.step, moment(tripRequestObj.timeTripBegin).unix());
         } else {
         alert('Could not display directions due to: ' + status);
       }

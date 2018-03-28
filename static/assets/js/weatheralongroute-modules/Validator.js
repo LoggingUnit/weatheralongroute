@@ -24,6 +24,10 @@ class Validator {
         return !!inputText;
     }
 
+    validateAsStepDistance(inputText) {
+        return inputText>=30;
+    }
+
     _getRulesFromServer(endpoint) {
         fetch(endpoint)
             .then(response => {
