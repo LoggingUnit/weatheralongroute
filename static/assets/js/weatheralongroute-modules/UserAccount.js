@@ -110,7 +110,10 @@ class UserAccount {
                 .then(response => {
                     if (response.status === 200) {
                         return response.json();
-                    } else {
+                    } else if (response.status === 409) {
+                        myUIManager.uiElementShow("form-register__alert-userexists-txt");
+                        return Promise.reject(response);
+                    } else if (response.status === 400) {
                         myUIManager.uiElementShow("form-register__alert-userexists-txt");
                         return Promise.reject(response);
                     }

@@ -1,5 +1,7 @@
 'use strict';
 var myUIManager = new UserInterfaceManager();
+var validator = new Validator('/validation');
+var userInputManager = new UserInputManager(validator, myUIManager);
 
 myUIManager.uiElementAddListenerByCSSclass('form-route__submit-button', 'click', callbackButtonSubmit);
 myUIManager.uiElementAddListenerByCSSclass('menu-header__logout-button', 'click', callbackButtonLogout);
@@ -34,9 +36,6 @@ window.onload = function () {
   googleMaps.addListenerOnDirChange(refreshWeatherOnDirChange);
   myUIManager.uiElementSetEnable('form-route__submit-button');
 }
-window.onerror = function () {
-  console.error(new Error('googleapisScripts is unable to load'));
-}
 
 function callbackButtonSubmit() {
   console.log('script.js callbackButtonSubmit activated');
@@ -56,12 +55,18 @@ function callbackButtonSubmit() {
 
 function callbackButtonRegister() {
   console.log('script.js callbackButtonRegister activated');
-  myPopUpManager.popUpHide('alert-login-required');
+  myPopUpManager.popUpHide();
   myPopUpManager.popUpShow('form-register');
-  //add validation of input data here
-  if ('prevalidator can be placed here') {
-    myUIManager.uiElementSetEnable('form-register__submit-button');
-  }
+
+  myUIManager.uiElementAddListenerByCSSclass('form-register__username-input', 'input', userInputManager.processRegisterInput);
+  myUIManager.uiElementAddListenerByCSSclass('form-register__email-input', 'input', userInputManager.processRegisterInput);
+  myUIManager.uiElementAddListenerByCSSclass('form-register__password-input', 'input', userInputManager.processRegisterInput);
+  
+
+  // //add validation of input data here
+  // if ('prevalidator can be placed here') {
+  //   myUIManager.uiElementSetEnable('form-register__submit-button');
+  // }
 }
 
 function callbackButtonSubmitRegistration() {

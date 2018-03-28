@@ -1248,6 +1248,12 @@ button,
   button:active,
   .button:active {
     background-color: #7eaeac; }
+  input[type="button"]:disabled,
+  input[type="submit"]:disabled,
+  input[type="reset"]:disabled,
+  button:disabled,
+  .button:disabled {
+    background-color: rgba(255, 255, 255, 0.89); }
 
 /* Item */
 .item {
