@@ -46,19 +46,6 @@
 
 			<!-- Nav -->
 			<nav id="nav">
-				<!--
-
-								Prologue's nav expects links in one of two formats:
-
-								1. Hash link (scrolls to a different section within the page)
-
-								   <li><a href="#foobar" id="foobar-link" class="icon fa-whatever-icon-you-want skel-layers-ignoreHref"><span class="label">Foobar</span></a></li>
-
-								2. Standard link (sends the user to another page/site)
-
-								   <li><a href="http://foobar.tld" id="foobar-link" class="icon fa-whatever-icon-you-want"><span class="label">Foobar</span></a></li>
-
-							-->
 				<ul>
 					<li>
 						<a href="#top" id="top-link" class="skel-layers-ignoreHref">
@@ -255,7 +242,7 @@
 					but it is just dummy text for now, sorry.
 				</p>
 
-				<a href=#void class="button scrolly trip-route__add-trip-button">Add trip</a>
+				<input type="button" class="trip-route__add-trip-button button" value="Add trip" disabled>
 			</div>
 
 	</div>
@@ -468,7 +455,6 @@
 				</div>
 			</div>
 		</form>
-
 		<!-- Modal-session-rexpired-alert -->
 		<form class="alert-session-expired" method="post" action="#">
 			<div class="row">
@@ -511,7 +497,7 @@
 	<script src="assets/js/external-modules/markerclusterer.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClPVi2QBIbPd5pHGNV_bhVv8JZiEMXq9M&libraries=geometry&"
-	async defer></script>
+	 async defer></script>
 
 	<!-- Weather on route related modules -->
 	<script src='assets/js/weatheralongroute-modules/AuthService.js'></script>

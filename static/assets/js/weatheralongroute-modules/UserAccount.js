@@ -54,7 +54,7 @@ class UserAccount {
         temp['tripDest'] = destination;
         temp['tripData'] = tripWithWeather;
         this.tripTemp = temp;
-        console.log(this.userData);
+        console.log('UserAccount.js addTripToUserBuffer() added with name', this.userObj.userName);
     }
 
     /**
@@ -109,6 +109,7 @@ class UserAccount {
             this._addUserDataToServer()
                 .then(response => {
                     if (response.status === 200) {
+                        this._updateUserInBuffer(this.userObj.userName);
                         return response.json();
                     } else if (response.status === 409) {
                         myUIManager.uiElementShow("form-register__alert-userexists-txt");
@@ -172,6 +173,7 @@ class UserAccount {
                     myUIManager.uiElementShow("form-login__alert-txt");
                     return Promise.reject(response);
                 } else {
+                    this._updateUserInBuffer(userObj.userName);
                     return response.json();
                 }
             })
@@ -349,5 +351,10 @@ class UserAccount {
         myUIManager.uiElementSetValue('email-txt', userObj.userEmail);
         myUIManager.uiElementShow("menu-header__logout-button", "menu-header__profile-button");
         myUIManager.uiElementHide("menu-header__login-button", "menu-header__register-button");
+    }
+    
+    _updateUserInBuffer(actualUserName) {
+        console.log('UserAccount.js _updateUserInBuffer() with name', actualUserName);
+        this.tripTemp.userName = actualUserName;
     }
 }

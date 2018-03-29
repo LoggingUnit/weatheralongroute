@@ -3,7 +3,7 @@ var myUIManager = new UserInterfaceManager();
 var validator = new Validator('/validation');
 var userInputManager = new UserInputManager(validator, myUIManager);
 
-myUIManager.uiElementAddListenerByCSSclass('form-route__submit-button', 'click', callbackButtonSubmit);
+myUIManager.uiElementAddListenerByCSSclass('form-route__submit-button', 'click', callbackButtonSubmitTrip);
 myUIManager.uiElementAddListenerByCSSclass('menu-header__logout-button', 'click', callbackButtonLogout);
 myUIManager.uiElementAddListenerByCSSclass('menu-header__profile-button', 'click', callbackButtonProfile);
 myUIManager.uiElementAddListenerByCSSclass('form-register__submit-button', 'click', callbackButtonSubmitRegistration);
@@ -35,19 +35,19 @@ window.onload = function () {
   googleMaps.initializeMap(66.788890, 93.775280, 3);
   googleMaps.addListenerOnDirChange(refreshWeatherOnDirChange);
 
-  // myUIManager.uiElementSetEnable('form-route__submit-button');
   myUIManager.uiElementAddListenerByCSSclass('form-route__origin-input', 'input', userInputManager.processTripInput);
   myUIManager.uiElementAddListenerByCSSclass('form-route__destination-input', 'input', userInputManager.processTripInput);
   myUIManager.uiElementAddListenerByCSSclass('form-route__step-input', 'input', userInputManager.processTripInput);
 }
 
-function callbackButtonSubmit() {
-  console.log('script.js callbackButtonSubmit activated');
+function callbackButtonSubmitTrip() {
+  console.log('script.js callbackButtonSubmitTrip activated');
 
   let tripRequestObj = userInputManager.getTripData();
   googleMaps.calcRoute(tripRequestObj);
   document.getElementById('map').scrollIntoView();
   myPopUpManager.popUpHide('form-route');
+  myUIManager.uiElementSetEnable('trip-route__add-trip-button');
 }
 
 function callbackButtonRegister() {
@@ -103,7 +103,10 @@ function callbackButtonTripAdd() {
 
   if (userAccount.isUserLoggedIn()) {
     userAccount.applyTripFromUserBuffer()
-      .then(result => document.getElementById('mainCalendar').scrollIntoView())
+      .then(result => {
+        document.getElementById('mainCalendar').scrollIntoView();
+        myUIManager.uiElementSetDisable('trip-route__add-trip-button');
+      })
       .catch(err => console.log);
   } else {
     myPopUpManager.popUpShow('alert-login-required');
