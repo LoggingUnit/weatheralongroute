@@ -321,6 +321,8 @@ class UserAccount {
         myUIManager.uiElementSetValue('username-txt', "Anonymous user");
         myUIManager.uiElementHide("menu-header__logout-button", "menu-header__profile-button");
         myUIManager.uiElementShow("menu-header__login-button", "menu-header__register-button");
+        // myUIManager.uiElementShow("containeer-main__features-button", "containeer-features", "menu-sidebar__features-link");
+
     }
 
     /**
@@ -351,10 +353,13 @@ class UserAccount {
         myUIManager.uiElementSetValue('email-txt', userObj.userEmail);
         myUIManager.uiElementShow("menu-header__logout-button", "menu-header__profile-button");
         myUIManager.uiElementHide("menu-header__login-button", "menu-header__register-button");
+        // myUIManager.uiElementHide("containeer-main__features-button", "containeer-features", "menu-sidebar__features-link");
     }
     
     _updateUserInBuffer(actualUserName) {
         console.log('UserAccount.js _updateUserInBuffer() with name', actualUserName);
-        this.tripTemp.userName = actualUserName;
+        if (!!this.tripTemp) {
+            this.tripTemp.userName = actualUserName;
+        }
     }
 }
