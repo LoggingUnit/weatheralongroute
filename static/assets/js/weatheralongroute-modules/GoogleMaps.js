@@ -1,9 +1,16 @@
 'use strict';
 /**
  * A class which providing all google maps API functions.
+ * One of the oldest part of code with appropriate quality. I am sorry.
+ * Nov 2017
  */
 class GoogleMaps {
 
+  /**
+   * Constructor creates new GoogleMaps obj and view it on element with #mountPointMap
+   * @param {string} mountPointMap id of <div> element to mount map
+   * @return {Object} instance of GoogleMaps class
+   */
   constructor(mountPointMap) {
     this.mountPointMap = mountPointMap;
     this.directions;
@@ -16,8 +23,7 @@ class GoogleMaps {
 
   /**
    * Method allows to add listener of directions_changed event of directionsDisplay object
-   * fu - callback function
-   * @param {*} fu 
+   * @param {function} fu callback function
    */
   addListenerOnDirChange(fu) {
     var that = this;
@@ -32,8 +38,10 @@ class GoogleMaps {
   }
 
   /**
-   * Method to initialize a map and info panel
-   * @param {div, div} div for mount map and info panel with the route
+   * Method to initialize map
+   * @param {Object} lat lat coordinate of map center
+   * @param {Object} lng lng coordinate of map center
+   * @param {number} zoom numeric value of zoom
    * @return nope
    */
   initializeMap(lat, lng, zoom) {
@@ -49,17 +57,17 @@ class GoogleMaps {
   }
 
   /**
-   * Method to show a route and info panel in defined divs. 
+   * Method creates instance of google API DirectionsService class and runs appropriate methods to 
+   * work with returned route
+   * tripRequestObj conbsist of followin data: 
    * Origin - start point of the route. City name.
    * Dest - final point of the route.
-   * Step - variable for internal _simplifyRoute(step) method, *  see details there.
-   * res, rej - promises response
-   * @param {origin, destination, step}
+   * Step - variable for internal _simplifyRoute(step) method, * see details there.
+   * @param {object} tripRequestObj
    * @return nope
    */
   calcRoute(tripRequestObj) {
     console.log(tripRequestObj);
-    //origin, destination, step, timeTripBegin
     this.definedStep = tripRequestObj.step;
     var that = this;
     var directionsService = new google.maps.DirectionsService;
@@ -81,6 +89,11 @@ class GoogleMaps {
     });
   }
 
+  /**
+   * Method to center map on coordinates from params
+   * @param {Object} point coordinate to center at
+   * @return nope
+   */
   centerAt(point) {
     console.log(point.coordStepEnd);
     console.log(this);
@@ -89,11 +102,11 @@ class GoogleMaps {
   }
 
   /**
-   * Method returns simplified route with fixed coordinate step entered previously into
+   * Method returns simplified route with fixed step entered previously into
    * _simplifyRoute(step) method arg step.
    * Output prepared to use with weather service.
    * @param {none}
-   * @return {lat, lng, time}
+   * @return {Object} routeSimple simplified route with fixed step
    */
   getRoute() {
     // console.log("dots count original: ", this.directions.routes[0].overview_path.length);
@@ -102,30 +115,8 @@ class GoogleMaps {
   }
 
   /**
-   * Method corrects timeStart and timeEnd for each step according to inputed timeTripBegin value
-   * to give to a use ability to change time of route start
-   * timeTripBegin - timeTripBegin 
-   * @param {offset}
-   * @return none
-   */
-  _setTimeTripBegin(timeTripBegin) {
-    var date = new Date(); 
-    console.log('GoogleMaps class timeTripBegin: ',timeTripBegin);
-    console.log('GoogleMaps class timeTripBegin UNIX: ', moment(timeTripBegin).unix());
-    console.log('Date.now()/1000', date.getTime()/1000);
-    console.log('diff ', moment(timeTripBegin).unix()-date.getTime()/1000);
-    // var offsetMilliSec = offset * 3600 * 1000;
-    // for (var i = 1; i < this.routeSimple.length; i++) {
-    //   // console.log(this.routeSimple[i].timeStart);
-    //   this.routeSimple[i].timeStart += offsetMilliSec;
-    //   // console.log(this.routeSimple[i].timeStart);
-    //   this.routeSimple[i].timeEnd += offsetMilliSec;
-    // }
-  }
-
-  /**
    * Method to compute a distance and change value in defined divs
-   * @param {result}
+   * @param {}
    * @return nope
    */
   _computeTotalDistance() {
@@ -140,7 +131,7 @@ class GoogleMaps {
 
   /**
    * Method to return defined step
-   * @return {}
+   * @return {number} step distance used to simplify route
    */
   _getDefinedStep() {
     return this.definedStep;
@@ -148,8 +139,8 @@ class GoogleMaps {
 
   /**
    * Method to simplify a direction route with fixed step.
-   * Step - how many meters between route coordinate points in simplified route.
-   * @param {step} 
+   * @param {number} step - how many meters between route coordinate points in simplified route.
+   * @param {number} timeTripBeginUnix - time in unix format wich relates to trip begin
    */
   _simplifyRoute(step, timeTripBeginUnix) {
     var simpleRoute = new SimpleRoute(this.directions, step, timeTripBeginUnix);
@@ -158,7 +149,6 @@ class GoogleMaps {
 
   /**
    * Method to show custom markers of route on the map. 
-   * When method received array of LatLng obj it creates and displays markers;
    * @param {none} 
    */
   drawMarkers() {
@@ -196,6 +186,7 @@ class GoogleMaps {
       i++;
     }
 
+    //with part of code related to markert clusterization, don`t implemented yet 
     var styles = [[{
       url: 'weather-icons/01d.png',
       height: 35,
@@ -218,16 +209,11 @@ class GoogleMaps {
       textColor: '#ffffff',
       textSize: 12
     }]];
-    // var markerCluster = new MarkerClusterer(this.map, this.markers, {
-    //   maxZoom: null,
-    //   gridSize: null,
-    //   styles: styles[0],
-    // });
   }
 
   /**
    * Method to view a map and info panel
-   * @param {div, div} div for mount map and info panel with the route
+   * @param {} 
    * @return nope
    */
   _viewRoute() {

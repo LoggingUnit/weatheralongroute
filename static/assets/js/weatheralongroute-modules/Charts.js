@@ -5,6 +5,11 @@
 
 class Charts {
 
+  /**
+   * Constructor creates new Charts obj and view it on element with #mp
+   * @param {string} mp id of <div> element to mount charts
+   * @return {Object} instance of Charts class
+   */
   constructor(mp) {
     this.myChart = null;
     this.stepArr = null;
@@ -84,13 +89,10 @@ class Charts {
 
   /**
    * A method wich creates a chart in div defined as constructor argument.
-   * stepArr - array with step combined with weather data
-   * curve1 - curve parameter for left chart
-   * curve2 - curve parameter for right chart
    * curve options available: 'temperature', 'precipitation', 'wind', 'clouds'.
-   * @param {*} stepArr 
-   * @param {*} curve1 
-   * @param {*} curve2 
+   * @param {Object} stepArr array with step combined with weather data
+   * @param {string} curve1 curve parameter for left chart
+   * @param {string} curve2 curve parameter for right chart
    * @return {none}
    */
   plotData(stepArr, curve1, curve2) {
@@ -118,7 +120,7 @@ class Charts {
    * A method wich returns chart label according to input parameter.
    * Params available: 'temperature', 'precipitation', 'wind', 'clouds'.
    * Returns appropriate label for chart
-   * @param {*} param
+   * @param {string} param to display
    * @return {*} label 
    */
   _getLabelForDataset(param) {
@@ -151,14 +153,11 @@ class Charts {
 
   /**
    * A method wich returns dataset according to input parameters.
-   * param - a curve to build in a chart
    * Params currently available: 'temperature', 'precipitation', 'wind', 'clouds'.
-   * placement - chart 'y' axis position on chart panel
    * Placements currently available: 'left', 'right'.
-   * Returns datasets according to input data
-   * @param {*} param 
-   * @param {*} placement 
-   * @return {dataset}
+   * @param {string} param a curve to build in a chart
+   * @param {string} placement chart 'y' axis position on chart panel
+   * @return {Object} dataset according to input data
    */
   _getDataset(param, placement) {
     var that = this;
@@ -184,16 +183,12 @@ class Charts {
 
   /**
    * A method wich returns data according to input parameters. It gets data from input stepArr.
-   * param - a data to extract from input stepArr.
    * Params currently available: 'temperature', 'precipitation', 'wind', 'clouds'.
-   * Return - array with all data with defined parameter.
-   * @param {*} param 
-   * @return {arr}
+   * @param {string} param a data to extract from input stepArr.
+   * @return {Object[]} array with all data with defined parameter.
    */
   _getData(param) {
     var stepArr = this.stepArr;
-
-    // console.log(param);
 
     let outputArr = [];
 
@@ -256,8 +251,7 @@ class Charts {
   /**
    * A method wich adds event listener on onmousemove over data dots on chart.
    * As soon mouse is over dot callback 'fu' is called.
-   * fu - callback function wich called on event
-   * @param {*} fu 
+   * @param {function} fu callback function to call on event
    * @return none
    */
   addEventListenerOnMouseMove(fu) {
@@ -286,8 +280,7 @@ class Charts {
   /**
    * A method wich adds event listener on onmouseclick over data dots on chart.
    * As soon mouse is over dot callback 'fu' is called.
-   * fu - callback function wich called on event
-   * @param {*} fu 
+   * @param {function} callback function to call on event 
    * @return none
    */
   addEventListenerOnMouseClick(fu) {
@@ -312,7 +305,6 @@ class Charts {
       }
     }
   }
-
 }
 
 

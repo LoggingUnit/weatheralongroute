@@ -1,10 +1,14 @@
 'use strict';
 /**
+ * A class which provides user input related operations in one place
  */
 class UserInputManager {
 
     /**
-     * Constructor creates new UserInterfaceManager obj
+     * Constructor creates new UserInputManager obj
+     * @param {Object} validator instance of Validator class
+     * @param {Object} myUIManager instance of UIManager class
+     * @return {Object} instance of UserInputManager class
      */
     constructor(validator, myUIManager) {
         this.validator = validator;
@@ -25,6 +29,10 @@ class UserInputManager {
     }
 
     /**
+     * Callback method called on each change of any register form field
+     * in case if entered data is valid button submit became enabled and modal window became hidden.
+     * @param {Object} e event object
+     * @return {null}
      */
     processRegisterInput(e) {
         switch (e.target.className) {
@@ -54,6 +62,12 @@ class UserInputManager {
         }
     }
 
+    /**
+     * Callback method called on each change of any login form field
+     * in case if entered data is valid button submit became enabled and modal window became hidden.
+     * @param {Object} e event object
+     * @return {null} instance of UserInputManager class
+     */
     processLoginInput(e) {
         switch (e.target.className) {
             case 'form-login__username-input': {
@@ -78,6 +92,12 @@ class UserInputManager {
         }
     }
 
+    /**
+     * Callback method called on each change of any trip form field
+     * in case if entered data is valid button submit became enabled and modal window became hidden.
+     * @param {Object} e event object
+     * @return {null} instance of UserInputManager class
+     */
     processTripInput(e) {
         console.log(e);
         switch (e.target.className) {
@@ -106,6 +126,10 @@ class UserInputManager {
         }
     }
 
+    /**
+     * Method returns combined registration data if they are valid
+     * @return {Object} userObj contains register data
+     */
     getRegistrationData() {
         let inputUsernameRegisterValue = this.myUIManager.uiElementGetValue('form-register__username-input');
         let inputEmailRegisterValue = this.myUIManager.uiElementGetValue('form-register__email-input');
@@ -127,6 +151,10 @@ class UserInputManager {
         }
     }
 
+    /**
+     * Method returns combined registration data if they are valid
+     * @return {Object} userObj contains login data
+     */
     getLoginData() {
         let inputUsernameLoginValue = myUIManager.uiElementGetValue('form-login__username-input');
         let inputPasswordLoginValue = myUIManager.uiElementGetValue('form-login__password-input');
@@ -146,6 +174,10 @@ class UserInputManager {
         }
     }
 
+    /**
+     * Method returns combined trip data if they are valid
+     * @return {Object} tripRequestObj contains trip data
+     */
     getTripData() {
         let inputFromValue = myUIManager.uiElementGetValue('form-route__origin-input');
         let inputToValue = myUIManager.uiElementGetValue('form-route__destination-input');
@@ -161,7 +193,7 @@ class UserInputManager {
             var tripRequestObj = {
                 origin: inputFromValue,
                 destination: inputToValue,
-                step: inputStepValue*1000,
+                step: inputStepValue * 1000,
                 timeTripBegin: inputTimeTripBeginValue
             };
             return tripRequestObj;

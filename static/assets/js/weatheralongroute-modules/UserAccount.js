@@ -7,11 +7,11 @@ class UserAccount {
 
     /**
      * Constructor creates new UserAccount obj
-     * @param {obj} myPopUpManager instance of myPopUpManager class
-     * @param {obj} myUIManager instance of myUIManager class
+     * @param {Object} myPopUpManager instance of myPopUpManager class
+     * @param {Object} myUIManager instance of myUIManager class
      * @param {function} getItem method of class with storage access
      * @param {function} setItem method of class with storage access
-     * @return {obj} instance of UserAccount class
+     * @return {Object} instance of UserAccount class
      */
     constructor(myPopUpManager, myUIManager, getItem, setItem) {
         this.mainCalendar = new MainCalendar('#mainCalendar', myPopUpManager.popUpShow, myUIManager.uiElementSetValue);
@@ -38,7 +38,7 @@ class UserAccount {
      * Method for temporary storage of created tripObj obj till it added by user into storages and calendars
      * @param {string} origin origin point of planned route
      * @param {string} destination destination point of planned route
-     * @param {obj} tripWithWeather object contents route and weather combined
+     * @param {Object} tripWithWeather object contents route and weather combined
      * @return {null}
      */
     addTripToUserBuffer(origin, destination, tripWithWeather) {
@@ -61,7 +61,7 @@ class UserAccount {
      * Method to apply tripTemp obj from buffer into user profile.
      * Also adds applied data to calendars and to storage by calling related internal methods
      * @param {null}
-     * @return {null}
+     * @return {Promise}
      */
     applyTripFromUserBuffer() {
         return new Promise((resolveExternal, rejectExternal) => {
@@ -98,8 +98,8 @@ class UserAccount {
      * Method to create new user from external userObj obj
      * Also adds user to storage, sets actual UI view and sets created user as last by 
      * calling related methods
-     * @param {obj} userObj contents main user data
-     * @return {null}
+     * @param {Object} userObj contents main user data
+     * @return {Promise}
      */
     createUser(userObj) {
         return new Promise((externalResolve, externalError) => {
@@ -160,7 +160,7 @@ class UserAccount {
     /**
      * Method to provide simple autentification of already registred user
      * Hides login form, hides alert form, sets last user, restores user data by calling related methods.
-     * @param {obj} userObj contents main user data
+     * @param {Object} userObj contents main user data
      * @param {function} popUpHide method to hide popup window 
      * @return {null}
      */
@@ -241,17 +241,27 @@ class UserAccount {
             .catch(error => console.log);
     }
 
+    /**
+     * Method return promise to add trip from instance of UserAccount class to server
+     * @param {none}
+     * @return {Promise}
+     */
     _addTripDataToServer() {
         return this.tripService.tripCreate(this.tripTemp);
     }
 
+    /**
+     * Method return promise to add user from instance of UserAccount class data to server
+     * @param {none}
+     * @return {Promise}
+     */
     _addUserDataToServer() {
         return this.userService.userCreate(this.userObj);
     }
 
     /**
      * Method takes tripObj arr creates fullcalendar.js events and calls related calendar methods to display data 
-     * @param {obj[]} tripsObj objects what represents single trip obj
+     * @param {Object[]} tripsObj objects what represents single trip obj
      * @return {null}
      */
     _addDataToCalendar(tripsObj) {
@@ -278,6 +288,11 @@ class UserAccount {
         this.profileCalendar.addMultipleEventsToCalendar(eventsArray);
     }
 
+    /**
+     * Method takes token string and adds it into client services 
+     * @param {string} token token string
+     * @return {null}
+     */
     _setSessionToken(token) {
         this.userToken = token;
         this.userService.setToken(token);
@@ -322,12 +337,11 @@ class UserAccount {
         myUIManager.uiElementHide("menu-header__logout-button", "menu-header__profile-button");
         myUIManager.uiElementShow("menu-header__login-button", "menu-header__register-button");
         // myUIManager.uiElementShow("containeer-main__features-button", "containeer-features", "menu-sidebar__features-link");
-
     }
 
     /**
      * Method takes userObj restores data related to user`s trips
-     * @param {obj} userObj contents main user data
+     * @param {Object} userObj contents main user data
      * @return {null}
      */
     _restoreTripData(userObj) {
@@ -345,7 +359,7 @@ class UserAccount {
 
     /**
      * Method to restore user UI by calling related myUIManager methods
-     * @param {obj} userObj contents main user data
+     * @param {Object} userObj contents main user data
      * @return {null}
      */
     _restoreUserUIView(userObj) {
@@ -356,6 +370,11 @@ class UserAccount {
         // myUIManager.uiElementHide("containeer-main__features-button", "containeer-features", "menu-sidebar__features-link");
     }
     
+    /**
+     * Method update user buffer data. Needed in case if trip created prior to user change.
+     * @param {string} actualUserName new user name to set
+     * @return {null}
+     */
     _updateUserInBuffer(actualUserName) {
         console.log('UserAccount.js _updateUserInBuffer() with name', actualUserName);
         if (!!this.tripTemp) {

@@ -8,7 +8,7 @@ class MyLocalStorage {
     /** 
      * Creates instance of MyLocalStorage class
      * @param {null}
-     * @return {obj} instance of MyLocalStorage class
+     * @return {Object} instance of MyLocalStorage class
      */
     constructor() {
         this.getItem = this.getItem.bind(this);

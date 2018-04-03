@@ -1,19 +1,25 @@
 'use strict';
 /**
  * A class which providing all weather API functions.
+ * One of the oldest part of code with appropriate quality. I am sorry.
+ * Nov 2017
  */
 class Weather {
 
+  /**
+   * Constructor creates new Weather obj
+   * @param {string} endpointAddress address of weather API
+   * @return {Object} instance of Weather class
+   */
   constructor(endpointAddress) {
     this.endpointAddress = endpointAddress;
   }
 
   /**
    * A method to apply propper forecast to each step from simple step array
-   * routeSimple - route with simplified step with fixed intervals 
-   * weatherForecast - forecast array with all forecasts for current step
-   * @param {routeSimple, weatherForecast}
-   * @return {routeWithWeather}
+   * @param {Object} routeSimple route with simplified step with fixed intervals 
+   * @param {Object[]} weatherForecast forecast array with all forecasts for current step
+   * @return {Object[]} routeWithWeather array of routeSimple with applied forcasts
    */
   assignWeatherToRoute(routeSimple, weatherForecast) {
     // console.log('routeSimple: ', routeSimple);
@@ -55,9 +61,8 @@ class Weather {
 
   /**
    * Method to recieve a weather forecast for each point of input array
-   * arr - input array of steps 
-   * @param {arr}
-   * @return {promise}
+   * @param {Object[]} arr - input array of steps 
+   * @return {Promise}
    */
   weatherForecast(arr) {
     var that = this;
@@ -75,9 +80,8 @@ class Weather {
 
   /**
    * Method to create a single XMLHttpRequest promise
-   * arr[] - one step element from simple route array to add lat and lng into URL
-   * @param {arr[]}
-   * @return {promise}
+   * @param {Object} input cobject contains coordinate of point to know weather in (single step element)
+   * @return {Promise}
    */
   _singleWeatherXhrPromise(input) {
     let lat = input.coordStepEnd.lat().toFixed(6);

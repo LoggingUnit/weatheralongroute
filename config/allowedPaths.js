@@ -1,3 +1,4 @@
+//Path which don to need to be validated
 module.exports = {
   allowedPaths: [
     '/users',

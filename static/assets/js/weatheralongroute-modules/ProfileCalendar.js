@@ -10,7 +10,7 @@ class ProfileCalendar {
    * Constructor creates new ProfileCalendar obj and view it on element with #mountPointCalendar
    * @param {string} mountPointCalendar id of <div> element to mount calendar
    * @param {function} eventDeleteByCalendarButtonClick method emitted by pressing delete button near event
-   * @return {obj} instance of ProfileCalendar class
+   * @return {Object} instance of ProfileCalendar class
    */
   constructor(mountPointCalendar, eventDeleteByCalendarButtonClick) {
     this.mountPointCalendar = mountPointCalendar;
@@ -49,7 +49,7 @@ class ProfileCalendar {
 
   /**
    * Method creates single fullcalendar.js event and renders it
-   * @param {obj} eventData standart fullcalendar.js event obj
+   * @param {Object} eventData standart fullcalendar.js event obj
    * @return {none} 
    */
   addSingleEventToCalendar(eventData) {
@@ -59,7 +59,7 @@ class ProfileCalendar {
 
   /**
   * Method creates multiple fullcalendar.js event and renders it
-  * @param {obj[]} eventDataArr standart fullcalendar.js event obj
+  * @param {Object[]} eventDataArr standart fullcalendar.js event obj
   * @return {none} 
   */
   addMultipleEventsToCalendar(eventDataArr) {

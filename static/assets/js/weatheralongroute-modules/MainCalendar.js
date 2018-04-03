@@ -10,7 +10,7 @@ class MainCalendar {
    * @param {string} mountPointCalendar id of <div> element to mount calendar
    * @param {function} popUpShow method emitted as soon as date and time picked
    * @param {function} uiElementSetValue method emitted as soon as date and time picked
-   * @return {obj} instance of MainCalendar class
+   * @return {Object} instance of MainCalendar class
    */
   constructor(mountPointCalendar, popUpShow, uiElementSetValue) {
     this.mountPointCalendar = mountPointCalendar;
@@ -48,7 +48,7 @@ class MainCalendar {
 
   /**
    * Method creates single fullcalendar.js event and renders it, then set view of MainCalendar to 'month'
-   * @param {obj} eventData standart fullcalendar.js event obj
+   * @param {Object} eventData standart fullcalendar.js event obj
    * @return {none} 
    */
   addSingleEventToCalendar(eventData) {
@@ -59,7 +59,7 @@ class MainCalendar {
 
   /**
    * Method creates multiple fullcalendar.js event and renders it
-   * @param {obj[]} eventDataArr standart fullcalendar.js event obj
+   * @param {Object[]} eventDataArr standart fullcalendar.js event obj
    * @return {none} 
    */
   addMultipleEventsToCalendar(eventDataArr) {

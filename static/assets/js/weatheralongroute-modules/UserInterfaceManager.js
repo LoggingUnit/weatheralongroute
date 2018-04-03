@@ -7,7 +7,7 @@ class UserInterfaceManager {
     /**
      * Constructor creates new UserInterfaceManager obj
      * @param {null}
-     * @return {obj} instance of UserInterfaceManager class
+     * @return {Object} instance of UserInterfaceManager class
      */
     constructor() {
         this.uiElementSetValue = this.uiElementSetValue.bind(this);

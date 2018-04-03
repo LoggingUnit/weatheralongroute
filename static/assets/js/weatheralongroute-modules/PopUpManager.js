@@ -8,7 +8,7 @@ class PopUpManager {
      * Creates instance of PopUpManager class
      * @param {string[]} collection of strings represents css classes of modal windows. First of them 
      * have to be 'modal' itself as main padding element of each modal window.
-     * @return {obj} instance of PopUpManager class
+     * @return {Object} instance of PopUpManager class
      */
     constructor(...args) {
         this.collection = {};
